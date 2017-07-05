@@ -8,16 +8,30 @@ import * as request from 'request';
 
 let all_market:any ={
   timestamp:0,
-  payload:'no data'
+  payload:'[]'
 }
 
 
-function updateAllMarket(){
-  request.get('https://api.coinmarketcap.com/v1/ticker/',function (err,r,body){
-    if(!err){
-     console.error(err);
+function updateAllMarket(callBack?:Function){
+  let url = 'https://api.coinmarketcap.com/v1/ticker/';
+  console.log(url)
+  
+  request.get(url,function (err,r,body){
+
+    if(err){
+     console.error(' error from https://api.coinmarketcap.com/v1/ticker/ ', err);
+     //console.log(body);
+    // console.log(body);
     }else{
-      all_market.payload = body;
+     // console.log(body)
+      all_market.timestamp = Date.now();
+      try{
+        all_market.payload = JSON.parse(body);
+      }catch (e){
+        all_market.error =  body
+      }
+
+      if(callBack)callBack(all_market)
     }
 
   })
@@ -26,13 +40,21 @@ function updateAllMarket(){
 export function initShapeSift(app: Application): void {
 
 
-  setInterval(updateAllMarket, 600000);
+  setInterval(updateAllMarket, 60000);
 
   updateAllMarket();
 
+  app.route("/api/exchange/shapeshift/all-market/now").get(function (req: Request, res: Response) {
+
+    updateAllMarket(function (data) {
+      res.json(data);
+    });
+
+  });
+
   app.route("/api/exchange/shapeshift/all-market").get(function (req: Request, res: Response) {
 
-    res.end(all_market.payload);
+    res.json(all_market);
 
   });
 

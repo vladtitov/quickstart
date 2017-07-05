@@ -3,7 +3,13 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "./server/server"
+    "start": "node ./server/server",
+    "b-web3": "browserify node_modules/web3/index.js -s web3 | uglifyjs -c > ./pub/libs/web3.min.js",
+    "b-ethereum-tx": "browserify node_modules/ethereumjs-tx/index.js -s ethereumtx > ./pub/libs/ethereumjs-tx.js",
+    "b-ethereumjs-util": "browserify node_modules/ethereumjs-util/index.js -s ethereumjs-util > ./pub/libs/ethereumjs-util.js",
+    "b-bitcoin-lib": "browserify node_modules/bitcoinjs-lib/src/index.js -s bitcoinjs-lib | uglifyjs -c > ./pub/libs/bitcoinjs-lib.min.js",
+    "b-cryptojs": "browserify node_modules/crypto-js/index.js -s crypto-js | uglifyjs -c > ./pub/libs/crypto-js.min.js",
+    "b-buffer": "browserify node_modules/buffer/index.js -s buffer | uglifyjs -c > ./pub/libs/buffer.min.js"
   },
   "private": true,
   "dependencies": {

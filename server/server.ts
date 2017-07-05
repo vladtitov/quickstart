@@ -1,5 +1,5 @@
 
-
+import * as path from 'path';
 import * as express from "express";
 import {Application, Response} from "express";
 import {initRestApi} from "./api/api";
@@ -19,6 +19,8 @@ app.use(bodyParser.json());
 //app.use('/node_modules',express.static('./client/node_modules'));
 app.use(cors({credentials:true}));
 
+
+
 /*
 app.use('/api',function(req:any, res:Response , next:Function){
  // console.log(req.path);
@@ -31,7 +33,12 @@ app.use('/api',function(req:any, res:Response , next:Function){
 */
 
 
-app.use('/',express.static('./dist'));
+
+
+app.get('/', function(req,res) {
+  res.sendFile(path.join(__dirname, '../pub', 'index.html'));
+});
+app.use('/',express.static('./pub'));
 initRestApi(app);
 initChangelly(app);
 initShapeSift(app);
@@ -40,7 +47,7 @@ app.use(apiErrorHandler);
 
 const port:number = 50488;
 app.listen(port, () => {
-    console.log("Server is now running on port " + port);
+    console.log("Server now running on port " + port);
 });
 
 

@@ -10,3 +10,4 @@ function apiGetMenu(req, respond) {
     });
 }
 exports.apiGetMenu = apiGetMenu;
+//# sourceMappingURL=apiGetMenu.js.map

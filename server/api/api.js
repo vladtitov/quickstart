@@ -7,3 +7,4 @@ function initRestApi(app) {
     app.route("/api/menu/:stamp").get(apiGetMenu_1.apiGetMenu);
 }
 exports.initRestApi = initRestApi;
+//# sourceMappingURL=api.js.map

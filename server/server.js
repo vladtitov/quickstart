@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var path = require("path");
 var express = require("express");
 var api_1 = require("./api/api");
 var apiErrorHandler_1 = require("./api/apiErrorHandler");
@@ -21,12 +22,16 @@ app.use('/api',function(req:any, res:Response , next:Function){
   else verifyLogin(req,res,next);
 });
 */
-app.use('/', express.static('./dist'));
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, '../pub', 'index.html'));
+});
+app.use('/', express.static('./pub'));
 api_1.initRestApi(app);
 changelly_api_1.initChangelly(app);
 shapeshift_api_1.initShapeSift(app);
 app.use(apiErrorHandler_1.apiErrorHandler);
 var port = 50488;
 app.listen(port, function () {
-    console.log("Server is now running on port " + port);
+    console.log("Server now running on port " + port);
 });
+//# sourceMappingURL=server.js.map

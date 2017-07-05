@@ -24,3 +24,4 @@ export const PostModel =  initPostModel(sequelize);
 //UserModel.hasMany(PostModel, {foreignKey: "userId"});
 
 //PostModel.belongsTo(UserModel, {foreignKey: "userId"});*/ 
+//# sourceMappingURL=model.js.map

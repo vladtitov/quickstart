@@ -19,12 +19,12 @@
       "displayName":"Ethereum",
       "hdIndex":60,
       "sort":2,
-      "urlBalance":"api/ether/balance/{{address}}",
-      "urlBalances":"api/ether/balances/{{addresses}}",
-      "urlTransactions":"api/ether/transactions/{{address}}",
-      "urlTransactionStatus":"api/ether/transactionStatus/{{txid}}",
-      "urlTransactionInternal":"api/ether/transactionInternal/{{txid}}",
-      "urlSendTransaction":"api/ether/sendTransactions",
+      "urlBalance":"api/ETH/balance/{{address}}",
+      "urlBalances":"api/ETH/balances/{{addresses}}",
+      "urlTransactions":"api/ETH/transactions/{{address}}",
+      "urlTransactionStatus":"api/ETH/transactionStatus/{{txid}}",
+      "urlTransactionInternal":"api/ETH/transactionInternal/{{txid}}",
+      "urlSendTransaction":"api/ETH/sendTransactions",
       "urlNonce":"",
       "generator":"ETH",
       "transactionType":"ETH"
@@ -34,21 +34,9 @@
   "tokens":[
     {
       "order": 3,
-      "units":"wei",
-      "shapeshift":"shapeshift",
-      "symbol": "GNT",
-      "icon": "images/GNTlogo.svg",
-      "imageLarge":"images/gnt-wash.png",
-      "displayName": "Golem",
-      "gasPrice": "21000000000",
-      "gasLimit": "150000",
-      "contractAddress": "0xa74476443119A942dE498590Fe1f2454d7D4aC0d",
-      "minimumBalanceOnEthereumAddress": "21000000000"
-    },
-    {
-      "order": 3,
       "_coinType": 12,
       "units":"wei",
+      "network":"ETH",
       "shapeshift":"shapeshift",
       "paperwallet":"paperwallet",
       "symbol": "GNT",
@@ -67,6 +55,7 @@
       "order": 4,
       "symbol": "REP",
       "units":"wei",
+      "network":"ETH",
       "shapeshift":"shapeshift",
       "paperwallet":"paperwallet",
       "_coinType": 5,
@@ -84,6 +73,7 @@
     {
       "order": 5,
       "symbol": "GNO",
+      "network":"ETH",
       "_coinType": 13,
       "units":"wei",
       "shapeshift":{"exclude":[
@@ -103,6 +93,7 @@
     {
       "order": 6,
       "symbol": "DGD",
+      "network":"ETH",
       "units":"wei",
       "icon": "images/DGDlogo.png",
       "imageLarge":"images/dgd-wash.png",
@@ -120,6 +111,7 @@
     {
       "order": 7,
       "symbol": "ICN",
+      "network":"ETH",
       "icon": "images/ICNlogo.svg",
       "imageLarge":"images/icn-wash.png",
       "shapeshift":"shapeshift",
@@ -132,6 +124,7 @@
     {
       "order": 8,
       "symbol": "MON",
+      "network":"ETH",
       "units":"wei",
       "_coinType": 17,
       "icon": "images/Monaco.svg",
@@ -149,6 +142,7 @@
     {
       "order": 9,
       "symbol": "BAN",
+      "network":"ETH",
       "units":"wei",
       "_coinType": 18,
       "shapeshift":"shapeshift",

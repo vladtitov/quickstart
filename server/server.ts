@@ -11,6 +11,7 @@ import {apiLogin, verifyLogin} from './api/apiLogin';
 import {onSuccess} from "./api/com";
 import {initChangelly} from './api/changelly-api';
 import {initShapeSift} from './api/shapeshift-api';
+import {initEther} from './api/api-ether';
 
 const app: Application = express();
 const cors = require('cors');
@@ -41,6 +42,7 @@ app.use('/',express.static('./pub'));
 initRestApi(app);
 initChangelly(app);
 initShapeSift(app);
+initEther(app);
 
 app.use(apiErrorHandler);
 

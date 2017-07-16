@@ -8,6 +8,7 @@ var bodyParser = require("body-parser");
 var changelly_api_1 = require("./api/changelly-api");
 var shapeshift_api_1 = require("./api/shapeshift-api");
 var api_ether_1 = require("./api/api-ether");
+var api_save_1 = require("./api/api-save");
 var app = express();
 var cors = require('cors');
 app.use(bodyParser.json());
@@ -31,6 +32,7 @@ api_1.initRestApi(app);
 changelly_api_1.initChangelly(app);
 shapeshift_api_1.initShapeSift(app);
 api_ether_1.initEther(app);
+api_save_1.apiSave(app);
 app.use(apiErrorHandler_1.apiErrorHandler);
 var port = 50488;
 app.listen(port, function () {

@@ -12,6 +12,7 @@ import {onSuccess} from "./api/com";
 import {initChangelly} from './api/changelly-api';
 import {initShapeSift} from './api/shapeshift-api';
 import {initEther} from './api/api-ether';
+import {apiSave} from './api/api-save';
 
 const app: Application = express();
 const cors = require('cors');
@@ -43,7 +44,7 @@ initRestApi(app);
 initChangelly(app);
 initShapeSift(app);
 initEther(app);
-
+apiSave(app);
 app.use(apiErrorHandler);
 
 const port:number = 50488;

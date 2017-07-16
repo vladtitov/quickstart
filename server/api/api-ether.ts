@@ -8,7 +8,47 @@ import * as request from 'request';
 export function initEther(app: Application): void {
 
 
-  let config = {
+  let getTokenBalance = function (contractAddress:string, address:string, callback:Function) {
+
+    let url = 'https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress={{contractAddress}}&address={{address}}&tag=latest';
+    url = url
+      .replace('{{contractAddress}}', contractAddress)
+      .replace('{{address}}', address);
+
+    request.get(url, function (err, r, body) {
+      callback(err, body);
+    })
+
+  }
+
+
+ let  getCoinBalance = function(coin, address, callback){
+
+    if(coin){
+
+      let url = coin.urlBalance;
+      url = url.replace('{{address}}',address);
+
+      request.get(url,function (err,r,body){
+        callback(err, body)
+      })
+    }
+
+ }
+
+
+
+
+
+  let coins = {
+    "ETH":{
+     // "urlBalance":"https://api.etherscan.io/api?module=account&action=balancemulti&address={{address}}&tag=latest",
+      "urlBalance":"https://api.etherscan.io/api?module=account&action=balance&address={{address}}&tag=latest",
+      "urlSendTransaction":""
+    }
+  }
+
+  let tokens = {
     "REP":"0x48c80F1f4D53D5951e5D5438B54Cba84f29F32a5",
     "GNO":"0x6810e776880c02933d47db1b9fc05908e5386b96",
     "GNT":"0xa74476443119A942dE498590Fe1f2454d7D4aC0d",
@@ -17,46 +57,37 @@ export function initEther(app: Application): void {
   }
 
 
-  app.route("/api/ETH/balance/:address").get(function (req: Request, res: Response) {
 
-    let address = req.params.address;
 
-    let url = 'https://api.etherscan.io/api?module=account&action=balancemulti&address={{address}}&tag=latest';
-      url = url.replace('{{address}}',address);
+  app.route("/api/coin/balance/:symbol/:address").get(function (req: Request, res: Response) {
 
-    request.get(url,function (err,r,body){
+    let contractAddress = tokens[req.params.symbol];
 
-      res.end(body);
+    if (contractAddress) getTokenBalance(contractAddress, req.params.address, function (err, result) {
+      if (err) res.json({error: err});
+      else {
+
+        res.end(result);
+      }
     })
+    else getCoinBalance(coins[req.params.symbol], req.params.address, function (err, result) {
+      if(err) res.json({error: err});
+      else {
+        res.end(result);
+      }
+    })
+  })
 
-  });
 
-
-  app.route("/api/token/balance/:token/:address").get(function (req: Request, res: Response) {
-
-
-    let contractAddress = config[req.params.token];
-    let address = req.params.address;
-
-    if(address && contractAddress){
-      let url = 'https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress={{contractAddress}}&address={{address}}&tag=latest';
-      url = url
-      .replace('{{contractAddress}}', contractAddress)
-      .replace('{{address}}', address);
-
-      request.get(url,function (err,r,body){
-
-        res.end(body);
-      })
-    }else{
-      res.end('{"error":"not supported"}');
-    }
-
-  });
-
-  app.route("/api/token/sendTransaction").post(function (req: Request, res: Response) {
+  app.route("/api/coin/sendTransaction/:symbol").post(function (req: Request, res: Response) {
 
     let rawTransaction = req.body;
+    let symbol = req.params.symbol;
+    if(tokens[symbol]) symbol = 'ETH';
+
+    let coin = coins[symbol];
+
+
 
     var options = {
       uri: '',

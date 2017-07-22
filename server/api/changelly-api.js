@@ -39,7 +39,7 @@ function initChangelly(app) {
     });
     app.route("/api/exchange/changelly/generateAddress/:from_to/:address").get(function (req, res) {
         var ar = req.params.from_to.split('_');
-        var address = +req.params.address;
+        var address = req.params.address;
         changelly.generateAddress(ar[0], ar[1], address, function (err, data) {
             if (err) {
                 res.json({ error: err });
@@ -51,7 +51,7 @@ function initChangelly(app) {
     });
     app.route("/api/exchange/changelly/getTransactions/:currency/:address").get(function (req, res) {
         var currency = req.params.currency;
-        var address = +req.params.address;
+        var address = req.params.address;
         changelly.getTransactions(currency, address, function (err, data) {
             if (err) {
                 res.json({ error: err });

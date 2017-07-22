@@ -60,7 +60,7 @@ console.log(req.params.from_to);
 
 
     let ar = req.params.from_to.split('_');
-    let address = +req.params.address;
+    let address = req.params.address;
 
     changelly.generateAddress(ar[0], ar[1], address, function (err, data) {
       if (err) {
@@ -76,7 +76,7 @@ console.log(req.params.from_to);
 
 
     let currency = req.params.currency;
-    let address = +req.params.address;
+    let address = req.params.address;
 
     changelly.getTransactions(currency, address, function (err, data) {
       if (err) {

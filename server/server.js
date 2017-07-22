@@ -5,10 +5,13 @@ var express = require("express");
 var api_1 = require("./api/api");
 var apiErrorHandler_1 = require("./api/apiErrorHandler");
 var bodyParser = require("body-parser");
+//import * as JWT from "jsonwebtoken";
+var apiLogin_1 = require("./api/apiLogin");
 var changelly_api_1 = require("./api/changelly-api");
 var shapeshift_api_1 = require("./api/shapeshift-api");
 var api_ether_1 = require("./api/api-ether");
 var api_save_1 = require("./api/api-save");
+var bittrex_proxy_1 = require("./api/bittrex-proxy");
 var app = express();
 var cors = require('cors');
 app.use(bodyParser.json());
@@ -28,11 +31,13 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../pub', 'index.html'));
 });
 app.use('/', express.static('./pub'));
+apiLogin_1.initLogin(app);
 api_1.initRestApi(app);
 changelly_api_1.initChangelly(app);
 shapeshift_api_1.initShapeSift(app);
 api_ether_1.initEther(app);
 api_save_1.apiSave(app);
+bittrex_proxy_1.bittrexApi(app);
 app.use(apiErrorHandler_1.apiErrorHandler);
 var port = 50488;
 app.listen(port, function () {

@@ -7,12 +7,13 @@ import {apiErrorHandler} from "./api/apiErrorHandler";
 
 const bodyParser:any = require("body-parser");
 //import * as JWT from "jsonwebtoken";
-import {apiLogin, verifyLogin} from './api/apiLogin';
+import {initLogin} from './api/apiLogin';
 import {onSuccess} from "./api/com";
 import {initChangelly} from './api/changelly-api';
 import {initShapeSift} from './api/shapeshift-api';
 import {initEther} from './api/api-ether';
 import {apiSave} from './api/api-save';
+import {bittrexApi} from './api/bittrex-proxy';
 
 const app: Application = express();
 const cors = require('cors');
@@ -20,6 +21,10 @@ app.use(bodyParser.json());
 
 //app.use('/node_modules',express.static('./client/node_modules'));
 app.use(cors({credentials:true}));
+
+
+
+
 
 
 
@@ -35,16 +40,23 @@ app.use('/api',function(req:any, res:Response , next:Function){
 */
 
 
+
 app.get('/', function(req,res) {
   res.sendFile(path.join(__dirname, '../pub', 'index.html'));
 });
 
 app.use('/',express.static('./pub'));
+
+initLogin(app);
+
 initRestApi(app);
 initChangelly(app);
 initShapeSift(app);
 initEther(app);
 apiSave(app);
+bittrexApi(app);
+
+
 app.use(apiErrorHandler);
 
 const port:number = 50488;

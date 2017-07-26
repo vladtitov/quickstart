@@ -11,4 +11,3 @@ function createCourseSummaries(data) {
     return data.map(createCourseSummary);
 }
 exports.createCourseSummaries = createCourseSummaries;
-//# sourceMappingURL=course-summary.js.map

@@ -18,4 +18,3 @@ function databaseErrorHandler(res, err) {
         message: "Error occurred error code " + id });
 }
 exports.databaseErrorHandler = databaseErrorHandler;
-//# sourceMappingURL=com.js.map

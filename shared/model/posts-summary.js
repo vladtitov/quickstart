@@ -9,4 +9,3 @@ function createPostsSummaries(data) {
     return data.map(createPostSummary);
 }
 exports.createPostsSummaries = createPostsSummaries;
-//# sourceMappingURL=posts-summary.js.map

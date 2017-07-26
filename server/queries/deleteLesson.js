@@ -7,4 +7,3 @@ function deleteLesson(id) {
     });
 }
 exports.deleteLesson = deleteLesson;
-//# sourceMappingURL=deleteLesson.js.map

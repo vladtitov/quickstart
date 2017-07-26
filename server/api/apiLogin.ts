@@ -1,14 +1,23 @@
 import {Application, Request, Response} from "express";
 import * as _ from "lodash";
 const uuidV1 = require('uuid/v1');
+const uuidV4 = require('uuid/v4');
 import {UserModel} from '../model/model';
-import {onError, onSuccess} from './com';
-import * as JWT from "jsonwebtoken";
+//import {onError, onSuccess} from './com';
+//import * as JWT from "jsonwebtoken";
 import * as crypto from 'crypto';
 import * as request from 'request';
 
+const hri = require('human-readable-ids').hri;
+
 const EXPIRATION_TIME:number = 180;
-const MY_SECRET:string = 'my secrete 2';
+
+  let algorithmCTR = 'aes-256-ctr',
+    algorithmGSM= 'aes-256-gcm',
+    PASSWORD = '3zTvzr3p67VC61jmV54rIYu1545x4TlY',
+    confirmURL ='http://callcenter.front-desk.ca/api/login-confirm/'
+
+
 /**
  * Created by Vlad on 3/29/2017.
  */
@@ -16,6 +25,46 @@ const MY_SECRET:string = 'my secrete 2';
 
 
 export function initLogin(app:Application){
+
+
+  app.route("/api/login/login").post(function (req: Request, res: Response) {
+
+    let email = req.body.email;
+    let password = req.body.password;
+    let deviceid = req.headers['user-agent'];
+
+    let user = {
+      email:email,
+      password:crypto.createHash('md5').update(password).digest("hex"),
+      deviceid:deviceid
+    }
+
+
+    UserModel.findOne({where: {email: user.email, password:user.password }})
+      .then(function (user2:VOUser) {
+        if (user2) {
+          if(user2.confirmed){
+            res.json({success:{
+              token:encryptCTR(user2.uid),
+              nikname:user2.nickname,
+              email:user2.email,
+              role:user2.role
+            }})
+          }else{
+            res.json({
+              error:'verification',
+              confirmURL:confirmURL+encryptCTR(user2.uid)
+            })
+
+          }
+
+        } else {
+
+          res.json({error:'wrong'});
+
+        }
+      })
+  })
 
   app.route("/api/login/register").post(function (req: Request, res: Response) {
 
@@ -27,6 +76,7 @@ export function initLogin(app:Application){
       email:email,
       password:crypto.createHash('md5').update(password).digest("hex"),
       deviceid:deviceid,
+      nickname:'',
       uid:uuidV1()
     }
 
@@ -37,17 +87,149 @@ export function initLogin(app:Application){
           res.json({error: 'exists', message: email});
         } else {
 
-          createUser(user).then(function (result) {
-            console.log(result);
-            res.json(result);
+          createUser(user).then(function (user2:VOUser) {
+            console.log(user2);
+            user2.uid = encryptCTR(user2.uid);
+
+            sendEmail(user2,function (error) {
+              console.log(error);
+              if(error) res.json({error:error});
+              else  res.json(user2);
+            })
 
           })
-
         }
       })
   })
 
+
+  app.route("/api/login/confirm/:uid").get(function (req: Request, res: Response) {
+    let uid = req.body.uid;
+    uid = decryptCTR(uid);
+
+    UserModel.findOne({where: {uid: uid}})
+      .then(function (user:VOUser) {
+        if(user.confirmed){
+          res.json({success:'confirmed-before'})
+        }else{
+
+          UserModel.update({
+            confirmed:true,
+            uid:uuidV4(),
+            nickname:hri.random()
+          },{where:{uid:uid}})
+            .then(function (result) {
+              console.log(result)
+              res.json({success:'confirmed'});
+            })
+        }
+
+      })
+
+  })
+
 }
+
+
+export function encryptCTR(text){
+  var cipher = crypto.createCipher(algorithmCTR,PASSWORD)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+
+
+export function decryptCTR(text){
+  var decipher = crypto.createDecipher(algorithmCTR,PASSWORD)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec;
+}
+
+
+
+
+
+function updateUserByUid(user){
+
+  return UserModel.update(user ,{where:{uid:user.uid}})
+    .then(function (result) {
+      console.log(result)
+
+    })
+
+}
+
+let user ={
+  confirmed:1,
+  email:'vladstitov@gmail.com',
+  uid:'4476d200-6f1a-11e7-b958-a3fb439b8f27'
+  //uid:'qazxsw'
+}
+
+//updateUserByUid(user);
+
+
+
+
+
+function createUser(user:VOUser){
+  return UserModel.create(user)
+}
+
+
+
+
+
+
+function sendEmail(user, callBack:Function){
+
+  let message = 'Hello ' + user.nickname +
+    '. <br/> You have registered at  callcenter.front-desk.ca. <br/>'+
+    '<p>To finalize registration please click link below <br/>'+
+    '<h2><a href="'+confirmURL+user.uid+
+    '">Confirm Registration</a></h2></p><br/>' +
+    '<p><b>Note: this link is valid within 24h since you are registered</b> <br/>'+
+    'Registration is free and does not contains any contracts </p>'
+
+
+
+  let body ={
+    user:'uplight.ca@gmail.com',
+    pass:'uplight.ca@gmail.com',
+    subject:'Email Verification form front-desk.ca',
+    message:message,
+    to:user.email
+  }
+
+
+  let options ={
+    url:'http://callcenter.front-desk.ca/send-email.php',
+    method:'POST',
+    body:JSON.stringify(body)
+  }
+ request(options, function (error, object, data) {
+   console.log(data)
+   callBack(data);
+ })
+
+}
+
+export interface VOUser{
+  id?:number;
+  nickname?:string;
+  email?:string;
+  role?:number;
+  password?:string;
+  uid?:string;
+  createdAt?:number;
+  updatedAt?:number;
+  confirmed?:number;
+  lastVisit?:number;
+  deviceid?:string;
+}
+/*
+
 
 
 function checkUser(password:string, respond:Response, user:any){
@@ -64,47 +246,6 @@ function checkUser(password:string, respond:Response, user:any){
   return null;
 }
 
-
-function createUser(user:VOUser){
-
-  return UserModel.create(user)
-}
-
-function sendEmail(user){
-
-  let message = 'Hello ' + user.email +
-    '. <br/> You have registered at  front-desk.ca <br/>'+
-    'to finalize registration please click url below <br/>'+
-    '<a href="http://callcenter.front-desk.ca/api/login/confirm/'
-    +user.uid+'">Confirm Registration</a> <br/>' +
-    'Please note this link is valid till 24h since you are registered <br/>'+
-    'Registration is free and does not contains any contracts'
-
-
-
-  let body ={
-    user:'uplight.ca@gmail.com',
-    pass:'uplight.ca@gmail.com',
-    subject:'Email Verification form front-desk.ca',
-    message:message,
-    to:user.email
-  }
-
-
-  let options ={
-    url:'http://aesoft.front-desk.ca/send.php',
-    method:'POST',
-    body:JSON.stringify(body)
-  }
- request(options, function (error, object, data) {
-   console.log(data)
- })
-
-}
-export interface VOUser{
-
-}
-/*
 export function apiLogin(req: Request, respond: Response): void {
  // let  email:string = 'uplight.ca@gmail.com' , password:string = '$2a$10$Op3rW9gYT6uXDlAOrmRsHOheTy6jwwDamZONx.apHaQjzmqj8Tiem';
  // console.log(req.body)

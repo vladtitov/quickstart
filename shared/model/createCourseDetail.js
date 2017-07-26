@@ -30,4 +30,3 @@ function createLessonFromDbModel(_a) {
         tags: tags
     };
 }
-//# sourceMappingURL=createCourseDetail.js.map

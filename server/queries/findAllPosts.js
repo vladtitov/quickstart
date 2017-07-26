@@ -8,4 +8,3 @@ function findAllPosts() {
     }); });
 }
 exports.findAllPosts = findAllPosts;
-//# sourceMappingURL=findAllPosts.js.map

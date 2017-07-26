@@ -10,4 +10,3 @@ function apiGetAllCourses(req, res) {
         .catch(_.partial(onError_1.onError, res, "Find All Courses Failed"));
 }
 exports.apiGetAllCourses = apiGetAllCourses;
-//# sourceMappingURL=apiGetAllCourses.js.map

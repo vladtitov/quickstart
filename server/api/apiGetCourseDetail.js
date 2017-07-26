@@ -11,4 +11,3 @@ function apiGetCourseDetail(req, res) {
         .catch(_.partial(onError_1.onError, res, "Could not find course detail for id " + courseId));
 }
 exports.apiGetCourseDetail = apiGetCourseDetail;
-//# sourceMappingURL=apiGetCourseDetail.js.map

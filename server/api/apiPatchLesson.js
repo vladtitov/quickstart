@@ -13,4 +13,3 @@ function apiPatchLesson(req, res) {
         .catch(_.partial(com_2.onError, res, "Could not update lesson"));
 }
 exports.apiPatchLesson = apiPatchLesson;
-//# sourceMappingURL=apiPatchLesson.js.map

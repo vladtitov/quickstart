@@ -22,7 +22,6 @@ function initEther(app) {
     };
     var coins = {
         "ETH": {
-            // "urlBalance":"https://api.etherscan.io/api?module=account&action=balancemulti&address={{address}}&tag=latest",
             "urlBalance": "https://api.etherscan.io/api?module=account&action=balance&address={{address}}&tag=latest",
             "urlSendTransaction": ""
         }
@@ -70,4 +69,3 @@ function initEther(app) {
     });
 }
 exports.initEther = initEther;
-//# sourceMappingURL=api-ether.js.map

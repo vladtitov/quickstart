@@ -14,4 +14,3 @@ function initLessonModel(sequelize) {
     });
 }
 exports.initLessonModel = initLessonModel;
-//# sourceMappingURL=initLessonModel.js.map

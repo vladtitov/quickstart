@@ -8,4 +8,3 @@ function updateLesson(id, props) {
     });
 }
 exports.updateLesson = updateLesson;
-//# sourceMappingURL=updateLesson.js.map

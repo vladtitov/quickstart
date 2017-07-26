@@ -30,6 +30,7 @@ function initUserModel(sequelize: Sequelize) {
   return sequelize.define("registration", {
     email:  ORM.STRING,
     password: ORM.TEXT,
+    role:ORM.INTEGER,
     createdAt:ORM.DATE,
     updatedAt:ORM.DATE,
     uid:ORM.STRING,

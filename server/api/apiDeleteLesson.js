@@ -11,4 +11,3 @@ function apiDeleteLesson(req, res) {
         .catch(_.partial(onError_1.onError, res, "Could not delete lesson " + lessonId));
 }
 exports.apiDeleteLesson = apiDeleteLesson;
-//# sourceMappingURL=apiDeleteLesson.js.map

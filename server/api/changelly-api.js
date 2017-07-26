@@ -63,4 +63,3 @@ function initChangelly(app) {
     });
 }
 exports.initChangelly = initChangelly;
-//# sourceMappingURL=changelly-api.js.map

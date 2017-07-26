@@ -8,4 +8,3 @@ function initPostModel(sequelize) {
     });
 }
 exports.initPostModel = initPostModel;
-//# sourceMappingURL=initModel.js.map

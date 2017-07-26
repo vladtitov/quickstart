@@ -12,4 +12,3 @@ function apiCreateLesson(req, res) {
         .catch(_.partial(onError_1.onError, res, "Could not create lesson"));
 }
 exports.apiCreateLesson = apiCreateLesson;
-//# sourceMappingURL=apiCreateLesson.js.map

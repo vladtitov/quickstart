@@ -13,4 +13,3 @@ function findCourseDetail(courseId) {
         .then(createCourseDetail_1.createCourseDetail);
 }
 exports.findCourseDetail = findCourseDetail;
-//# sourceMappingURL=findCourseDetail.js.map

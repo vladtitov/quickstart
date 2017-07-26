@@ -9,4 +9,3 @@ function findAllCourses() {
         .then(course_summary_1.createCourseSummaries);
 }
 exports.findAllCourses = findAllCourses;
-//# sourceMappingURL=findAllCourses.js.map

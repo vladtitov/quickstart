@@ -11,11 +11,8 @@ function updateAllMarket(callBack) {
     request.get(url, function (err, r, body) {
         if (err) {
             console.error(' error from https://api.coinmarketcap.com/v1/ticker/ ', err);
-            //console.log(body);
-            // console.log(body);
         }
         else {
-            // console.log(body)
             all_market.timestamp = Date.now();
             try {
                 all_market.payload = JSON.parse(body);
@@ -76,4 +73,3 @@ function initShapeSift(app) {
     });
 }
 exports.initShapeSift = initShapeSift;
-//# sourceMappingURL=shapeshift-api.js.map

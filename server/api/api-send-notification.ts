@@ -8,7 +8,7 @@ import * as request from 'request';
 
 export function apiSendNotification(app:Application){
 
-   app.route("/api/send-notification").post(function (req: Request, response: Response) {
+   app.route("/api/send-notification").post(function (req: Request, resp: Response) {
 
     let email = req.body.email;
     let message = req.body.message;
@@ -26,19 +26,23 @@ export function apiSendNotification(app:Application){
     UserModel.findOne({where: {email: email}})
       .then(function (result:VOUser) {
         if (result) {
-          user.nickname = result.nickname;
+          if(result.confirmed){
+            user.nickname = result.nickname;
 
-          /*UserModel.update({
-            confirmed:true,
-          },{where:{email:email}});*/
+            /*UserModel.update({
+              confirmed:true,
+            },{where:{email:email}});*/
 
-          sendNotificationEmail(user, subject, message, function (res) {
-            res.ip=ip;
-            response.json(res);
-          })
+            sendNotificationEmail(user, subject, message, function (res) {
+              res.ip=ip;
+              resp.json(res);
+            })
+          }else{
+            resp.json({error:'need-confirmation'});
+          }
 
         } else {
-          response.json({error: 'notregistared', message:' Please register first'});
+          resp.json({error: 'notregistared', message:' Please register first'});
 
         }
       })

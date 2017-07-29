@@ -4,7 +4,7 @@ var model_1 = require("../model/model");
 var app_utils_1 = require("../utils/app-utils");
 var request = require("request");
 function apiSendNotification(app) {
-    app.route("/api/send-notification").post(function (req, response) {
+    app.route("/api/send-notification").post(function (req, resp) {
         var email = req.body.email;
         var message = req.body.message;
         var subject = req.body.subject;
@@ -18,14 +18,19 @@ function apiSendNotification(app) {
         model_1.UserModel.findOne({ where: { email: email } })
             .then(function (result) {
             if (result) {
-                user.nickname = result.nickname;
-                sendNotificationEmail(user, subject, message, function (res) {
-                    res.ip = ip;
-                    response.json(res);
-                });
+                if (result.confirmed) {
+                    user.nickname = result.nickname;
+                    sendNotificationEmail(user, subject, message, function (res) {
+                        res.ip = ip;
+                        resp.json(res);
+                    });
+                }
+                else {
+                    resp.json({ error: 'need-confirmation' });
+                }
             }
             else {
-                response.json({ error: 'notregistared', message: ' Please register first' });
+                resp.json({ error: 'notregistared', message: ' Please register first' });
             }
         });
     });

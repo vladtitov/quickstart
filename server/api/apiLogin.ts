@@ -1,37 +1,35 @@
-import {Application, Request, Response} from "express";
-import * as _ from "lodash";
-const uuidV1 = require('uuid/v1');
-const uuidV4 = require('uuid/v4');
-import {UserModel} from '../model/model';
-//import {onError, onSuccess} from './com';
-//import * as JWT from "jsonwebtoken";
-import * as crypto from 'crypto';
-import * as request from 'request';
-
-const hri = require('human-readable-ids').hri;
-
-const EXPIRATION_TIME:number = 180;
-
-  let algorithmCTR = 'aes-256-ctr',
-    algorithmGSM= 'aes-256-gcm',
-    PASSWORD = '3zTvzr3p67VC61jmV54rIYu1545x4TlY',
-    confirmURL ='http://callcenter.front-desk.ca/api/login-confirm/'
-
 
 /**
  * Created by Vlad on 3/29/2017.
  */
+
+import {Application, Request, Response} from "express";
+import * as _ from "lodash";
+const uuidV1 = require('uuid/v1');
+const uuidV4 = require('uuid/v4');
+import {UserModel, VOUser} from '../model/model';
+//import {onError, onSuccess} from './com';
+//import * as JWT from "jsonwebtoken";
+import * as request from 'request';
+
+
+import * as crypto from 'crypto';
+import {decryptCTR, encryptCTR, getIp} from '../utils/app-utils';
+
+const hri = require('human-readable-ids').hri;
+const  confirmURL ='http://callcenter.front-desk.ca/api/login-confirm/';
 
 
 
 export function initLogin(app:Application){
 
 
-  app.route("/api/login/login").post(function (req: Request, res: Response) {
+  app.route("/api/login/login").post(function (req: Request, resp: Response) {
 
     let email = req.body.email;
     let password = req.body.password;
     let deviceid = req.headers['user-agent'];
+    let ip = getIp(req);
 
     let user = {
       email:email,
@@ -44,14 +42,14 @@ export function initLogin(app:Application){
       .then(function (user2:VOUser) {
         if (user2) {
           if(user2.confirmed){
-            res.json({success:{
+            resp.json({success:{
               token:encryptCTR(user2.uid),
               nikname:user2.nickname,
               email:user2.email,
               role:user2.role
             }})
           }else{
-            res.json({
+            resp.json({
               error:'verification',
               confirmURL:confirmURL+encryptCTR(user2.uid)
             })
@@ -60,18 +58,18 @@ export function initLogin(app:Application){
 
         } else {
 
-          res.json({error:'wrong'});
+          resp.json({error:'wrong'});
 
         }
       })
   })
 
-  app.route("/api/login/register").post(function (req: Request, res: Response) {
+  app.route("/api/login/register").post(function (req: Request, resp: Response) {
 
     let email = req.body.email;
     let password = req.body.password;
     let deviceid = req.headers['user-agent'];
-
+    let ip = getIp(req);
     let user = {
       email:email,
       password:crypto.createHash('md5').update(password).digest("hex"),
@@ -84,17 +82,17 @@ export function initLogin(app:Application){
     UserModel.findOne({where: {email: email}})
       .then(function (result) {
         if (result) {
-          res.json({error: 'exists', message: email});
+          resp.json({error: 'exists', message: email});
         } else {
 
           createUser(user).then(function (user2:VOUser) {
             console.log(user2);
             user2.uid = encryptCTR(user2.uid);
 
-            sendEmail(user2,function (error) {
+            sendConfirmationEmail(user2,function (error) {
               console.log(error);
-              if(error) res.json({error:error});
-              else  res.json(user2);
+              if(error) resp.json({error:error});
+              else  resp.json(user2);
             })
 
           })
@@ -103,14 +101,15 @@ export function initLogin(app:Application){
   })
 
 
-  app.route("/api/login/confirm/:uid").get(function (req: Request, res: Response) {
+  app.route("/api/login/confirm/:uid").get(function (req: Request, resp: Response) {
     let uid = req.body.uid;
     uid = decryptCTR(uid);
+    let ip = getIp(req);
 
     UserModel.findOne({where: {uid: uid}})
       .then(function (user:VOUser) {
         if(user.confirmed){
-          res.json({success:'confirmed-before'})
+          resp.json({success:'confirmed-before'})
         }else{
 
           UserModel.update({
@@ -120,7 +119,7 @@ export function initLogin(app:Application){
           },{where:{uid:uid}})
             .then(function (result) {
               console.log(result)
-              res.json({success:'confirmed'});
+              resp.json({success:'confirmed'});
             })
         }
 
@@ -130,21 +129,6 @@ export function initLogin(app:Application){
 
 }
 
-
-export function encryptCTR(text){
-  var cipher = crypto.createCipher(algorithmCTR,PASSWORD)
-  var crypted = cipher.update(text,'utf8','hex')
-  crypted += cipher.final('hex');
-  return crypted;
-}
-
-
-export function decryptCTR(text){
-  var decipher = crypto.createDecipher(algorithmCTR,PASSWORD)
-  var dec = decipher.update(text,'hex','utf8')
-  dec += decipher.final('utf8');
-  return dec;
-}
 
 
 
@@ -180,9 +164,7 @@ function createUser(user:VOUser){
 
 
 
-
-
-function sendEmail(user, callBack:Function){
+function sendConfirmationEmail(user, callBack:Function){
 
   let message = 'Hello ' + user.nickname +
     '. <br/> You have registered at  callcenter.front-desk.ca. <br/>'+
@@ -215,19 +197,7 @@ function sendEmail(user, callBack:Function){
 
 }
 
-export interface VOUser{
-  id?:number;
-  nickname?:string;
-  email?:string;
-  role?:number;
-  password?:string;
-  uid?:string;
-  createdAt?:number;
-  updatedAt?:number;
-  confirmed?:number;
-  lastVisit?:number;
-  deviceid?:string;
-}
+
 /*
 
 

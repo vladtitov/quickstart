@@ -14,6 +14,7 @@ import {initShapeSift} from './api/shapeshift-api';
 import {initEther} from './api/api-ether';
 import {apiSave} from './api/api-save';
 import {bittrexApi} from './api/bittrex-proxy';
+import {apiSendNotification} from './api/api-send-notification';
 
 const app: Application = express();
 const cors = require('cors');
@@ -48,6 +49,7 @@ app.get('/', function(req,res) {
 app.use('/',express.static('./pub'));
 
 initLogin(app);
+apiSendNotification(app);
 
 initRestApi(app);
 initChangelly(app);

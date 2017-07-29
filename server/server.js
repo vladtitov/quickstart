@@ -11,6 +11,7 @@ var shapeshift_api_1 = require("./api/shapeshift-api");
 var api_ether_1 = require("./api/api-ether");
 var api_save_1 = require("./api/api-save");
 var bittrex_proxy_1 = require("./api/bittrex-proxy");
+var api_send_notification_1 = require("./api/api-send-notification");
 var app = express();
 var cors = require('cors');
 app.use(bodyParser.json());
@@ -20,6 +21,7 @@ app.get('/', function (req, res) {
 });
 app.use('/', express.static('./pub'));
 apiLogin_1.initLogin(app);
+api_send_notification_1.apiSendNotification(app);
 api_1.initRestApi(app);
 changelly_api_1.initChangelly(app);
 shapeshift_api_1.initShapeSift(app);

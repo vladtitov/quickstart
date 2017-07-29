@@ -41,6 +41,21 @@ function initUserModel(sequelize: Sequelize) {
 }
 
 export const UserModel =  initUserModel(sequelize);
+
+
+export interface VOUser{
+  id?:number;
+  nickname?:string;
+  email?:string;
+  role?:number;
+  password?:string;
+  uid?:string;
+  createdAt?:number;
+  updatedAt?:number;
+  confirmed?:number;
+  lastVisit?:number;
+  deviceid?:string;
+}
 //export const PostModel =  initPostModel(sequelize);
 
 

@@ -8,11 +8,11 @@ var all_market = {
     payload: '[]'
 };
 function updateAllMarket(callBack) {
-    var url = 'http://52.36.123.150:49599/api/exchange/proxy';
+    var url = 'https://api.etherscan.io/api?module=account&action=balance&address=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae&tag=latest&apikey=YourApiKeyToken';
     console.log(url);
     request.get(url, function (err, r, body) {
         if (err) {
-            console.error(' error from https://api.coinmarketcap.com/v1/ticker/ ', err);
+            console.error(' error from  ' + url, err);
         }
         else {
             console.log(body);

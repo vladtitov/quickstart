@@ -12,7 +12,7 @@
         'Accept-Language: vi,en-US;q=0.8,en;q=0.6',
         'Cache-Control: max-age=0',
         'Connection: keep-alive',
-        'Cookie: __cfduid=d7bf11c717fbcd54ec9b259e301a966d71480412679',
+        'Cookie: __cfduid=d9f52c3f5acc12f1dc38a2f65cd1dda401501427687',
         'Host: www.animemobile.com',
         'Upgrade-Insecure-Requests: 1',
         'User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'

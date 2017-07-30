@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var requestOrig = require("request");
 var FileCookieStore = require('tough-cookie-filestore');
+var cookie_string;
 var request = requestOrig;
 var all_market = {
     timestamp: 0,
@@ -12,8 +13,18 @@ function updateAllMarket(callBack) {
     request = request.defaults({ jar: j });
     var url = 'https://api.coinmarketcap.com/v1/ticker/';
     console.log(url);
-    request.get(url, function (err, r, body) {
-        var cookie_string = j.getCookieString(url);
+    var options = {
+        url: url,
+        method: 'GET',
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+            'Cookie': cookie_string,
+            'Accept': '/',
+            'Connection': 'keep-alive'
+        }
+    };
+    request.get(options, function (err, r, body) {
+        cookie_string = j.getCookieString(url);
         if (err) {
             console.error(' error from https://api.coinmarketcap.com/v1/ticker/ ', err);
         }

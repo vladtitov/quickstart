@@ -24,7 +24,9 @@ function updateAllMarket(callBack) {
         }
     };
     request.get(options, function (err, r, body) {
-        cookie_string = j.getCookieString(url);
+        var cookies = j.getCookieString(url);
+        if (cookies)
+            cookie_string = cookies;
         if (err) {
             console.error(' error from https://api.coinmarketcap.com/v1/ticker/ ', err);
         }

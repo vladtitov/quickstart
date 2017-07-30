@@ -19,4 +19,5 @@
     ];
     curl_setopt($c, CURLOPT_HTTPHEADER, $headers);
     $data = curl_exec($c);
+	echo $data;
  ?>

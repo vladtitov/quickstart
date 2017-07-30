@@ -13,6 +13,7 @@ function updateAllMarket(callBack) {
             console.error(' error from https://api.coinmarketcap.com/v1/ticker/ ', err);
         }
         else {
+            console.log(body);
             all_market.timestamp = Date.now();
             try {
                 all_market.payload = JSON.parse(body);

@@ -21,7 +21,7 @@ function updateAllMarket(callBack?:Function){
       //console.log(body);
       // console.log(body);
     }else{
-      // console.log(body)
+       console.log(body)
       all_market.timestamp = Date.now();
       try{
         all_market.payload = JSON.parse(body);

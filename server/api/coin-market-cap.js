@@ -8,7 +8,7 @@ var all_market = {
     payload: '[]'
 };
 function updateAllMarket(callBack) {
-    var url = 'https://utils.jaxx.io/api/exchange/proxy';
+    var url = 'http://52.36.123.150:49599/api/exchange/proxy';
     console.log(url);
     request.get(url, function (err, r, body) {
         if (err) {

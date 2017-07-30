@@ -21,7 +21,9 @@ function updateAllMarket(callBack?:Function){
  // request = request.defaults({ jar : j })
 
   //let url = 'https://api.coinmarketcap.com/v1/ticker/';
-  let url = 'https://utils.jaxx.io/api/exchange/proxy';
+  let url = 'http://52.36.123.150:49599/api/exchange/proxy';
+
+
   //j.setCookie(cookie, url);
   console.log(url)
 

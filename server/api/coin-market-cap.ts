@@ -3,7 +3,8 @@ import {Application, Response, Request} from "express";
 
 import * as requestOrig from 'request';
 var FileCookieStore = require('tough-cookie-filestore');
-var cookie_string;
+var cookie_string = '__cfduid=d637b4b187aea018d48767e06cde771f41501428058';
+;
 let request = requestOrig;
 
 let all_market:any ={
@@ -14,25 +15,29 @@ let all_market:any ={
 
 function updateAllMarket(callBack?:Function){
   var j = request.jar();
-  //var j = request.jar(new FileCookieStore('cookies.json'));
-  request = request.defaults({ jar : j })
+  var cookie = request.cookie(cookie_string);
+  var j = request.jar(cookie_string);
+
+ // request = request.defaults({ jar : j })
   let url = 'https://api.coinmarketcap.com/v1/ticker/';
+  j.setCookie(cookie, url);
   console.log(url)
 
 
-  var options = {
+ /* var options = {
     url:url,
     method: 'GET',
     headers: {
-      'User-Agent': 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+      'User-Agent': 'nodejs',
       'Cookie': cookie_string,
       'Accept': '/',
       'Connection': 'keep-alive'
     }
     //,jar: j
-  };
+  };*/
 
-  request.get(options,function (err,r,body){
+
+  request.get({url: url, jar: j},function (err,r,body){
     let cookies = j.getCookieString(url);
     if(cookies) cookie_string = cookies;
 

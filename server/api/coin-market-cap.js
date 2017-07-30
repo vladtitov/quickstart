@@ -27,6 +27,7 @@ function updateAllMarket(callBack) {
     });
 }
 function coinMarketCap(app) {
+    request.defaults({ jar: true });
     setInterval(updateAllMarket, 60000);
     updateAllMarket();
     app.route("/api/all-coins/market/minute").get(function (req, res) {

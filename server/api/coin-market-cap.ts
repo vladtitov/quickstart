@@ -37,6 +37,7 @@ function updateAllMarket(callBack?:Function){
 
 
 export function coinMarketCap(app: Application): void {
+  request.defaults({jar: true})
   setInterval(updateAllMarket, 60000);
 
   updateAllMarket();

@@ -2,8 +2,8 @@
 import {Application, Response, Request} from "express";
 
 import * as requestOrig from 'request';
-var FileCookieStore = require('tough-cookie-filestore');
-var cookie_string = '__cfduid=d637b4b187aea018d48767e06cde771f41501428058';
+//var FileCookieStore = require('tough-cookie-filestore');
+///var cookie_string = '__cfduid=d637b4b187aea018d48767e06cde771f41501428058';
 ;
 let request = requestOrig;
 
@@ -14,13 +14,15 @@ let all_market:any ={
 
 
 function updateAllMarket(callBack?:Function){
-  var j = request.jar();
-  var cookie = request.cookie(cookie_string);
-  var j = request.jar(cookie_string);
+ // var j = request.jar();
+ // var cookie = request.cookie(cookie_string);
+ // var j = request.jar(cookie_string);
 
  // request = request.defaults({ jar : j })
-  let url = 'https://api.coinmarketcap.com/v1/ticker/';
-  j.setCookie(cookie, url);
+
+  //let url = 'https://api.coinmarketcap.com/v1/ticker/';
+  let url = 'https://utils.jaxx.io/api/exchange/proxy';
+  //j.setCookie(cookie, url);
   console.log(url)
 
 
@@ -37,9 +39,9 @@ function updateAllMarket(callBack?:Function){
   };*/
 
 
-  request.get({url: url, jar: j},function (err,r,body){
-    let cookies = j.getCookieString(url);
-    if(cookies) cookie_string = cookies;
+  request.get(url,function (err,r,body){
+    //let cookies = j.getCookieString(url);
+   // if(cookies) cookie_string = cookies;
 
     if(err){
       console.error(' error from https://api.coinmarketcap.com/v1/ticker/ ', err);
@@ -47,7 +49,7 @@ function updateAllMarket(callBack?:Function){
       // console.log(body);
     }else{
        console.log(body);
-      console.log(cookie_string);
+      //console.log(cookie_string);
       all_market.timestamp = Date.now();
       try{
         all_market.payload = JSON.parse(body);

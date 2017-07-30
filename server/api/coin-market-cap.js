@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var requestOrig = require("request");
-var FileCookieStore = require('tough-cookie-filestore');
-var cookie_string = '__cfduid=d637b4b187aea018d48767e06cde771f41501428058';
 ;
 var request = requestOrig;
 var all_market = {
@@ -10,22 +8,14 @@ var all_market = {
     payload: '[]'
 };
 function updateAllMarket(callBack) {
-    var j = request.jar();
-    var cookie = request.cookie(cookie_string);
-    var j = request.jar(cookie_string);
-    var url = 'https://api.coinmarketcap.com/v1/ticker/';
-    j.setCookie(cookie, url);
+    var url = 'https://utils.jaxx.io/api/exchange/proxy';
     console.log(url);
-    request.get({ url: url, jar: j }, function (err, r, body) {
-        var cookies = j.getCookieString(url);
-        if (cookies)
-            cookie_string = cookies;
+    request.get(url, function (err, r, body) {
         if (err) {
             console.error(' error from https://api.coinmarketcap.com/v1/ticker/ ', err);
         }
         else {
             console.log(body);
-            console.log(cookie_string);
             all_market.timestamp = Date.now();
             try {
                 all_market.payload = JSON.parse(body);

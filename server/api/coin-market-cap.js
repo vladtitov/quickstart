@@ -1,20 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var requestOrig = require("request");
-var request = requestOrig.defaults({ jar: true });
+var FileCookieStore = require('tough-cookie-filestore');
+var request = requestOrig;
 var all_market = {
     timestamp: 0,
     payload: '[]'
 };
 function updateAllMarket(callBack) {
+    var j = request.jar();
+    request = request.defaults({ jar: j });
     var url = 'https://api.coinmarketcap.com/v1/ticker/';
     console.log(url);
     request.get(url, function (err, r, body) {
+        var cookie_string = j.getCookieString(url);
         if (err) {
             console.error(' error from https://api.coinmarketcap.com/v1/ticker/ ', err);
         }
         else {
             console.log(body);
+            console.log(cookie_string);
             all_market.timestamp = Date.now();
             try {
                 all_market.payload = JSON.parse(body);

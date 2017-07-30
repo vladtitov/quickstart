@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var request = require("request");
+var requestOrig = require("request");
+var request = requestOrig.defaults({ jar: true });
 var all_market = {
     timestamp: 0,
     payload: '[]'
@@ -27,7 +28,6 @@ function updateAllMarket(callBack) {
     });
 }
 function coinMarketCap(app) {
-    request.defaults({ jar: true });
     setInterval(updateAllMarket, 60000);
     updateAllMarket();
     app.route("/api/all-coins/market/minute").get(function (req, res) {

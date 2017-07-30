@@ -1,8 +1,9 @@
 
 import {Application, Response, Request} from "express";
 
-import * as request from 'request';
+import * as requestOrig from 'request';
 
+let request = requestOrig.defaults({jar: true});
 
 let all_market:any ={
   timestamp:0,
@@ -37,7 +38,7 @@ function updateAllMarket(callBack?:Function){
 
 
 export function coinMarketCap(app: Application): void {
-  request.defaults({jar: true})
+
   setInterval(updateAllMarket, 60000);
 
   updateAllMarket();

@@ -14,19 +14,20 @@ export function apiSendNotification(app:Application){
     let message = req.body.message;
     let subject = req.body.subject;
     let deviceid = req.headers['user-agent'];
-     let ip = getIp(req);
+    let ip = getIp(req);
 
 
     let user = {
       email:email,
       deviceid:deviceid,
       nickname:''
-    }
+    };
 
     UserModel.findOne({where: {email: email}})
       .then(function (result:VOUser) {
         if (result) {
           if(result.confirmed){
+
             user.nickname = result.nickname;
 
             /*UserModel.update({

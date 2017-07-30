@@ -15,6 +15,7 @@ import {initEther} from './api/api-ether';
 import {apiSave} from './api/api-save';
 import {bittrexApi} from './api/bittrex-proxy';
 import {apiSendNotification} from './api/api-send-notification';
+import {coinMarketCap} from './api/coin-market-cap';
 
 const app: Application = express();
 const cors = require('cors');
@@ -57,6 +58,8 @@ initShapeSift(app);
 initEther(app);
 apiSave(app);
 bittrexApi(app);
+
+coinMarketCap(app);
 
 
 app.use(apiErrorHandler);

@@ -12,6 +12,7 @@ var api_ether_1 = require("./api/api-ether");
 var api_save_1 = require("./api/api-save");
 var bittrex_proxy_1 = require("./api/bittrex-proxy");
 var api_send_notification_1 = require("./api/api-send-notification");
+var coin_market_cap_1 = require("./api/coin-market-cap");
 var app = express();
 var cors = require('cors');
 app.use(bodyParser.json());
@@ -28,6 +29,7 @@ shapeshift_api_1.initShapeSift(app);
 api_ether_1.initEther(app);
 api_save_1.apiSave(app);
 bittrex_proxy_1.bittrexApi(app);
+coin_market_cap_1.coinMarketCap(app);
 app.use(apiErrorHandler_1.apiErrorHandler);
 var port = 50488;
 app.listen(port, function () {

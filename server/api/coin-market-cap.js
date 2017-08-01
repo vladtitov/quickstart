@@ -8,7 +8,7 @@ var all_market = {
     payload: '[]'
 };
 function updateAllMarket(callBack) {
-    var url = 'http://theblockchaincomputer.com/elogs/market-cap.php';
+    var url = 'http://aesoft.ca/tests/market-cap.php';
     console.log(url);
     request.get(url, function (err, r, body) {
         if (err) {

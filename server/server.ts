@@ -46,13 +46,14 @@ app.use('/api',function(req:any, res:Response , next:Function){
 let apis:any[] = [];
 
 app.get('/', function(req,res) {
+
   let p = path.join(__dirname, '../pub','index.html');
   console.log(p);
 
   res.sendFile(p);
 });
 
-app.use('/',express.static('./pub'));
+app.use('/',express.static('../pub'));
 
 /*app.get('/apis-info', function(req,resp) {
 

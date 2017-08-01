@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
     console.log(p);
     res.sendFile(p);
 });
-app.use('/', express.static('./pub'));
+app.use('/', express.static('../pub'));
 var ar;
 ar = apiLogin_1.initLogin(app);
 if (Array.isArray(ar))

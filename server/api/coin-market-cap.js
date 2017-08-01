@@ -26,7 +26,6 @@ function updateAllMarket(callBack) {
                 callBack(all_market);
         }
     });
-    return APIs;
 }
 function coinMarketCap(app) {
     setInterval(updateAllMarket, 60000);
@@ -36,6 +35,7 @@ function coinMarketCap(app) {
             res.json(data);
         });
     });
+    return APIs;
 }
 exports.coinMarketCap = coinMarketCap;
 var APIs = [

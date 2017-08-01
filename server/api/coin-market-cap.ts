@@ -65,11 +65,11 @@ function updateAllMarket(callBack?:Function){
     }
 
   })
-  return APIs;
+
 }
 
 
-export function coinMarketCap(app: Application): void {
+export function coinMarketCap(app: Application) {
 
   setInterval(updateAllMarket, 60000);
 
@@ -82,7 +82,7 @@ export function coinMarketCap(app: Application): void {
     });
 
   });
-
+  return APIs;
 }
 
 const APIs=[

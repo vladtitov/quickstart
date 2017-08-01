@@ -3,19 +3,21 @@ import * as path from 'path';
 import * as express from "express";
 import {Application, Response} from "express";
 import {initRestApi} from "./api/api";
-import {apiErrorHandler} from "./api/apiErrorHandler";
+import {apiErrorHandler} from "./utils/apiErrorHandler";
 
 const bodyParser:any = require("body-parser");
 //import * as JWT from "jsonwebtoken";
 import {initLogin} from './api/apiLogin';
-import {onSuccess} from "./api/com";
+import {onSuccess} from "./utils/com";
 import {initChangelly} from './api/changelly-api';
 import {initShapeSift} from './api/shapeshift-api';
 import {initEther} from './api/api-ether';
-import {apiSave} from './api/api-save';
+import {apiSave} from './utils/api-save';
 import {bittrexApi} from './api/bittrex-proxy';
 import {apiSendNotification} from './api/api-send-notification';
 import {coinMarketCap} from './api/coin-market-cap';
+import {initPoloniex} from './api/poloniex';
+import {initCoinbase} from './api/coinbase';
 
 const app: Application = express();
 const cors = require('cors');
@@ -60,6 +62,10 @@ apiSave(app);
 bittrexApi(app);
 
 coinMarketCap(app);
+
+initPoloniex(app);
+
+initCoinbase(app);
 
 
 app.use(apiErrorHandler);

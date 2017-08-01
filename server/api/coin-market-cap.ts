@@ -20,9 +20,9 @@ function updateAllMarket(callBack?:Function){
 
  // request = request.defaults({ jar : j })
 
-  //let url = 'https://api.coinmarketcap.com/v1/ticker/';
+  let url = 'https://api.coinmarketcap.com/v1/ticker/';
  // let url = 'http://52.36.123.150:49599/api/exchange/proxy';
-  let url = 'https://api.etherscan.io/api?module=account&action=balance&address=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae&tag=latest&apikey=YourApiKeyToken';
+ //let url = 'https://api.etherscan.io/api?module=account&action=balance&address=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae&tag=latest&apikey=YourApiKeyToken';
 
 
   //j.setCookie(cookie, url);
@@ -51,7 +51,7 @@ function updateAllMarket(callBack?:Function){
       //console.log(body);
       // console.log(body);
     }else{
-       console.log(body);
+      // console.log(body);
       //console.log(cookie_string);
       all_market.timestamp = Date.now();
       try{

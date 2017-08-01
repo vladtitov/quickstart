@@ -1,8 +1,8 @@
 
 import {Application} from "express";
-import {apiGetAllPosts} from './apiGetAllPosts';
+import {apiGetAllPosts} from '../archive/apiGetAllPosts';
 import {apiLogin} from './apiLogin';
-import {apiGetMenu} from './apiGetMenu';
+import {apiGetMenu} from '../utils/apiGetMenu';
 import * as fs from 'fs';
 import * as path from 'path';
 

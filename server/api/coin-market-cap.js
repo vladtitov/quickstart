@@ -8,14 +8,13 @@ var all_market = {
     payload: '[]'
 };
 function updateAllMarket(callBack) {
-    var url = 'https://api.etherscan.io/api?module=account&action=balance&address=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae&tag=latest&apikey=YourApiKeyToken';
+    var url = 'https://api.coinmarketcap.com/v1/ticker/';
     console.log(url);
     request.get(url, function (err, r, body) {
         if (err) {
             console.error(' error from  ' + url, err);
         }
         else {
-            console.log(body);
             all_market.timestamp = Date.now();
             try {
                 all_market.payload = JSON.parse(body);

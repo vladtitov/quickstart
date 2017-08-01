@@ -1,8 +1,8 @@
 
 import {Request, Response} from "express";
 import * as _ from "lodash";
-import {onError} from "./com";
-import {onSuccess} from "./com";
+import {onError} from "../utils/com";
+import {onSuccess} from "../utils/com";
 //import {findAllPosts} from '../queries/findAllPosts';
 import {PostModel} from '../model/model';
 

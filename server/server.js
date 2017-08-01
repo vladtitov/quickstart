@@ -19,10 +19,18 @@ var app = express();
 var cors = require('cors');
 app.use(bodyParser.json());
 app.use(cors({ credentials: true }));
+var apis = [];
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../pub', 'index.html'));
 });
 app.use('/', express.static('./pub'));
+app.get('/apis-info', function (req, resp) {
+    resp.json({
+        title: 'APIS Available',
+        timestamp: (new Date()).toISOString(),
+        data: apis
+    });
+});
 apiLogin_1.initLogin(app);
 api_send_notification_1.apiSendNotification(app);
 api_1.initRestApi(app);
@@ -31,7 +39,7 @@ shapeshift_api_1.initShapeSift(app);
 api_ether_1.initEther(app);
 api_save_1.apiSave(app);
 bittrex_proxy_1.bittrexApi(app);
-coin_market_cap_1.coinMarketCap(app);
+apis = apis.concat(coin_market_cap_1.coinMarketCap(app));
 poloniex_1.initPoloniex(app);
 coinbase_1.initCoinbase(app);
 app.use(apiErrorHandler_1.apiErrorHandler);

@@ -43,13 +43,23 @@ app.use('/api',function(req:any, res:Response , next:Function){
 });
 */
 
-
+let apis:any[] = [];
 
 app.get('/', function(req,res) {
   res.sendFile(path.join(__dirname, '../pub', 'index.html'));
 });
 
 app.use('/',express.static('./pub'));
+
+app.get('/apis-info', function(req,resp) {
+
+  resp.json({
+    title:'APIS Available',
+    timestamp:(new Date()).toISOString(),
+    data:apis
+  })
+
+});
 
 initLogin(app);
 apiSendNotification(app);
@@ -61,7 +71,7 @@ initEther(app);
 apiSave(app);
 bittrexApi(app);
 
-coinMarketCap(app);
+apis = apis.concat(coinMarketCap(app));
 
 initPoloniex(app);
 

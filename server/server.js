@@ -31,17 +31,40 @@ app.get('/apis-info', function (req, resp) {
         data: apis
     });
 });
-apiLogin_1.initLogin(app);
-api_send_notification_1.apiSendNotification(app);
-api_1.initRestApi(app);
-changelly_api_1.initChangelly(app);
-shapeshift_api_1.initShapeSift(app);
-api_ether_1.initEther(app);
-api_save_1.apiSave(app);
-bittrex_proxy_1.bittrexApi(app);
-apis = apis.concat(coin_market_cap_1.coinMarketCap(app));
-poloniex_1.initPoloniex(app);
-coinbase_1.initCoinbase(app);
+var ar;
+ar = apiLogin_1.initLogin(app);
+if (Array.isArray(ar))
+    apis = apis.concat(ar);
+ar = api_send_notification_1.apiSendNotification(app);
+if (Array.isArray(ar))
+    apis = apis.concat(ar);
+ar = api_1.initRestApi(app);
+if (Array.isArray(ar))
+    apis = apis.concat(ar);
+ar = changelly_api_1.initChangelly(app);
+if (Array.isArray(ar))
+    apis = apis.concat(ar);
+ar = shapeshift_api_1.initShapeSift(app);
+if (Array.isArray(ar))
+    apis = apis.concat(ar);
+ar = api_ether_1.initEther(app);
+if (Array.isArray(ar))
+    apis = apis.concat(ar);
+ar = api_save_1.apiSave(app);
+if (Array.isArray(ar))
+    apis = apis.concat(ar);
+ar = bittrex_proxy_1.bittrexApi(app);
+if (Array.isArray(ar))
+    apis = apis.concat(ar);
+ar = coin_market_cap_1.coinMarketCap(app);
+if (Array.isArray(ar))
+    apis = apis.concat(ar);
+ar = poloniex_1.initPoloniex(app);
+if (Array.isArray(ar))
+    apis = apis.concat(ar);
+ar = coinbase_1.initCoinbase(app);
+if (Array.isArray(ar))
+    apis = apis.concat(ar);
 app.use(apiErrorHandler_1.apiErrorHandler);
 var port = 50488;
 app.listen(port, function () {

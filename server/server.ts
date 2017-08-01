@@ -61,22 +61,33 @@ app.get('/apis-info', function(req,resp) {
 
 });
 
-initLogin(app);
-apiSendNotification(app);
+let ar:any;
 
-initRestApi(app);
-initChangelly(app);
-initShapeSift(app);
-initEther(app);
-apiSave(app);
-bittrexApi(app);
+ar = initLogin(app);
+if(Array.isArray(ar)) apis = apis.concat(ar);
+ar = apiSendNotification(app);
+if(Array.isArray(ar)) apis = apis.concat(ar);
 
-apis = apis.concat(coinMarketCap(app));
+ar = initRestApi(app);
+if(Array.isArray(ar)) apis = apis.concat(ar);
+ar = initChangelly(app);
+if(Array.isArray(ar)) apis = apis.concat(ar);
+ar = initShapeSift(app);
+if(Array.isArray(ar)) apis = apis.concat(ar);
+ar = initEther(app);
+if(Array.isArray(ar)) apis = apis.concat(ar);
+ar = apiSave(app);
+if(Array.isArray(ar)) apis = apis.concat(ar);
+ar = bittrexApi(app);
+if(Array.isArray(ar)) apis = apis.concat(ar);
+ar = coinMarketCap(app);
+if(Array.isArray(ar)) apis = apis.concat(ar);
 
-initPoloniex(app);
+ar = initPoloniex(app);
+if(Array.isArray(ar)) apis = apis.concat(ar);
 
-initCoinbase(app);
-
+ar = initCoinbase(app);
+if(Array.isArray(ar)) apis = apis.concat(ar);
 
 app.use(apiErrorHandler);
 

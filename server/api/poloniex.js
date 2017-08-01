@@ -19,6 +19,7 @@ function initPoloniex(app) {
     app.route("/api/poloniex/info").get(function (req, resp) {
         resp.json(APIS);
     });
+    return APIS;
 }
 exports.initPoloniex = initPoloniex;
 var APIS = [

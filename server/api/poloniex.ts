@@ -27,6 +27,9 @@ export function initPoloniex(app: Application) {
    resp.json(APIS);
   });
 
+
+  return APIS;
+
 }
 
 

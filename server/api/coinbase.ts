@@ -27,6 +27,8 @@ export function initCoinbase(app:Application){
 
     resp.json(APIS);
   });
+
+  return APIS;
 }
 
 

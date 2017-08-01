@@ -19,6 +19,7 @@ function initCoinbase(app) {
     app.route("/api/coinbase/info").get(function (req, resp) {
         resp.json(APIS);
     });
+    return APIS;
 }
 exports.initCoinbase = initCoinbase;
 var APIS = [

@@ -26,13 +26,6 @@ app.get('/', function (req, res) {
     res.sendFile(p);
 });
 app.use('/', express.static('./pub'));
-app.get('/apis-info', function (req, resp) {
-    resp.json({
-        title: 'APIS Available',
-        timestamp: (new Date()).toISOString(),
-        data: apis
-    });
-});
 var ar;
 ar = apiLogin_1.initLogin(app);
 if (Array.isArray(ar))

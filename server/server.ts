@@ -54,7 +54,7 @@ app.get('/', function(req,res) {
 
 app.use('/',express.static('./pub'));
 
-app.get('/apis-info', function(req,resp) {
+/*app.get('/apis-info', function(req,resp) {
 
   resp.json({
     title:'APIS Available',
@@ -62,7 +62,7 @@ app.get('/apis-info', function(req,resp) {
     data:apis
   })
 
-});
+});*/
 
 let ar:any;
 

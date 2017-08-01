@@ -45,7 +45,7 @@ app.use('/api',function(req:any, res:Response , next:Function){
 
 let apis:any[] = [];
 
-app.get('/', function(req,res) {
+app.get('/index', function(req,res) {
 
   let p = path.join(__dirname, '../pub','index.html');
   console.log(p);

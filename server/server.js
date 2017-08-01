@@ -20,7 +20,7 @@ var cors = require('cors');
 app.use(bodyParser.json());
 app.use(cors({ credentials: true }));
 var apis = [];
-app.get('/', function (req, res) {
+app.get('/index', function (req, res) {
     var p = path.join(__dirname, '../pub', 'index.html');
     console.log(p);
     res.sendFile(p);

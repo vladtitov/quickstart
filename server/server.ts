@@ -46,7 +46,10 @@ app.use('/api',function(req:any, res:Response , next:Function){
 let apis:any[] = [];
 
 app.get('/', function(req,res) {
-  res.sendFile(path.join(__dirname, '../pub', 'index.html'));
+  let p = path.join(__dirname, '../pub','index.html');
+  console.log(p);
+
+  res.sendFile(p);
 });
 
 app.use('/',express.static('./pub'));

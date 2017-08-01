@@ -21,7 +21,9 @@ app.use(bodyParser.json());
 app.use(cors({ credentials: true }));
 var apis = [];
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, '../pub', 'index.html'));
+    var p = path.join(__dirname, '../pub', 'index.html');
+    console.log(p);
+    res.sendFile(p);
 });
 app.use('/', express.static('./pub'));
 app.get('/apis-info', function (req, resp) {

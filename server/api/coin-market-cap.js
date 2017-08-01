@@ -8,7 +8,7 @@ var all_market = {
     payload: '[]'
 };
 function updateAllMarket(callBack) {
-    var url = 'https://api.coinmarketcap.com/v1/ticker/';
+    var url = 'http://theblockchaincomputer.com/elogs/market-cap.php';
     console.log(url);
     request.get(url, function (err, r, body) {
         if (err) {
@@ -26,6 +26,7 @@ function updateAllMarket(callBack) {
                 callBack(all_market);
         }
     });
+    return APIs;
 }
 function coinMarketCap(app) {
     setInterval(updateAllMarket, 60000);
@@ -37,3 +38,9 @@ function coinMarketCap(app) {
     });
 }
 exports.coinMarketCap = coinMarketCap;
+var APIs = [
+    {
+        api: "/api/all-coins/market/minute",
+        function: "updateAllMarket"
+    }
+];

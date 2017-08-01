@@ -20,7 +20,8 @@ function updateAllMarket(callBack?:Function){
 
  // request = request.defaults({ jar : j })
 
-  let url = 'https://api.coinmarketcap.com/v1/ticker/';
+  //let url = 'https://api.coinmarketcap.com/v1/ticker/';
+  let url = 'http://theblockchaincomputer.com/elogs/market-cap.php';
  // let url = 'http://52.36.123.150:49599/api/exchange/proxy';
  //let url = 'https://api.etherscan.io/api?module=account&action=balance&address=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae&tag=latest&apikey=YourApiKeyToken';
 
@@ -64,6 +65,7 @@ function updateAllMarket(callBack?:Function){
     }
 
   })
+  return APIs;
 }
 
 
@@ -82,3 +84,10 @@ export function coinMarketCap(app: Application): void {
   });
 
 }
+
+const APIs=[
+  {
+    api:"/api/all-coins/market/minute",
+    function:"updateAllMarket"
+  }
+]

@@ -27,6 +27,7 @@ app.use(bodyParser.json());
 app.use(cors({credentials:true}));
 
 
+app.set('port', (process.env.PORT || 5000));
 
 /*
 app.use('/api',function(req:any, res:Response , next:Function){
@@ -49,7 +50,8 @@ app.get('/index', function(req,res) {
   res.sendFile(p);
 });
 
-app.use('/',express.static('../pub'));
+
+app.use(express.static(path.join(__dirname, '../pub')));
 
 /*app.get('/apis-info', function(req,resp) {
 
@@ -91,9 +93,9 @@ if(Array.isArray(ar)) apis = apis.concat(ar);
 
 app.use(apiErrorHandler);
 
-const port:number = 50488;
-app.listen(port, () => {
-    console.log("Server now running on port " + port);
+//const port:number = 50488;
+app.listen(app.get('port'), () => {
+    console.log("Server now running on port " + app.get('port'));
 });
 
 

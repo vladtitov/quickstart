@@ -1,7 +1,11 @@
 {
   "name": "exchange_coin",
-  "version": "0.0.1",
-  "license": "MIT",heroku
+  "version": "1.0.1",
+  "license": "MIT",
+  "engines": {
+    "node": "8.0.0"
+  },
+  "main": "./server/server.js",
   "scripts": {
     "start": "node ./server/server",
     "b-web3": "browserify node_modules/web3/index.js -s web3 | uglifyjs -c > ./pub/libs/web3.min.js",
@@ -11,7 +15,6 @@
     "b-cryptojs": "browserify node_modules/crypto-js/index.js -s crypto-js | uglifyjs -c > ./pub/libs/crypto-js.min.js",
     "b-buffer": "browserify node_modules/buffer/index.js -s buffer | uglifyjs -c > ./pub/libs/buffer.min.js"
   },
-  "private": true,
   "dependencies": {
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
@@ -53,5 +56,9 @@
     "@types/socket.io-client": "^1.4.29",
     "tslint": "~5.3.2",
     "uglify-js": "^3.0.23"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vladtitov/quickstart"
   }
 }

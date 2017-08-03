@@ -19,13 +19,14 @@ var app = express();
 var cors = require('cors');
 app.use(bodyParser.json());
 app.use(cors({ credentials: true }));
+app.set('port', (process.env.PORT || 5000));
 var apis = [];
 app.get('/index', function (req, res) {
     var p = path.join(__dirname, '../pub', 'index.html');
     console.log(p);
     res.sendFile(p);
 });
-app.use('/', express.static('../pub'));
+app.use(express.static(path.join(__dirname, '../pub')));
 var ar;
 ar = apiLogin_1.initLogin(app);
 if (Array.isArray(ar))
@@ -61,7 +62,6 @@ ar = coinbase_1.initCoinbase(app);
 if (Array.isArray(ar))
     apis = apis.concat(ar);
 app.use(apiErrorHandler_1.apiErrorHandler);
-var port = 50488;
-app.listen(port, function () {
-    console.log("Server now running on port " + port);
+app.listen(app.get('port'), function () {
+    console.log("Server now running on port " + app.get('port'));
 });

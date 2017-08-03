@@ -28,10 +28,6 @@ app.use(cors({credentials:true}));
 
 
 
-
-
-
-
 /*
 app.use('/api',function(req:any, res:Response , next:Function){
  // console.log(req.path);

@@ -1,7 +1,7 @@
 {
-  "name": "untitled10",
-  "version": "0.0.0",
-  "license": "MIT",
+  "name": "exchange_coin",
+  "version": "0.0.1",
+  "license": "MIT",heroku
   "scripts": {
     "start": "node ./server/server",
     "b-web3": "browserify node_modules/web3/index.js -s web3 | uglifyjs -c > ./pub/libs/web3.min.js",

@@ -8,7 +8,7 @@ var all_market = {
     payload: '[]'
 };
 function updateAllMarket(callBack) {
-    var url = 'http://aesoft.ca/tests/market-cap.php';
+    var url = 'https://api.coinmarketcap.com/v1/ticker/';
     console.log(url);
     request.get(url, function (err, r, body) {
         if (err) {
@@ -28,12 +28,10 @@ function updateAllMarket(callBack) {
     });
 }
 function coinMarketCap(app) {
-    setInterval(updateAllMarket, 60000);
+    setInterval(updateAllMarket, 5 * 60 * 1000);
     updateAllMarket();
-    app.route("/api/all-coins/market/minute").get(function (req, res) {
-        updateAllMarket(function (data) {
-            res.json(data);
-        });
+    app.route("/api/all-coins/market/minute").get(function (req, resp) {
+        resp.json(all_market);
     });
     return APIs;
 }

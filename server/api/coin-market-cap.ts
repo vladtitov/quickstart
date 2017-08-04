@@ -54,7 +54,7 @@ function updateAllMarket(callBack?:Function){
     }else{
       // console.log(body);
       //console.log(cookie_string);
-      all_market.timestamp = Date.now();
+      all_market.timestamp = (new Date()).toISOString();
       try{
         all_market.payload = JSON.parse(body);
       }catch (e){

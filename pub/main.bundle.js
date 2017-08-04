@@ -141,7 +141,7 @@ var _a;
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<diV>\r\n    {{menu | async}}\r\n    <md-sidenav-container >\r\n        <md-sidenav #sidenav>\r\n            <md-list>\r\n\r\n                <a md-list-item routerLink='/bittrex'>Bittrex</a>\r\n                <a md-list-item routerLink='/shape-shift-market-cap'>ShapeShift MarketCap</a>\r\n\r\n                <a md-list-item routerLink='/changelly'>Changelly</a>\r\n                <a md-list-item routerLink='/poloniex'>Poloniex</a>\r\n\r\n                <hr/>\r\n                <a md-list-item routerLink='/email-service'>Email Service</a>\r\n                <a md-list-item routerLink='/ss-main'>Shapeshift Selected</a>\r\n\r\n                <div>\r\n\r\n                    <a md-list-item routerLink='/exchange-ss'>Exchange SS</a>\r\n                    <a md-list-item routerLink='/my-wallets'>My Wallets</a>\r\n                    <hr/>\r\n                </div>\r\n\r\n\r\n                <a md-list-item [routerLink]=\"['/login/sign-in']\">Login</a>\r\n                <a md-list-item [routerLink]=\"['/login/forgot-password']\">Forgot Password</a>\r\n                <a md-list-item [routerLink]=\"['/login/register']\">Register</a>\r\n                <a md-list-item [routerLink]=\"['/login/logout']\">Logout</a>\r\n\r\n            </md-list>\r\n\r\n        </md-sidenav>\r\n\r\n        <div>\r\n            <div (click)=\"sidenav.open()\" class=\"fa fa-bars\">  </div>\r\n        </div>\r\n        <div id=\"MainOutlet\">\r\n            <router-outlet></router-outlet>\r\n        </div>\r\n\r\n    </md-sidenav-container>\r\n</diV>"
+module.exports = "<diV>\r\n    {{menu | async}}\r\n    <md-sidenav-container >\r\n        <md-sidenav #sidenav>\r\n            <md-list>\r\n                <a md-list-item routerLink='/market-cap/all-coins'>Market Cap All</a>\r\n                <a md-list-item routerLink='/market-cap/selected'>Market Cap Selected</a>\r\n                <hr/>\r\n                <a md-list-item routerLink='/bittrex'>Bittrex</a>\r\n                <a md-list-item routerLink='/shape-shift-market-cap'>ShapeShift</a>\r\n\r\n                <a md-list-item routerLink='/changelly'>Changelly</a>\r\n                <a md-list-item routerLink='/poloniex'>Poloniex</a>\r\n                <hr/>\r\n\r\n                <a md-list-item routerLink='/email-service'>Email Service</a>\r\n                <a md-list-item routerLink='/ss-main'>Shapeshift Selected</a>\r\n\r\n                <a md-list-item [routerLink]=\"['/login/sign-in']\">Login</a>\r\n                <a md-list-item [routerLink]=\"['/login/forgot-password']\">Forgot Password</a>\r\n                <a md-list-item [routerLink]=\"['/login/register']\">Register</a>\r\n                <a md-list-item [routerLink]=\"['/login/logout']\">Logout</a>\r\n\r\n            </md-list>\r\n\r\n        </md-sidenav>\r\n\r\n        <div class=\"navbar\">\r\n            <div (click)=\"sidenav.open()\" class=\"fa fa-bars\">  </div>\r\n        </div>\r\n        <div id=\"MainOutlet\">\r\n            <router-outlet></router-outlet>\r\n        </div>\r\n\r\n    </md-sidenav-container>\r\n</diV>"
 
 /***/ }),
 
@@ -226,27 +226,27 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__contact_contact_component__ = __webpack_require__("../../../../../src/app/contact/contact.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__github_shared_github_service__ = __webpack_require__("../../../../../src/app/github/shared/github.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__home_home_service__ = __webpack_require__("../../../../../src/app/home/home.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__ss_browse_ss_browse_module__ = __webpack_require__("../../../../../src/app/ss-browse/ss-browse.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__material_material_app_module__ = __webpack_require__("../../../../../src/app/material/material-app.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__wallets_wallets_module__ = __webpack_require__("../../../../../src/app/wallets/wallets.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/@angular/platform-browser/animations.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__exchange_ss_exchange_ss_component__ = __webpack_require__("../../../../../src/app/exchange-ss/exchange-ss.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__exchange_ss_exchange_ss_service__ = __webpack_require__("../../../../../src/app/exchange-ss/exchange-ss.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__wallets_wallets_all_service__ = __webpack_require__("../../../../../src/app/wallets/wallets-all.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__ss_browse_all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__api_server_service__ = __webpack_require__("../../../../../src/app/api-server.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__login2_login2_component__ = __webpack_require__("../../../../../src/app/login2/login2.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__bittrex_bittrex_module__ = __webpack_require__("../../../../../src/app/bittrex/bittrex.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__changelly_changelly_module__ = __webpack_require__("../../../../../src/app/changelly/changelly.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__exchange_ss_send_alert_service__ = __webpack_require__("../../../../../src/app/exchange-ss/send-alert.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__email_service_email_service_module__ = __webpack_require__("../../../../../src/app/email-service/email-service.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__login_auth_http_service__ = __webpack_require__("../../../../../src/app/login/auth-http.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__login_login_module__ = __webpack_require__("../../../../../src/app/login/login.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__shape_shift_shape_shift_module__ = __webpack_require__("../../../../../src/app/shape-shift/shape-shift.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__com_market_cap_service__ = __webpack_require__("../../../../../src/app/com/market-cap.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__poloniex_poloniex_service__ = __webpack_require__("../../../../../src/app/poloniex/poloniex.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__poloniex_poloniex_module__ = __webpack_require__("../../../../../src/app/poloniex/poloniex.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__material_material_app_module__ = __webpack_require__("../../../../../src/app/material/material-app.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__wallets_wallets_module__ = __webpack_require__("../../../../../src/app/wallets/wallets.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/@angular/platform-browser/animations.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__exchange_ss_exchange_ss_component__ = __webpack_require__("../../../../../src/app/exchange-ss/exchange-ss.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__exchange_ss_exchange_ss_service__ = __webpack_require__("../../../../../src/app/exchange-ss/exchange-ss.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__wallets_wallets_all_service__ = __webpack_require__("../../../../../src/app/wallets/wallets-all.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__api_server_service__ = __webpack_require__("../../../../../src/app/api-server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__login2_login2_component__ = __webpack_require__("../../../../../src/app/login2/login2.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__bittrex_bittrex_module__ = __webpack_require__("../../../../../src/app/bittrex/bittrex.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__changelly_changelly_module__ = __webpack_require__("../../../../../src/app/changelly/changelly.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__exchange_ss_send_alert_service__ = __webpack_require__("../../../../../src/app/exchange-ss/send-alert.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__email_service_email_service_module__ = __webpack_require__("../../../../../src/app/email-service/email-service.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__login_auth_http_service__ = __webpack_require__("../../../../../src/app/login/auth-http.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__login_login_module__ = __webpack_require__("../../../../../src/app/login/login.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__shape_shift_shape_shift_module__ = __webpack_require__("../../../../../src/app/shape-shift/shape-shift.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__com_market_cap_service__ = __webpack_require__("../../../../../src/app/com/market-cap.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__poloniex_poloniex_service__ = __webpack_require__("../../../../../src/app/poloniex/poloniex.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__poloniex_poloniex_module__ = __webpack_require__("../../../../../src/app/poloniex/poloniex.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__market_cap_market_cap_module__ = __webpack_require__("../../../../../src/app/market-cap/market-cap.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__market_cap_market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -313,40 +313,40 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_15__github_repo_detail_repo_detail_component__["a" /* RepoDetailComponent */],
             __WEBPACK_IMPORTED_MODULE_12__home_home_component__["a" /* HomeComponent */],
             __WEBPACK_IMPORTED_MODULE_16__contact_contact_component__["a" /* ContactComponent */],
-            __WEBPACK_IMPORTED_MODULE_24__exchange_ss_exchange_ss_component__["a" /* ExchangeSsComponent */],
-            __WEBPACK_IMPORTED_MODULE_29__login2_login2_component__["a" /* Login2Component */]
+            __WEBPACK_IMPORTED_MODULE_23__exchange_ss_exchange_ss_component__["a" /* ExchangeSsComponent */],
+            __WEBPACK_IMPORTED_MODULE_27__login2_login2_component__["a" /* Login2Component */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* ReactiveFormsModule */],
-            __WEBPACK_IMPORTED_MODULE_19__ss_browse_ss_browse_module__["a" /* SsBrowseModule */],
-            __WEBPACK_IMPORTED_MODULE_20__material_material_app_module__["a" /* MaterialAppModule */],
-            __WEBPACK_IMPORTED_MODULE_21__wallets_wallets_module__["a" /* WalletsModule */],
-            __WEBPACK_IMPORTED_MODULE_22__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+            __WEBPACK_IMPORTED_MODULE_38__market_cap_market_cap_module__["a" /* MarketCapModule */],
+            __WEBPACK_IMPORTED_MODULE_19__material_material_app_module__["a" /* MaterialAppModule */],
+            __WEBPACK_IMPORTED_MODULE_20__wallets_wallets_module__["a" /* WalletsModule */],
+            __WEBPACK_IMPORTED_MODULE_21__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_23__shared_shared_module__["a" /* SharedModule */],
-            __WEBPACK_IMPORTED_MODULE_30__bittrex_bittrex_module__["a" /* BittrexModule */],
-            __WEBPACK_IMPORTED_MODULE_31__changelly_changelly_module__["a" /* ChangellyModule */],
-            __WEBPACK_IMPORTED_MODULE_33__email_service_email_service_module__["a" /* EmailServiceModule */],
-            __WEBPACK_IMPORTED_MODULE_35__login_login_module__["a" /* LoginModule */],
-            __WEBPACK_IMPORTED_MODULE_36__shape_shift_shape_shift_module__["a" /* ShapeShiftModule */],
-            __WEBPACK_IMPORTED_MODULE_39__poloniex_poloniex_module__["a" /* PoloniexModule */],
+            __WEBPACK_IMPORTED_MODULE_22__shared_shared_module__["a" /* SharedModule */],
+            __WEBPACK_IMPORTED_MODULE_28__bittrex_bittrex_module__["a" /* BittrexModule */],
+            __WEBPACK_IMPORTED_MODULE_29__changelly_changelly_module__["a" /* ChangellyModule */],
+            __WEBPACK_IMPORTED_MODULE_31__email_service_email_service_module__["a" /* EmailServiceModule */],
+            __WEBPACK_IMPORTED_MODULE_33__login_login_module__["a" /* LoginModule */],
+            __WEBPACK_IMPORTED_MODULE_34__shape_shift_shape_shift_module__["a" /* ShapeShiftModule */],
+            __WEBPACK_IMPORTED_MODULE_37__poloniex_poloniex_module__["a" /* PoloniexModule */],
             // AuthModule,
             __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */].forRoot(__WEBPACK_IMPORTED_MODULE_5__app_routes__["a" /* rootRouterConfig */], { useHash: true })
         ],
         providers: [
             //AuthHttp,
             __WEBPACK_IMPORTED_MODULE_17__github_shared_github_service__["a" /* GithubService */],
-            __WEBPACK_IMPORTED_MODULE_34__login_auth_http_service__["a" /* AuthHttpService */],
+            __WEBPACK_IMPORTED_MODULE_32__login_auth_http_service__["a" /* AuthHttpService */],
             __WEBPACK_IMPORTED_MODULE_18__home_home_service__["a" /* HomeService */],
-            __WEBPACK_IMPORTED_MODULE_25__exchange_ss_exchange_ss_service__["a" /* ExchangeSsService */],
-            __WEBPACK_IMPORTED_MODULE_26__wallets_wallets_all_service__["a" /* WalletsAllService */],
-            __WEBPACK_IMPORTED_MODULE_27__ss_browse_all_coins_service__["a" /* AllCoinsService */],
-            __WEBPACK_IMPORTED_MODULE_28__api_server_service__["a" /* ApiServerService */],
-            __WEBPACK_IMPORTED_MODULE_32__exchange_ss_send_alert_service__["a" /* SendAlertService */],
-            __WEBPACK_IMPORTED_MODULE_37__com_market_cap_service__["a" /* MarketCapService */],
-            __WEBPACK_IMPORTED_MODULE_38__poloniex_poloniex_service__["a" /* PoloniexService */]
+            __WEBPACK_IMPORTED_MODULE_24__exchange_ss_exchange_ss_service__["a" /* ExchangeSsService */],
+            __WEBPACK_IMPORTED_MODULE_25__wallets_wallets_all_service__["a" /* WalletsAllService */],
+            __WEBPACK_IMPORTED_MODULE_39__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */],
+            __WEBPACK_IMPORTED_MODULE_26__api_server_service__["a" /* ApiServerService */],
+            __WEBPACK_IMPORTED_MODULE_30__exchange_ss_send_alert_service__["a" /* SendAlertService */],
+            __WEBPACK_IMPORTED_MODULE_35__com_market_cap_service__["a" /* MarketCapService */],
+            __WEBPACK_IMPORTED_MODULE_36__poloniex_poloniex_service__["a" /* PoloniexService */]
             // provideAuth({
             // headerName: 'Authorization',
             //  headerPrefix: 'Bearer',
@@ -375,22 +375,23 @@ AppModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__github_repo_list_repo_list_component__ = __webpack_require__("../../../../../src/app/github/repo-list/repo-list.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__github_repo_detail_repo_detail_component__ = __webpack_require__("../../../../../src/app/github/repo-detail/repo-detail.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__contact_contact_component__ = __webpack_require__("../../../../../src/app/contact/contact.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ss_browse_ss_main_ss_main_component__ = __webpack_require__("../../../../../src/app/ss-browse/ss-main/ss-main.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__wallets_wallets_main_wallets_main_component__ = __webpack_require__("../../../../../src/app/wallets/wallets-main/wallets-main.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__wallets_my_wallets_my_wallets_component__ = __webpack_require__("../../../../../src/app/wallets/my-wallets/my-wallets.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__exchange_ss_exchange_ss_component__ = __webpack_require__("../../../../../src/app/exchange-ss/exchange-ss.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__bittrex_bittrex_market_bittrex_market_component__ = __webpack_require__("../../../../../src/app/bittrex/bittrex-market/bittrex-market.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__changelly_ch_market_ch_market_component__ = __webpack_require__("../../../../../src/app/changelly/ch-market/ch-market.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__login_login_login_component__ = __webpack_require__("../../../../../src/app/login/login/login.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__login_confirm_confirm_component__ = __webpack_require__("../../../../../src/app/login/confirm/confirm.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__email_service_email_main_email_main_component__ = __webpack_require__("../../../../../src/app/email-service/email-main/email-main.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__email_service_email_all_coins_email_all_coins_component__ = __webpack_require__("../../../../../src/app/email-service/email-all-coins/email-all-coins.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__email_service_email_selected_coins_email_selected_coins_component__ = __webpack_require__("../../../../../src/app/email-service/email-selected-coins/email-selected-coins.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__email_service_create_watchdog_create_watchdog_component__ = __webpack_require__("../../../../../src/app/email-service/create-watchdog/create-watchdog.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__email_service_run_watchdogs_run_watchdogs_component__ = __webpack_require__("../../../../../src/app/email-service/run-watchdogs/run-watchdogs.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__email_service_edit_script_edit_script_component__ = __webpack_require__("../../../../../src/app/email-service/edit-script/edit-script.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__shape_shift_ss_coins_available_ss_coins_available_component__ = __webpack_require__("../../../../../src/app/shape-shift/ss-coins-available/ss-coins-available.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__poloniex_poloniex_ticker_poloniex_ticker_component__ = __webpack_require__("../../../../../src/app/poloniex/poloniex-ticker/poloniex-ticker.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__wallets_wallets_main_wallets_main_component__ = __webpack_require__("../../../../../src/app/wallets/wallets-main/wallets-main.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__wallets_my_wallets_my_wallets_component__ = __webpack_require__("../../../../../src/app/wallets/my-wallets/my-wallets.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__exchange_ss_exchange_ss_component__ = __webpack_require__("../../../../../src/app/exchange-ss/exchange-ss.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__bittrex_bittrex_market_bittrex_market_component__ = __webpack_require__("../../../../../src/app/bittrex/bittrex-market/bittrex-market.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__changelly_ch_market_ch_market_component__ = __webpack_require__("../../../../../src/app/changelly/ch-market/ch-market.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__login_login_login_component__ = __webpack_require__("../../../../../src/app/login/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__login_confirm_confirm_component__ = __webpack_require__("../../../../../src/app/login/confirm/confirm.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__email_service_email_main_email_main_component__ = __webpack_require__("../../../../../src/app/email-service/email-main/email-main.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__email_service_email_all_coins_email_all_coins_component__ = __webpack_require__("../../../../../src/app/email-service/email-all-coins/email-all-coins.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__email_service_email_selected_coins_email_selected_coins_component__ = __webpack_require__("../../../../../src/app/email-service/email-selected-coins/email-selected-coins.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__email_service_create_watchdog_create_watchdog_component__ = __webpack_require__("../../../../../src/app/email-service/create-watchdog/create-watchdog.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__email_service_run_watchdogs_run_watchdogs_component__ = __webpack_require__("../../../../../src/app/email-service/run-watchdogs/run-watchdogs.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__email_service_edit_script_edit_script_component__ = __webpack_require__("../../../../../src/app/email-service/edit-script/edit-script.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__shape_shift_ss_coins_available_ss_coins_available_component__ = __webpack_require__("../../../../../src/app/shape-shift/ss-coins-available/ss-coins-available.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__poloniex_poloniex_ticker_poloniex_ticker_component__ = __webpack_require__("../../../../../src/app/poloniex/poloniex-ticker/poloniex-ticker.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__market_cap_selected_coins_selected_coins_component__ = __webpack_require__("../../../../../src/app/market-cap/selected-coins/selected-coins.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__market_cap_all_coins_table_all_coins_table_component__ = __webpack_require__("../../../../../src/app/market-cap/all-coins-table/all-coins-table.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return rootRouterConfig; });
 
 
@@ -414,31 +415,33 @@ AppModule = __decorate([
 
 
 
+
 var rootRouterConfig = [
-    { path: '', redirectTo: 'ss-main', pathMatch: 'full' },
+    { path: '', redirectTo: 'market-cap/all-coins', pathMatch: 'full' },
     { path: 'home', component: __WEBPACK_IMPORTED_MODULE_1__home_home_component__["a" /* HomeComponent */] },
     // { path: 'login', component: LoginMain },
     { path: 'about', component: __WEBPACK_IMPORTED_MODULE_0__about_about_component__["a" /* AboutComponent */] },
-    { path: 'exchange-ss', component: __WEBPACK_IMPORTED_MODULE_9__exchange_ss_exchange_ss_component__["a" /* ExchangeSsComponent */] },
-    { path: 'ss-main', component: __WEBPACK_IMPORTED_MODULE_6__ss_browse_ss_main_ss_main_component__["a" /* SsMainComponent */] },
-    { path: 'shape-shift-market-cap', component: __WEBPACK_IMPORTED_MODULE_20__shape_shift_ss_coins_available_ss_coins_available_component__["a" /* SSCoinsAvailableComponent */] },
-    { path: 'changelly', component: __WEBPACK_IMPORTED_MODULE_11__changelly_ch_market_ch_market_component__["a" /* ChMarketComponent */] },
-    { path: 'poloniex', component: __WEBPACK_IMPORTED_MODULE_21__poloniex_poloniex_ticker_poloniex_ticker_component__["a" /* PoloniexTickerComponent */] },
-    { path: 'wallets', component: __WEBPACK_IMPORTED_MODULE_7__wallets_wallets_main_wallets_main_component__["a" /* WalletsMainComponent */] },
-    { path: 'email-service', component: __WEBPACK_IMPORTED_MODULE_14__email_service_email_main_email_main_component__["a" /* EmailMainComponent */],
+    { path: 'exchange-ss', component: __WEBPACK_IMPORTED_MODULE_8__exchange_ss_exchange_ss_component__["a" /* ExchangeSsComponent */] },
+    { path: 'market-cap/all-coins', component: __WEBPACK_IMPORTED_MODULE_22__market_cap_all_coins_table_all_coins_table_component__["a" /* AllCoinsTableComponent */] },
+    { path: 'market-cap/selected', component: __WEBPACK_IMPORTED_MODULE_21__market_cap_selected_coins_selected_coins_component__["a" /* SelectedCoinsComponent */] },
+    { path: 'shape-shift-market-cap', component: __WEBPACK_IMPORTED_MODULE_19__shape_shift_ss_coins_available_ss_coins_available_component__["a" /* SSCoinsAvailableComponent */] },
+    { path: 'changelly', component: __WEBPACK_IMPORTED_MODULE_10__changelly_ch_market_ch_market_component__["a" /* ChMarketComponent */] },
+    { path: 'poloniex', component: __WEBPACK_IMPORTED_MODULE_20__poloniex_poloniex_ticker_poloniex_ticker_component__["a" /* PoloniexTickerComponent */] },
+    { path: 'wallets', component: __WEBPACK_IMPORTED_MODULE_6__wallets_wallets_main_wallets_main_component__["a" /* WalletsMainComponent */] },
+    { path: 'email-service', component: __WEBPACK_IMPORTED_MODULE_13__email_service_email_main_email_main_component__["a" /* EmailMainComponent */],
         children: [
-            { path: '', component: __WEBPACK_IMPORTED_MODULE_15__email_service_email_all_coins_email_all_coins_component__["a" /* EmailAllCoinsComponent */] },
-            { path: 'all-coins', component: __WEBPACK_IMPORTED_MODULE_15__email_service_email_all_coins_email_all_coins_component__["a" /* EmailAllCoinsComponent */] },
-            { path: 'selected-coins', component: __WEBPACK_IMPORTED_MODULE_16__email_service_email_selected_coins_email_selected_coins_component__["a" /* EmailSelectedCoinsComponent */] },
-            { path: 'create-watch-dog', component: __WEBPACK_IMPORTED_MODULE_17__email_service_create_watchdog_create_watchdog_component__["a" /* CreateWatchdogComponent */] },
-            { path: 'edit-script/:uid', component: __WEBPACK_IMPORTED_MODULE_19__email_service_edit_script_edit_script_component__["a" /* EditScriptComponent */] },
-            { path: 'run-watch-dog', component: __WEBPACK_IMPORTED_MODULE_18__email_service_run_watchdogs_run_watchdogs_component__["a" /* RunWatchdogsComponent */] }
+            { path: '', component: __WEBPACK_IMPORTED_MODULE_14__email_service_email_all_coins_email_all_coins_component__["a" /* EmailAllCoinsComponent */] },
+            { path: 'all-coins', component: __WEBPACK_IMPORTED_MODULE_14__email_service_email_all_coins_email_all_coins_component__["a" /* EmailAllCoinsComponent */] },
+            { path: 'selected-coins', component: __WEBPACK_IMPORTED_MODULE_15__email_service_email_selected_coins_email_selected_coins_component__["a" /* EmailSelectedCoinsComponent */] },
+            { path: 'create-watch-dog', component: __WEBPACK_IMPORTED_MODULE_16__email_service_create_watchdog_create_watchdog_component__["a" /* CreateWatchdogComponent */] },
+            { path: 'edit-script/:uid', component: __WEBPACK_IMPORTED_MODULE_18__email_service_edit_script_edit_script_component__["a" /* EditScriptComponent */] },
+            { path: 'run-watch-dog', component: __WEBPACK_IMPORTED_MODULE_17__email_service_run_watchdogs_run_watchdogs_component__["a" /* RunWatchdogsComponent */] }
         ]
     },
-    { path: 'my-wallets', component: __WEBPACK_IMPORTED_MODULE_8__wallets_my_wallets_my_wallets_component__["a" /* MyWalletsComponent */] },
-    { path: 'bittrex', component: __WEBPACK_IMPORTED_MODULE_10__bittrex_bittrex_market_bittrex_market_component__["a" /* BittrexMarketComponent */] },
-    { path: 'login/:topic', component: __WEBPACK_IMPORTED_MODULE_12__login_login_login_component__["a" /* LoginComponent */] },
-    { path: 'login-confirm', component: __WEBPACK_IMPORTED_MODULE_13__login_confirm_confirm_component__["a" /* ConfirmComponent */] },
+    { path: 'my-wallets', component: __WEBPACK_IMPORTED_MODULE_7__wallets_my_wallets_my_wallets_component__["a" /* MyWalletsComponent */] },
+    { path: 'bittrex', component: __WEBPACK_IMPORTED_MODULE_9__bittrex_bittrex_market_bittrex_market_component__["a" /* BittrexMarketComponent */] },
+    { path: 'login/:topic', component: __WEBPACK_IMPORTED_MODULE_11__login_login_login_component__["a" /* LoginComponent */] },
+    { path: 'login-confirm', component: __WEBPACK_IMPORTED_MODULE_12__login_confirm_confirm_component__["a" /* ConfirmComponent */] },
     { path: 'github', component: __WEBPACK_IMPORTED_MODULE_2__github_repo_browser_repo_browser_component__["a" /* RepoBrowserComponent */],
         children: [
             { path: '', component: __WEBPACK_IMPORTED_MODULE_3__github_repo_list_repo_list_component__["a" /* RepoListComponent */] },
@@ -1096,12 +1099,12 @@ module.exports = "<div class=\"content\">\n<hr/>\n    <table>\n        <tbody>\n
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__email_service_service__ = __webpack_require__("../../../../../src/app/email-service/email-service.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_dialog_simple_dialog_simple_component__ = __webpack_require__("../../../../../src/app/shared/dialog-simple/dialog-simple.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__email_service_service__ = __webpack_require__("../../../../../src/app/email-service/email-service.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_dialog_simple_dialog_simple_component__ = __webpack_require__("../../../../../src/app/shared/dialog-simple/dialog-simple.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__market_cap_market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CreateWatchdogComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1138,13 +1141,13 @@ var CreateWatchdogComponent = (function () {
     
         } */
         this.emailService.watchDogs$.subscribe(function (res) {
-            _this.setData(__WEBPACK_IMPORTED_MODULE_2_lodash__["values"](res));
+            _this.setData(__WEBPACK_IMPORTED_MODULE_1_lodash__["values"](res));
         });
     };
     CreateWatchdogComponent.prototype.onDeleteClick = function (dog) {
         var _this = this;
         console.log(dog);
-        var ref = this.dialog.open(__WEBPACK_IMPORTED_MODULE_4__shared_dialog_simple_dialog_simple_component__["a" /* DialogSimpleComponent */], { data: {
+        var ref = this.dialog.open(__WEBPACK_IMPORTED_MODULE_3__shared_dialog_simple_dialog_simple_component__["a" /* DialogSimpleComponent */], { data: {
                 title: 'Alert',
                 message: 'You want to delete watch dog ' + dog.uid + ' ' + dog.label + '?',
                 buttons: ['Yes', 'No']
@@ -1170,12 +1173,12 @@ var CreateWatchdogComponent = (function () {
                     item.market = market;
                 }
             });
-            this.watchDogs = __WEBPACK_IMPORTED_MODULE_2_lodash__["orderBy"](ar, this.sortCriteria, this.asc_desc);
+            this.watchDogs = __WEBPACK_IMPORTED_MODULE_1_lodash__["orderBy"](ar, this.sortCriteria, this.asc_desc);
         }
     };
     CreateWatchdogComponent.prototype.setMarket = function (market) {
         this.marketsRaw = market;
-        this.coinsAvailable = __WEBPACK_IMPORTED_MODULE_2_lodash__["values"](market);
+        this.coinsAvailable = __WEBPACK_IMPORTED_MODULE_1_lodash__["values"](market);
         this.mergeData();
     };
     CreateWatchdogComponent.prototype.createDog = function () {
@@ -1185,7 +1188,7 @@ var CreateWatchdogComponent = (function () {
     };
     CreateWatchdogComponent.prototype.setData = function (ar) {
         //console.log(ar);
-        this.watchDogs = __WEBPACK_IMPORTED_MODULE_2_lodash__["orderBy"](ar, this.sortCriteria, this.asc_desc);
+        this.watchDogs = __WEBPACK_IMPORTED_MODULE_1_lodash__["orderBy"](ar, this.sortCriteria, this.asc_desc);
         console.log('setData  ' + this.sortCriteria + '  ' + this.asc_desc);
         this.mergeData();
     };
@@ -1266,7 +1269,7 @@ CreateWatchdogComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/email-service/create-watchdog/create-watchdog.component.html"),
         styles: [__webpack_require__("../../../../../src/app/email-service/create-watchdog/create-watchdog.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__["a" /* AllCoinsService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__email_service_service__["a" /* EmailServiceService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__email_service_service__["a" /* EmailServiceService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__angular_material__["a" /* MdDialog */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_5__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__email_service_service__["a" /* EmailServiceService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__email_service_service__["a" /* EmailServiceService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_material__["a" /* MdDialog */]) === "function" && _c || Object])
 ], CreateWatchdogComponent);
 
 var _a, _b, _c;
@@ -1295,7 +1298,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/email-service/edit-script/edit-script.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content\">\n    <section>\n\n        <div style=\" display: flex; flex-direction: row\" >\n            <div id=\"ScriptContentContainer\">\n\n                <span>{{currentDog.uid}}</span>\n\n                <small>{{currentDog.label}}</small>\n                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\n\n                <md-select  [(ngModel)]=\"currentTrigger\" id=\"SelectTrigger\" #selectedTrigger placeholder=\"Select Variable\" >\n                    <md-option [value]=\"'send_notification'\"> <span class=\"fa fa-flash\"></span> Send Notification</md-option>\n                    <md-option *ngFor=\"let myvar of variablesAvailable\" [value]=\"myvar.index\">{{myvar.label}}</md-option>\n                </md-select>\n                <span class=\"fa fa-arrow-left\"> </span>\n                <button md-raised-button color=\"primary\" (click)=\"insertTrigget(selectedTrigger)\">\n                    <span class=\"fa fa-paste\"></span>\n                    Insert\n                </button>\n                <button color=\"accent\" md-raised-button  (click)=\"runScript()\" title=\"Run Script\">\n                    <span class=\"fa fa-flash\"></span>\n                    Run\n                </button>\n                <button md-raised-button color=\"primary\" (click)=\"saveDog($event)\">\n                    <span class=\"fa fa-save\"></span>\n                    Save\n                </button>\n\n\n\n                <div id=\"ScriptContent\"\n                     #scriptContent\n                     contenteditable=\"true\"\n                     spellcheck=\"false\"\n                     (blur)=\"onScriptContentBlur(scriptContent)\"\n                     (change)=\"onScriptContentChange(scriptContent)\">\n                </div>\n            </div>\n\n            <div class=\"current-changes\">\n                <h3>Current Values</h3>\n                <table>\n                    <tbody>\n                    <tr *ngFor=\"let myvar of variablesAvailable\">\n                        <td>{{myvar.index}}</td>\n                        <td>\n                            <input style=\"width: 3em\" type=\"number\" [(ngModel)]=\"myvar.value\"  name=\"value\" />\n\n                        </td>\n                    </tr>\n                    </tbody>\n                </table>\n            </div>\n\n        </div>\n\n\n\n\n        <!-- <button md-raised-button color=\"accent\"  (click)=\"testScript(scriptContent)\"><span class=\"fa fa-play\"></span> Test</button>\n         <button md-raised-button  (click)=\"viewSorse($event)\"><span class=\"fa fa-eye\"></span> Source</button>\n-->\n\n\n\n        <!--\n          let prev_usd_percent_change_1h:number, prev_usd_percent_change_24h:number, prev_usd_percent_change_7d:number,\nusd_percent_change_1h:number, usd_percent_change_24h:number, usd_percent_change_7d:number;\n        -->\n\n\n\n\n\n    </section>\n\n\n\n\n</div>\n"
+module.exports = "<div class=\"content\">\n    <section>\n\n        <div style=\" display: flex; flex-direction: row\" >\n            <div id=\"ScriptContentContainer\">\n\n                <span>{{currentDog.uid}}</span>\n\n                <small>{{currentDog.label}}</small>        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\n\n                <md-select  [(ngModel)]=\"currentTrigger\" id=\"SelectTrigger\" #selectedTrigger placeholder=\"Select Variable\" >\n                    <md-option [value]=\"'send_notification'\"> <span class=\"fa fa-flash\"></span> Send Notification</md-option>\n                    <md-option *ngFor=\"let myvar of variablesAvailable\" [value]=\"myvar.index\">{{myvar.label}}</md-option>\n                </md-select>\n                <span class=\"fa fa-arrow-left\"> </span>\n                <button md-raised-button color=\"primary\" (click)=\"insertTrigget(selectedTrigger)\">\n                    <span class=\"fa fa-paste\"></span>\n                    Insert\n                </button>\n                <button color=\"accent\" md-raised-button  (click)=\"runScript()\" title=\"Run Script\">\n                    <span class=\"fa fa-flash\"></span>\n                    Run\n                </button>\n                <button md-raised-button color=\"primary\" (click)=\"saveDog($event)\">\n                    <span class=\"fa fa-save\"></span>\n                    Save\n                </button>\n\n\n\n                <div id=\"ScriptContent\"\n                     #scriptContent\n                     contenteditable=\"true\"\n                     spellcheck=\"false\"\n                     (blur)=\"onScriptContentBlur(scriptContent)\"\n                     (change)=\"onScriptContentChange(scriptContent)\">\n                </div>\n            </div>\n\n            <div class=\"current-changes\">\n                <h3>Current Values</h3>\n                <table>\n                    <tbody>\n                    <tr *ngFor=\"let myvar of variablesAvailable\">\n                        <td>{{myvar.index}}</td>\n                        <td>\n                            <input style=\"width: 3em\" type=\"number\" [(ngModel)]=\"myvar.value\"  name=\"value\" />\n\n                        </td>\n                    </tr>\n                    </tbody>\n                </table>\n            </div>\n\n        </div>\n\n\n\n\n        <!-- <button md-raised-button color=\"accent\"  (click)=\"testScript(scriptContent)\"><span class=\"fa fa-play\"></span> Test</button>\n         <button md-raised-button  (click)=\"viewSorse($event)\"><span class=\"fa fa-eye\"></span> Source</button>\n-->\n\n\n\n        <!--\n          let prev_usd_percent_change_1h:number, prev_usd_percent_change_24h:number, prev_usd_percent_change_7d:number,\nusd_percent_change_1h:number, usd_percent_change_24h:number, usd_percent_change_7d:number;\n        -->\n\n\n\n\n\n    </section>\n\n\n\n\n</div>\n"
 
 /***/ }),
 
@@ -1304,11 +1307,11 @@ module.exports = "<div class=\"content\">\n    <section>\n\n        <div style=\
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__email_service_service__ = __webpack_require__("../../../../../src/app/email-service/email-service.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__run_watchdogs_script_analytics__ = __webpack_require__("../../../../../src/app/email-service/run-watchdogs/script-analytics.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__email_service_service__ = __webpack_require__("../../../../../src/app/email-service/email-service.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__run_watchdogs_script_analytics__ = __webpack_require__("../../../../../src/app/email-service/run-watchdogs/script-analytics.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__market_cap_market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EditScriptComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1378,7 +1381,7 @@ var EditScriptComponent = (function () {
             marketHistory: [history]
         };
         console.log(dog);
-        var results = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__run_watchdogs_script_analytics__["a" /* runDogScript */])(dog, script);
+        var results = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__run_watchdogs_script_analytics__["a" /* runDogScript */])(dog, script);
         console.log(results);
         if (results.length) {
             var message = results.join('<br/>');
@@ -1490,7 +1493,7 @@ EditScriptComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/email-service/edit-script/edit-script.component.html"),
         styles: [__webpack_require__("../../../../../src/app/email-service/edit-script/edit-script.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__["a" /* AllCoinsService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__email_service_service__["a" /* EmailServiceService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__email_service_service__["a" /* EmailServiceService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_material__["a" /* MdDialog */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__angular_material__["d" /* MdSnackBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_material__["d" /* MdSnackBar */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_router__["c" /* ActivatedRoute */]) === "function" && _e || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_5__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__email_service_service__["a" /* EmailServiceService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__email_service_service__["a" /* EmailServiceService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MdDialog */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["d" /* MdSnackBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["d" /* MdSnackBar */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* ActivatedRoute */]) === "function" && _e || Object])
 ], EditScriptComponent);
 
 var _a, _b, _c, _d, _e;
@@ -1528,9 +1531,9 @@ module.exports = "<div class=\"content\">\n          <h3>All Coins </h3><small>T
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__market_cap_market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EmailAllCoinsComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1582,7 +1585,7 @@ var EmailAllCoinsComponent = (function () {
         else
             this.asc_desc = 'asc';
         console.log(this.asc_desc);
-        this.allCoinsData = __WEBPACK_IMPORTED_MODULE_2_lodash__["orderBy"](this.allCoinsData, criteria, this.asc_desc);
+        this.allCoinsData = __WEBPACK_IMPORTED_MODULE_1_lodash__["orderBy"](this.allCoinsData, criteria, this.asc_desc);
         this.sortCriteria = criteria;
     };
     return EmailAllCoinsComponent;
@@ -1593,7 +1596,7 @@ EmailAllCoinsComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/email-service/email-all-coins/email-all-coins.component.html"),
         styles: [__webpack_require__("../../../../../src/app/email-service/email-all-coins/email-all-coins.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__["a" /* AllCoinsService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */]) === "function" && _a || Object])
 ], EmailAllCoinsComponent);
 
 var _a;
@@ -1692,9 +1695,9 @@ module.exports = "<div class=\"content\">\n    <h4> Selected Coins </h4> <small>
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__market_cap_market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EmailSelectedCoinsComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1717,10 +1720,10 @@ var EmailSelectedCoinsComponent = (function () {
     }
     EmailSelectedCoinsComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.allCoinsService.selectedCoins$.subscribe(function (res) { return _this.setCoins(__WEBPACK_IMPORTED_MODULE_2_lodash__["values"](res)); });
+        this.allCoinsService.selectedCoins$.subscribe(function (res) { return _this.setCoins(__WEBPACK_IMPORTED_MODULE_1_lodash__["values"](res)); });
     };
     EmailSelectedCoinsComponent.prototype.setCoins = function (ar) {
-        this.selectedCoins = __WEBPACK_IMPORTED_MODULE_2_lodash__["orderBy"](ar, this.sortCriteria, this.asc_desc);
+        this.selectedCoins = __WEBPACK_IMPORTED_MODULE_1_lodash__["orderBy"](ar, this.sortCriteria, this.asc_desc);
     };
     EmailSelectedCoinsComponent.prototype.onClickHeader = function (criteria) {
         console.log(criteria);
@@ -1744,7 +1747,7 @@ EmailSelectedCoinsComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/email-service/email-selected-coins/email-selected-coins.component.html"),
         styles: [__webpack_require__("../../../../../src/app/email-service/email-selected-coins/email-selected-coins.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__["a" /* AllCoinsService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */]) === "function" && _a || Object])
 ], EmailSelectedCoinsComponent);
 
 var _a;
@@ -1961,12 +1964,12 @@ module.exports = "<div class=\"content\">\n      <section>\n        <h4> Watch D
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__email_service_service__ = __webpack_require__("../../../../../src/app/email-service/email-service.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__script_analytics__ = __webpack_require__("../../../../../src/app/email-service/run-watchdogs/script-analytics.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__email_service_service__ = __webpack_require__("../../../../../src/app/email-service/email-service.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__script_analytics__ = __webpack_require__("../../../../../src/app/email-service/run-watchdogs/script-analytics.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__market_cap_market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RunWatchdogsComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2004,7 +2007,7 @@ var RunWatchdogsComponent = (function () {
         ar.forEach(function (item) {
             var script = item.scriptText;
             if (script) {
-                var res = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__script_analytics__["a" /* runDogScript */])(item, script);
+                var res = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__script_analytics__["a" /* runDogScript */])(item, script);
                 if (res.length)
                     results = results.concat(res);
             }
@@ -2021,7 +2024,7 @@ var RunWatchdogsComponent = (function () {
     };
     RunWatchdogsComponent.prototype.setDogs = function (dogs) {
         this.dogs = dogs;
-        this.watchDogs = __WEBPACK_IMPORTED_MODULE_4_lodash__["orderBy"](__WEBPACK_IMPORTED_MODULE_4_lodash__["values"](dogs), this.sortCriteria, this.asc_desc);
+        this.watchDogs = __WEBPACK_IMPORTED_MODULE_3_lodash__["orderBy"](__WEBPACK_IMPORTED_MODULE_3_lodash__["values"](dogs), this.sortCriteria, this.asc_desc);
         this.mergeData();
     };
     RunWatchdogsComponent.prototype.startRefreshTimer = function () {
@@ -2096,7 +2099,7 @@ var RunWatchdogsComponent = (function () {
             this.asc_desc = 'asc';
         //console.log(this.asc_desc);
         this.sortCriteria = criteria;
-        this.watchDogs = __WEBPACK_IMPORTED_MODULE_4_lodash__["orderBy"](this.watchDogs, this.sortCriteria, this.asc_desc);
+        this.watchDogs = __WEBPACK_IMPORTED_MODULE_3_lodash__["orderBy"](this.watchDogs, this.sortCriteria, this.asc_desc);
     };
     return RunWatchdogsComponent;
 }());
@@ -2106,7 +2109,7 @@ RunWatchdogsComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/email-service/run-watchdogs/run-watchdogs.component.html"),
         styles: [__webpack_require__("../../../../../src/app/email-service/run-watchdogs/run-watchdogs.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ss_browse_all_coins_service__["a" /* AllCoinsService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__email_service_service__["a" /* EmailServiceService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__email_service_service__["a" /* EmailServiceService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_material__["a" /* MdDialog */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__angular_material__["d" /* MdSnackBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_material__["d" /* MdSnackBar */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_5__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__email_service_service__["a" /* EmailServiceService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__email_service_service__["a" /* EmailServiceService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MdDialog */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["d" /* MdSnackBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["d" /* MdSnackBar */]) === "function" && _d || Object])
 ], RunWatchdogsComponent);
 
 var _a, _b, _c, _d;
@@ -2273,9 +2276,9 @@ module.exports = "<div>\n    <h2>Exchange <small>{{counter}}</small> <button md-
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wallets_wallets_all_service__ = __webpack_require__("../../../../../src/app/wallets/wallets-all.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ss_browse_all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api_server_service__ = __webpack_require__("../../../../../src/app/api-server.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__send_alert_service__ = __webpack_require__("../../../../../src/app/exchange-ss/send-alert.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api_server_service__ = __webpack_require__("../../../../../src/app/api-server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__send_alert_service__ = __webpack_require__("../../../../../src/app/exchange-ss/send-alert.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__market_cap_market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ExchangeSsComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2410,7 +2413,7 @@ ExchangeSsComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/exchange-ss/exchange-ss.component.html"),
         styles: [__webpack_require__("../../../../../src/app/exchange-ss/exchange-ss.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__api_server_service__["a" /* ApiServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__api_server_service__["a" /* ApiServerService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__wallets_wallets_all_service__["a" /* WalletsAllService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__wallets_wallets_all_service__["a" /* WalletsAllService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__ss_browse_all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ss_browse_all_coins_service__["a" /* AllCoinsService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__send_alert_service__["a" /* SendAlertService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__send_alert_service__["a" /* SendAlertService */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__api_server_service__["a" /* ApiServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__api_server_service__["a" /* ApiServerService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__wallets_wallets_all_service__["a" /* WalletsAllService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__wallets_wallets_all_service__["a" /* WalletsAllService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__send_alert_service__["a" /* SendAlertService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__send_alert_service__["a" /* SendAlertService */]) === "function" && _d || Object])
 ], ExchangeSsComponent);
 
 var _a, _b, _c, _d;
@@ -2426,8 +2429,8 @@ var _a, _b, _c, _d;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wallets_wallets_all_service__ = __webpack_require__("../../../../../src/app/wallets/wallets-all.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/BehaviorSubject.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ss_browse_all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__api_server_service__ = __webpack_require__("../../../../../src/app/api-server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api_server_service__ = __webpack_require__("../../../../../src/app/api-server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__market_cap_market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ExchangeSsService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2499,7 +2502,7 @@ var ExchangeSsService = (function () {
 }());
 ExchangeSsService = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__wallets_wallets_all_service__["a" /* WalletsAllService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__wallets_wallets_all_service__["a" /* WalletsAllService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__ss_browse_all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ss_browse_all_coins_service__["a" /* AllCoinsService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__api_server_service__["a" /* ApiServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__api_server_service__["a" /* ApiServerService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__wallets_wallets_all_service__["a" /* WalletsAllService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__wallets_wallets_all_service__["a" /* WalletsAllService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__api_server_service__["a" /* ApiServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__api_server_service__["a" /* ApiServerService */]) === "function" && _c || Object])
 ], ExchangeSsService);
 
 var _a, _b, _c;
@@ -3476,6 +3479,443 @@ var _a, _b, _c;
 
 /***/ }),
 
+/***/ "../../../../../src/app/market-cap/all-coins-table/all-coins-table.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "table td{\r\n    border-bottom: 1px solid #ddd;\r\n}\r\n\r\ntable th{\r\n    cursor: pointer;\r\n}\r\n\r\nh3{\r\n    display: inline;\r\n}\r\nnav{\r\n    margin-left: 60px;\r\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/market-cap/all-coins-table/all-coins-table.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n\n    <nav>\n        <a  routerLink=\"/market-cap/selected\" routerLinkActive=\"active\">Market Cap Selected</a>\n    </nav>\n    <br/>\n    <h3>MarketCap all Coins </h3>\n    <small>{{allCoinsData.length}}</small>\n\n    <hr/>\n\n    <div>\n\n        <table>\n            <tr>\n                <th (click)=\"onClickHeader('market_cap_usd')\">market cap usd</th>\n                <th (click)=\"onClickHeader('percent_change_1h')\">1h%</th>\n                <th (click)=\"onClickHeader('percent_change_24h')\" >24h%</th>\n                <th (click)=\"onClickHeader('percent_change_7d')\">7 days%</th>\n                <th (click)=\"onClickHeader('price_usd')\">$US</th>\n                <th (click)=\"onClickHeader('rank')\">Rank</th>\n                <th (click)=\"onClickHeader('symbol')\">Symbol</th>\n                <th>#</th>\n                <th>Name</th>\n            </tr>\n\n            <tbody *ngFor=\"let item of allCoinsData\">\n                <tr>\n                    <td>{{item.market_cap_usd}}</td>\n                    <td>{{item.percent_change_1h}}</td>\n                    <td>{{item.percent_change_24h}}</td>\n                    <td>{{item.percent_change_7d}}</td>\n                    <td>{{item.price_usd}}</td>\n                    <td>{{item.rank}}</td>\n                    <td>{{item.symbol}}</td>\n                    <td><input type=\"checkbox\"  (change)=\"onCoinSelected($event, item)\" [checked]=\"item.selected\"   name=\"selected\"/></td>\n                    <td>{{item.name}}</td>\n\n                </tr>\n\n            </tbody>\n        </table>\n    </div>\n\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/market-cap/all-coins-table/all-coins-table.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AllCoinsTableComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var AllCoinsTableComponent = (function () {
+    function AllCoinsTableComponent(allCoinsService) {
+        this.allCoinsService = allCoinsService;
+        this.asc_desc = 'asc';
+    }
+    // ngOnChanges(changes: any) {
+    // console.log(changes);
+    //this.modelCoins  = changes.allCoins.currentValue;// _.reject(changes.allCoins,'selected')
+    //this.doSomething(changes.categoryId.currentValue);
+    //}
+    AllCoinsTableComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.allCoinsService.allCoins$.subscribe(function (res) { return _this.allCoinsData = res; });
+    };
+    /*private changeStatus(coin:VOExchangeData):void{
+  
+    }
+  */
+    AllCoinsTableComponent.prototype.onCoinSelected = function (event, coin) {
+        console.log(event.target.checked, coin);
+        if (event.target.checked) {
+            this.allCoinsService.addSelected(coin.symbol);
+        }
+        else {
+            this.allCoinsService.removeSelected(coin.symbol);
+        }
+        /*
+            let selectedCoinsNames = this.allCoins.reduce(function (result, item) {
+              if(item.selected)  result.push(item.symbol);
+              return result;
+            },[]);
+        
+        
+            this.selectedCoinsNamesChange.emit(selectedCoinsNames);*/
+    };
+    AllCoinsTableComponent.prototype.onClickHeader = function (creteria) {
+        console.log(creteria);
+        if (this.creteria === creteria) {
+            if (this.asc_desc === 'asc')
+                this.asc_desc = 'desc';
+            else
+                this.asc_desc = 'asc';
+        }
+        else
+            this.asc_desc = 'asc';
+        console.log(this.asc_desc);
+        this.allCoinsData = __WEBPACK_IMPORTED_MODULE_1_lodash__["orderBy"](this.allCoinsData, creteria, this.asc_desc);
+        this.creteria = creteria;
+    };
+    return AllCoinsTableComponent;
+}());
+AllCoinsTableComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
+        selector: 'app-all-coins-table',
+        template: __webpack_require__("../../../../../src/app/market-cap/all-coins-table/all-coins-table.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/market-cap/all-coins-table/all-coins-table.component.css")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__market_cap_selected_service__["a" /* MarketCapSelectedService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__market_cap_selected_service__["a" /* MarketCapSelectedService */]) === "function" && _a || Object])
+], AllCoinsTableComponent);
+
+var _a;
+//# sourceMappingURL=all-coins-table.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/market-cap/market-cap-selected.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/BehaviorSubject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__ = __webpack_require__("../../../../rxjs/Subject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_app_models__ = __webpack_require__("../../../../../src/app/models/app-models.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MarketCapSelectedService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var MarketCapSelectedService = (function () {
+    //private marketIndexed:{[s:string]:VOExchangeData};
+    //private marketIndexedSub:Subject<{[s:string]:VOExchangeData}>;
+    // marketIndexed$:Observable<{[s:string]:VOExchangeData}>;
+    // private selectedMarketIndexed:{[s:string]:VOExchangeData};
+    // private selectedMarketIndexedSub:Subject<{[s:string]:VOExchangeData}>;
+    // selectedMarketIndexed$:Observable<{[s:string]:VOExchangeData}>;
+    function MarketCapSelectedService(http) {
+        this.http = http;
+        this.timestamp = 0;
+        this.allCoinsSub = new __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__["BehaviorSubject"]([]);
+        this.allCoins$ = this.allCoinsSub.asObservable();
+        this.timestampSub = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
+        this.timestamp$ = this.timestampSub.asObservable();
+        this.totalCoinsSub = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
+        this.totalCoins$ = this.totalCoinsSub.asObservable();
+        this.totalCoinsSub = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
+        this.totalCoins$ = this.totalCoinsSub.asObservable();
+        this.totalSelectedCoinsSub = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
+        this.totalSelectedCoins$ = this.totalCoinsSub.asObservable();
+        this.selectedCoinsSub = new __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__["BehaviorSubject"]({});
+        this.selectedCoins$ = this.selectedCoinsSub.asObservable();
+        // this.marketIndexedSub = new Subject();
+        // this.marketIndexed$ = this.marketIndexedSub.asObservable();
+        // this.selectedMarketIndexedSub = new Subject();
+        // this.selectedMarketIndexed$ = this.selectedMarketIndexedSub.asObservable();
+        this.counter = 0;
+        this.loadData();
+    }
+    MarketCapSelectedService.prototype.start = function () {
+        var _this = this;
+        this.interval = setInterval(function () { return _this.loadData(); }, 60000);
+        this.loadData();
+    };
+    /*  getSelectedPrices():{[s:string]:number}{
+        let out = {};
+    
+        this.selectedCoins.forEach(function (item) {
+          out[item.symbol]=item.price_usd
+        })
+    
+        return out;
+      }*/
+    MarketCapSelectedService.prototype.setData = function (data) {
+        var ar = data.payload;
+        this.allCoins = ar;
+        this.timestamp = data.timestamp;
+        console.log(' allCoins   ' + this.allCoins.length);
+        this.counter++;
+        this.filterAllMarket();
+        this.timestampSub.next(this.timestamp);
+        this.allCoinsSub.next(this.allCoins);
+        this.totalCoinsSub.next(this.allCoins.length);
+    };
+    MarketCapSelectedService.prototype.filterAllMarket = function () {
+        var ar = this.allCoins;
+        var marketIndexed = {};
+        // let selectedMarketIndexed = {}
+        var selectedCoins = {};
+        var selNames = this.getSelectedNames();
+        ar.forEach(function (item) {
+            marketIndexed[item.symbol] = item;
+            if (selNames.indexOf(item.symbol) !== -1) {
+                item.selected = true;
+                selectedCoins[item.symbol] = item;
+                //selectedCoins.push(item);
+            }
+        });
+        //this.marketIndexed = marketIndexed;
+        // this.selectedMarketIndexed = selectedMarketIndexed;
+        this.selectedCoins = selectedCoins;
+        this.selectedCoinsSub.next(this.selectedCoins);
+        // this.totalSelectedCoinsSub.next(this.selectedCoins.length);
+        //this.marketIndexedSub.next(this.marketIndexed);
+        // this.selectedMarketIndexedSub.next(this.selectedMarketIndexed);
+        console.log('selectedCoin  ' + this.selectedCoins.length);
+    };
+    MarketCapSelectedService.prototype.broadcastUpdate = function () {
+    };
+    MarketCapSelectedService.prototype.populateSelected = function () {
+        var out = {};
+        var val = this.getSelectedNames();
+        this.allCoins.forEach(function (item) {
+            if (val.indexOf(item.symbol) !== -1) {
+                out[item.symbol] = item;
+            }
+        });
+        this.selectedCoins = out;
+    };
+    MarketCapSelectedService.prototype.getSelectedNames = function () {
+        if (!this.selectedCoinsNames) {
+            this.selectedCoinsNames = [];
+            var str = localStorage.getItem('selectedCoinsNames');
+            try {
+                if (str)
+                    this.selectedCoinsNames = JSON.parse(str);
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+        return this.selectedCoinsNames;
+    };
+    MarketCapSelectedService.prototype.addSelected = function (symbol) {
+        var ar = __WEBPACK_IMPORTED_MODULE_4_lodash__["keys"](this.selectedCoins);
+        if (ar.indexOf(symbol) === -1)
+            ar.push(symbol);
+        this.saveSelectedNames(ar);
+        this.populateSelected();
+        this.selectedCoinsSub.next(this.selectedCoins);
+    };
+    MarketCapSelectedService.prototype.removeSelected = function (symbol) {
+        var ar = this.getSelectedNames();
+        for (var i = ar.length - 1; i >= 0; i--)
+            if (ar[i] === symbol)
+                ar.splice(i, 1);
+        this.saveSelectedNames(ar);
+        this.populateSelected();
+        this.selectedCoinsSub.next(this.selectedCoins);
+    };
+    MarketCapSelectedService.prototype.saveSelectedNames = function (val) {
+        this.selectedCoinsNames = val;
+        localStorage.setItem('selectedCoinsNames', JSON.stringify(val));
+    };
+    MarketCapSelectedService.prototype.loadData = function (now) {
+        var _this = this;
+        var url = '/api/all-coins/market/minute';
+        this.http.get(url).map(function (res) {
+            var data = res.json();
+            data.payload = data.payload.map(_this.mapExchangeData);
+            return data;
+        }).subscribe(function (result) {
+            _this.setData(result);
+        });
+    };
+    MarketCapSelectedService.prototype.mapExchangeData = function (obj) {
+        var data = new __WEBPACK_IMPORTED_MODULE_5__models_app_models__["a" /* VOExchangeData */]();
+        for (var str in obj)
+            data[str] = isNaN(obj[str]) ? obj[str] : +obj[str];
+        data.volume_usd_24h = +obj['24h_volume_usd'];
+        delete data['24h_volume_usd'];
+        return data;
+    };
+    MarketCapSelectedService.prototype.getCoinMarket = function (symbol) {
+        return this.allCoins.find(function (item) {
+            return item.symbol == symbol;
+        });
+    };
+    MarketCapSelectedService.prototype.stop = function () {
+        clearInterval(this.interval);
+    };
+    return MarketCapSelectedService;
+}());
+MarketCapSelectedService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object])
+], MarketCapSelectedService);
+
+var _a;
+//# sourceMappingURL=market-cap-selected.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/market-cap/market-cap.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__all_coins_table_all_coins_table_component__ = __webpack_require__("../../../../../src/app/market-cap/all-coins-table/all-coins-table.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__selected_coins_selected_coins_component__ = __webpack_require__("../../../../../src/app/market-cap/selected-coins/selected-coins.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__material_material_app_module__ = __webpack_require__("../../../../../src/app/material/material-app.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MarketCapModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+var MarketCapModule = (function () {
+    function MarketCapModule() {
+    }
+    return MarketCapModule;
+}());
+MarketCapModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_4__material_material_app_module__["a" /* MaterialAppModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_router__["a" /* RouterModule */]
+        ],
+        declarations: [__WEBPACK_IMPORTED_MODULE_2__all_coins_table_all_coins_table_component__["a" /* AllCoinsTableComponent */], __WEBPACK_IMPORTED_MODULE_3__selected_coins_selected_coins_component__["a" /* SelectedCoinsComponent */]],
+        providers: [__WEBPACK_IMPORTED_MODULE_5__market_cap_selected_service__["a" /* MarketCapSelectedService */]]
+    })
+], MarketCapModule);
+
+//# sourceMappingURL=market-cap.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/market-cap/selected-coins/selected-coins.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "table{\r\n    width: 100%;\r\n}\r\ntable td{\r\n    border-bottom: 1px solid #ddd;\r\n}\r\ntable th{\r\n    cursor: pointer;\r\n}\r\n\r\nnav{\r\n    margin-left: 60px;\r\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/market-cap/selected-coins/selected-coins.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n    <nav>\n        <a  routerLink='/market-cap/all-coins' routerLinkActive=\"active\" >Market Cap All</a>\n    </nav>\n\n\n    <h4>MarketCap selected coins </h4><small>{{selectedCoins.length}}</small>\n\n    <hr/>\n    <div>\n\n        <table>\n            <tr>\n                <th><button md-button (click)=\"onClickHeader('market_cap_usd')\">market cap usd</button></th>\n                <th><button md-button (click)=\"onClickHeader('percent_change_1h')\">1h%</button></th>\n                <th><button md-button (click)=\"onClickHeader('percent_change_24h')\" >24h%</button></th>\n                <th><button md-button (click)=\"onClickHeader('percent_change_7d')\">7 days%</button></th>\n                <th><button md-button (click)=\"onClickHeader('price_usd')\">$US</button></th>\n                <th><button md-button (click)=\"onClickHeader('rank')\">Rank</button></th>\n                <th><button md-button (click)=\"onClickHeader('symbol')\">Symbol</button></th>\n            </tr>\n\n            <tbody *ngFor=\"let item of selectedCoins\">\n\n            <tr>\n                <td>{{item.market_cap_usd}}</td>\n                <td>{{item.percent_change_1h}}</td>\n                <td>{{item.percent_change_24h}}</td>\n                <td>{{item.percent_change_7d}}</td>\n                <td>{{item.price_usd}}</td>\n                <td>{{item.rank}}</td>\n                <td>{{item.symbol}}</td>\n                <td>{{item.name}}</td>\n            </tr>\n\n            </tbody>\n        </table>\n    </div>\n\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/market-cap/selected-coins/selected-coins.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectedCoinsComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var SelectedCoinsComponent = (function () {
+    function SelectedCoinsComponent(allCoinsService) {
+        this.allCoinsService = allCoinsService;
+        //@Input() modelCoins:VOExchangeData[];
+        this.selectedCoins = [];
+        this.sortCreteria = 'rank';
+        this.asc_desc = 'asc';
+    }
+    SelectedCoinsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.allCoinsService.selectedCoins$.subscribe(function (res) { return _this.selectedCoins = __WEBPACK_IMPORTED_MODULE_1_lodash__["values"](res); });
+    };
+    SelectedCoinsComponent.prototype.onClickHeader = function (creteria) {
+        console.log(creteria);
+        if (this.sortCreteria === creteria) {
+            if (this.asc_desc === 'asc')
+                this.asc_desc = 'desc';
+            else
+                this.asc_desc = 'asc';
+        }
+        else
+            this.asc_desc = 'asc';
+        console.log(this.asc_desc);
+        this.selectedCoins = __WEBPACK_IMPORTED_MODULE_1_lodash__["orderBy"](this.selectedCoins, creteria, this.asc_desc);
+        this.sortCreteria = creteria;
+    };
+    return SelectedCoinsComponent;
+}());
+SelectedCoinsComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
+        selector: 'app-selected-coins',
+        template: __webpack_require__("../../../../../src/app/market-cap/selected-coins/selected-coins.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/market-cap/selected-coins/selected-coins.component.css")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__market_cap_selected_service__["a" /* MarketCapSelectedService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__market_cap_selected_service__["a" /* MarketCapSelectedService */]) === "function" && _a || Object])
+], SelectedCoinsComponent);
+
+var _a;
+//# sourceMappingURL=selected-coins.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/material/material-app.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4223,549 +4663,6 @@ SharedModule = __decorate([
 
 /***/ }),
 
-/***/ "../../../../../src/app/ss-browse/all-coins-table/all-coins-table.component.css":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "table td{\r\n    border-bottom: 1px solid #ddd;\r\n}\r\n\r\ntable th{\r\n    cursor: pointer;\r\n}\r\n\r\nh3{\r\n    display: inline;\r\n}", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/ss-browse/all-coins-table/all-coins-table.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div>\n    <md-card>\n\n        <md-card-header>\n            <md-card-title><h3>ShapeShift </h3><small>Total {{allCoinsData.length}}</small></md-card-title>\n\n        </md-card-header>\n\n\n        <md-card-content>\n    <table>\n        <tr>\n            <th (click)=\"onClickHeader('market_cap_usd')\">market cap usd</th>\n            <th (click)=\"onClickHeader('percent_change_1h')\">1h%</th>\n            <th (click)=\"onClickHeader('percent_change_24h')\" >24h%</th>\n            <th (click)=\"onClickHeader('percent_change_7d')\">7 days%</th>\n            <th (click)=\"onClickHeader('price_usd')\">$US</th>\n            <th (click)=\"onClickHeader('rank')\">Rank</th>\n            <th (click)=\"onClickHeader('symbol')\">Symbol</th>\n            <th>#</th>\n            <th>Name</th>\n        </tr>\n\n        <tbody *ngFor=\"let item of allCoinsData\">\n            <tr>\n                <td>{{item.market_cap_usd}}</td>\n                <td>{{item.percent_change_1h}}</td>\n                <td>{{item.percent_change_24h}}</td>\n                <td>{{item.percent_change_7d}}</td>\n                <td>{{item.price_usd}}</td>\n                <td>{{item.rank}}</td>\n                <td>{{item.symbol}}</td>\n                <td><input type=\"checkbox\"  (change)=\"onCoinSelected($event, item)\" [checked]=\"item.selected\"   name=\"selected\"/></td>\n                <td>{{item.name}}</td>\n\n            </tr>\n\n        </tbody>\n    </table>\n        </md-card-content>\n    </md-card>\n\n</div>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/ss-browse/all-coins-table/all-coins-table.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AllCoinsTableComponent; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var AllCoinsTableComponent = (function () {
-    function AllCoinsTableComponent(allCoinsService) {
-        this.allCoinsService = allCoinsService;
-        this.asc_desc = 'asc';
-    }
-    // ngOnChanges(changes: any) {
-    // console.log(changes);
-    //this.modelCoins  = changes.allCoins.currentValue;// _.reject(changes.allCoins,'selected')
-    //this.doSomething(changes.categoryId.currentValue);
-    //}
-    AllCoinsTableComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.allCoinsService.allCoins$.subscribe(function (res) { return _this.allCoinsData = res; });
-    };
-    /*private changeStatus(coin:VOExchangeData):void{
-  
-    }
-  */
-    AllCoinsTableComponent.prototype.onCoinSelected = function (event, coin) {
-        console.log(event.target.checked, coin);
-        if (event.target.checked) {
-            this.allCoinsService.addSelected(coin.symbol);
-        }
-        else {
-            this.allCoinsService.removeSelected(coin.symbol);
-        }
-        /*
-            let selectedCoinsNames = this.allCoins.reduce(function (result, item) {
-              if(item.selected)  result.push(item.symbol);
-              return result;
-            },[]);
-        
-        
-            this.selectedCoinsNamesChange.emit(selectedCoinsNames);*/
-    };
-    AllCoinsTableComponent.prototype.onClickHeader = function (creteria) {
-        console.log(creteria);
-        if (this.creteria === creteria) {
-            if (this.asc_desc === 'asc')
-                this.asc_desc = 'desc';
-            else
-                this.asc_desc = 'asc';
-        }
-        else
-            this.asc_desc = 'asc';
-        console.log(this.asc_desc);
-        this.allCoinsData = __WEBPACK_IMPORTED_MODULE_1_lodash__["orderBy"](this.allCoinsData, creteria, this.asc_desc);
-        this.creteria = creteria;
-    };
-    return AllCoinsTableComponent;
-}());
-AllCoinsTableComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
-        selector: 'app-all-coins-table',
-        template: __webpack_require__("../../../../../src/app/ss-browse/all-coins-table/all-coins-table.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/ss-browse/all-coins-table/all-coins-table.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__all_coins_service__["a" /* AllCoinsService */]) === "function" && _a || Object])
-], AllCoinsTableComponent);
-
-var _a;
-//# sourceMappingURL=all-coins-table.component.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/ss-browse/all-coins.service.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/BehaviorSubject.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__ = __webpack_require__("../../../../rxjs/Subject.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_app_models__ = __webpack_require__("../../../../../src/app/models/app-models.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AllCoinsService; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-var AllCoinsService = (function () {
-    //private marketIndexed:{[s:string]:VOExchangeData};
-    //private marketIndexedSub:Subject<{[s:string]:VOExchangeData}>;
-    // marketIndexed$:Observable<{[s:string]:VOExchangeData}>;
-    // private selectedMarketIndexed:{[s:string]:VOExchangeData};
-    // private selectedMarketIndexedSub:Subject<{[s:string]:VOExchangeData}>;
-    // selectedMarketIndexed$:Observable<{[s:string]:VOExchangeData}>;
-    function AllCoinsService(http) {
-        this.http = http;
-        this.timestamp = 0;
-        this.allCoinsSub = new __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__["BehaviorSubject"]([]);
-        this.allCoins$ = this.allCoinsSub.asObservable();
-        this.timestampSub = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
-        this.timestamp$ = this.timestampSub.asObservable();
-        this.totalCoinsSub = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
-        this.totalCoins$ = this.totalCoinsSub.asObservable();
-        this.totalCoinsSub = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
-        this.totalCoins$ = this.totalCoinsSub.asObservable();
-        this.totalSelectedCoinsSub = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
-        this.totalSelectedCoins$ = this.totalCoinsSub.asObservable();
-        this.selectedCoinsSub = new __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__["BehaviorSubject"]({});
-        this.selectedCoins$ = this.selectedCoinsSub.asObservable();
-        // this.marketIndexedSub = new Subject();
-        // this.marketIndexed$ = this.marketIndexedSub.asObservable();
-        // this.selectedMarketIndexedSub = new Subject();
-        // this.selectedMarketIndexed$ = this.selectedMarketIndexedSub.asObservable();
-        this.counter = 0;
-        this.loadData();
-    }
-    AllCoinsService.prototype.start = function () {
-        var _this = this;
-        this.interval = setInterval(function () { return _this.loadData(); }, 60000);
-        this.loadData();
-    };
-    /*  getSelectedPrices():{[s:string]:number}{
-        let out = {};
-    
-        this.selectedCoins.forEach(function (item) {
-          out[item.symbol]=item.price_usd
-        })
-    
-        return out;
-      }*/
-    AllCoinsService.prototype.setData = function (data) {
-        var ar = data.payload;
-        this.allCoins = ar;
-        this.timestamp = data.timestamp;
-        console.log(' allCoins   ' + this.allCoins.length);
-        this.counter++;
-        this.filterAllMarket();
-        this.timestampSub.next(this.timestamp);
-        this.allCoinsSub.next(this.allCoins);
-        this.totalCoinsSub.next(this.allCoins.length);
-    };
-    AllCoinsService.prototype.filterAllMarket = function () {
-        var ar = this.allCoins;
-        var marketIndexed = {};
-        // let selectedMarketIndexed = {}
-        var selectedCoins = {};
-        var selNames = this.getSelectedNames();
-        ar.forEach(function (item) {
-            marketIndexed[item.symbol] = item;
-            if (selNames.indexOf(item.symbol) !== -1) {
-                item.selected = true;
-                selectedCoins[item.symbol] = item;
-                //selectedCoins.push(item);
-            }
-        });
-        //this.marketIndexed = marketIndexed;
-        // this.selectedMarketIndexed = selectedMarketIndexed;
-        this.selectedCoins = selectedCoins;
-        this.selectedCoinsSub.next(this.selectedCoins);
-        // this.totalSelectedCoinsSub.next(this.selectedCoins.length);
-        //this.marketIndexedSub.next(this.marketIndexed);
-        // this.selectedMarketIndexedSub.next(this.selectedMarketIndexed);
-        console.log('selectedCoin  ' + this.selectedCoins.length);
-    };
-    AllCoinsService.prototype.broadcastUpdate = function () {
-    };
-    AllCoinsService.prototype.populateSelected = function () {
-        var out = {};
-        var val = this.getSelectedNames();
-        this.allCoins.forEach(function (item) {
-            if (val.indexOf(item.symbol) !== -1) {
-                out[item.symbol] = item;
-            }
-        });
-        this.selectedCoins = out;
-    };
-    AllCoinsService.prototype.getSelectedNames = function () {
-        if (!this.selectedCoinsNames) {
-            this.selectedCoinsNames = [];
-            var str = localStorage.getItem('selectedCoinsNames');
-            try {
-                if (str)
-                    this.selectedCoinsNames = JSON.parse(str);
-            }
-            catch (e) {
-                console.error(e);
-            }
-        }
-        return this.selectedCoinsNames;
-    };
-    AllCoinsService.prototype.addSelected = function (symbol) {
-        var ar = __WEBPACK_IMPORTED_MODULE_4_lodash__["keys"](this.selectedCoins);
-        if (ar.indexOf(symbol) === -1)
-            ar.push(symbol);
-        this.saveSelectedNames(ar);
-        this.populateSelected();
-        this.selectedCoinsSub.next(this.selectedCoins);
-    };
-    AllCoinsService.prototype.removeSelected = function (symbol) {
-        var ar = this.getSelectedNames();
-        for (var i = ar.length - 1; i >= 0; i--)
-            if (ar[i] === symbol)
-                ar.splice(i, 1);
-        this.saveSelectedNames(ar);
-        this.populateSelected();
-        this.selectedCoinsSub.next(this.selectedCoins);
-    };
-    AllCoinsService.prototype.saveSelectedNames = function (val) {
-        this.selectedCoinsNames = val;
-        localStorage.setItem('selectedCoinsNames', JSON.stringify(val));
-    };
-    AllCoinsService.prototype.loadData = function (now) {
-        var _this = this;
-        var url = '/api/all-coins/market/minute';
-        this.http.get(url).map(function (res) {
-            var data = res.json();
-            data.payload = data.payload.map(_this.mapExchangeData);
-            return data;
-        }).subscribe(function (result) {
-            _this.setData(result);
-        });
-    };
-    AllCoinsService.prototype.mapExchangeData = function (obj) {
-        var data = new __WEBPACK_IMPORTED_MODULE_5__models_app_models__["a" /* VOExchangeData */]();
-        for (var str in obj)
-            data[str] = isNaN(obj[str]) ? obj[str] : +obj[str];
-        data.volume_usd_24h = +obj['24h_volume_usd'];
-        delete data['24h_volume_usd'];
-        return data;
-    };
-    AllCoinsService.prototype.getCoinMarket = function (symbol) {
-        return this.allCoins.find(function (item) {
-            return item.symbol == symbol;
-        });
-    };
-    AllCoinsService.prototype.stop = function () {
-        clearInterval(this.interval);
-    };
-    return AllCoinsService;
-}());
-AllCoinsService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object])
-], AllCoinsService);
-
-var _a;
-//# sourceMappingURL=all-coins.service.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/ss-browse/selected-coins/selected-coins.component.css":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "table{\r\n    width: 100%;\r\n}\r\ntable td{\r\n    border-bottom: 1px solid #ddd;\r\n}\r\ntable th{\r\n    cursor: pointer;\r\n}", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/ss-browse/selected-coins/selected-coins.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div>\n    <h4>Total {{selectedCoins.length}}</h4>\n    <table>\n        <tr>\n            <th><button md-button (click)=\"onClickHeader('market_cap_usd')\">market cap usd</button></th>\n            <th><button md-button (click)=\"onClickHeader('percent_change_1h')\">1h%</button></th>\n            <th><button md-button (click)=\"onClickHeader('percent_change_24h')\" >24h%</button></th>\n            <th><button md-button (click)=\"onClickHeader('percent_change_7d')\">7 days%</button></th>\n            <th><button md-button (click)=\"onClickHeader('price_usd')\">$US</button></th>\n            <th><button md-button (click)=\"onClickHeader('rank')\">Rank</button></th>\n            <th><button md-button (click)=\"onClickHeader('symbol')\">Symbol</button></th>\n        </tr>\n\n        <tbody *ngFor=\"let item of selectedCoins\">\n\n        <tr>\n            <td>{{item.market_cap_usd}}</td>\n            <td>{{item.percent_change_1h}}</td>\n            <td>{{item.percent_change_24h}}</td>\n            <td>{{item.percent_change_7d}}</td>\n            <td>{{item.price_usd}}</td>\n            <td>{{item.rank}}</td>\n            <td>{{item.symbol}}</td>\n            <td>{{item.name}}</td>\n        </tr>\n\n        </tbody>\n    </table>\n\n\n</div>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/ss-browse/selected-coins/selected-coins.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectedCoinsComponent; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var SelectedCoinsComponent = (function () {
-    function SelectedCoinsComponent(allCoinsService) {
-        this.allCoinsService = allCoinsService;
-        //@Input() modelCoins:VOExchangeData[];
-        this.selectedCoins = [];
-        this.sortCreteria = 'rank';
-        this.asc_desc = 'asc';
-    }
-    SelectedCoinsComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.allCoinsService.selectedCoins$.subscribe(function (res) { return _this.selectedCoins = __WEBPACK_IMPORTED_MODULE_1_lodash__["values"](res); });
-    };
-    SelectedCoinsComponent.prototype.onClickHeader = function (creteria) {
-        console.log(creteria);
-        if (this.sortCreteria === creteria) {
-            if (this.asc_desc === 'asc')
-                this.asc_desc = 'desc';
-            else
-                this.asc_desc = 'asc';
-        }
-        else
-            this.asc_desc = 'asc';
-        console.log(this.asc_desc);
-        this.selectedCoins = __WEBPACK_IMPORTED_MODULE_1_lodash__["orderBy"](this.selectedCoins, creteria, this.asc_desc);
-        this.sortCreteria = creteria;
-    };
-    return SelectedCoinsComponent;
-}());
-SelectedCoinsComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
-        selector: 'app-selected-coins',
-        template: __webpack_require__("../../../../../src/app/ss-browse/selected-coins/selected-coins.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/ss-browse/selected-coins/selected-coins.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__all_coins_service__["a" /* AllCoinsService */]) === "function" && _a || Object])
-], SelectedCoinsComponent);
-
-var _a;
-//# sourceMappingURL=selected-coins.component.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/ss-browse/ss-browse.module.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ss_main_ss_main_component__ = __webpack_require__("../../../../../src/app/ss-browse/ss-main/ss-main.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__all_coins_table_all_coins_table_component__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins-table/all-coins-table.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__selected_coins_selected_coins_component__ = __webpack_require__("../../../../../src/app/ss-browse/selected-coins/selected-coins.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__material_material_app_module__ = __webpack_require__("../../../../../src/app/material/material-app.module.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SsBrowseModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-
-
-
-var SsBrowseModule = (function () {
-    function SsBrowseModule() {
-    }
-    return SsBrowseModule;
-}());
-SsBrowseModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_5__material_material_app_module__["a" /* MaterialAppModule */]
-        ],
-        declarations: [__WEBPACK_IMPORTED_MODULE_2__ss_main_ss_main_component__["a" /* SsMainComponent */], __WEBPACK_IMPORTED_MODULE_3__all_coins_table_all_coins_table_component__["a" /* AllCoinsTableComponent */], __WEBPACK_IMPORTED_MODULE_4__selected_coins_selected_coins_component__["a" /* SelectedCoinsComponent */]],
-        providers: []
-    })
-], SsBrowseModule);
-
-//# sourceMappingURL=ss-browse.module.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/ss-browse/ss-main/ss-main.component.css":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".fa.fa-close{\r\n    float: right;\r\n}", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/ss-browse/ss-main/ss-main.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div>\n<div>\n\n    <button  md-raised-button (click)=\"onRefresh()\">Refresh</button>\n    <span>{{timestamp}}</span>\n    <button  md-button (click)=\"showAllCoins()\">All Coins</button>\n\n</div>\n    <hr/>\n\n    <app-selected-coins></app-selected-coins>\n\n    <div *ngIf=\"isAllcoins\">\n        <hr/>\n        <div class=\"fa fa-close\" (click)=\"onClose()\"></div>\n        <app-all-coins-table ></app-all-coins-table>\n    </div>\n</div>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/ss-browse/ss-main/ss-main.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SsMainComponent; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var SsMainComponent = (function () {
-    function SsMainComponent(allCoinsService) {
-        this.allCoinsService = allCoinsService;
-        this.timestamp = '';
-    }
-    SsMainComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.allCoinsService.allCoins$.subscribe(function (res) {
-            // this.markSelected(res)
-            _this.allCoins = res;
-            //this.populateSelected();
-        });
-        this.allCoinsService.loadData();
-        this.allCoinsService.timestamp$.subscribe(function (res) { return _this.timestamp = (new Date(res)).toLocaleTimeString(); });
-    };
-    SsMainComponent.prototype.showAllCoins = function () {
-        if (this.isAllcoins)
-            this.isAllcoins = false;
-        else
-            this.isAllcoins = true;
-    };
-    SsMainComponent.prototype.onClose = function () {
-        this.isAllcoins = false;
-    };
-    /*getSelectedNames():string[]{
-  
-      if(!this.selectedCoinsNames) {
-        this.selectedCoinsNames = []
-        let str = localStorage.getItem('selectedCoinsNames');
-        try {
-          if (str) this.selectedCoinsNames = JSON.parse(str);
-        } catch (e) {
-          console.error(e);
-        }
-      }
-  
-      return this.selectedCoinsNames;
-    }
-  
-    saveSelectedNames(val:string[]):void{
-      this.selectedCoinsNames = val;
-      localStorage.setItem('selectedCoinsNames', JSON.stringify(val));
-    }*/
-    SsMainComponent.prototype.onSelectChanged = function (val) {
-        //  this.saveSelectedNames(val);
-        // this.populateSelected();
-    };
-    SsMainComponent.prototype.onRefresh = function () {
-        this.allCoinsService.loadData('now');
-    };
-    return SsMainComponent;
-}());
-SsMainComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
-        selector: 'app-ss-main',
-        template: __webpack_require__("../../../../../src/app/ss-browse/ss-main/ss-main.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/ss-browse/ss-main/ss-main.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__all_coins_service__["a" /* AllCoinsService */]) === "function" && _a || Object])
-], SsMainComponent);
-
-var _a;
-//# sourceMappingURL=ss-main.component.js.map
-
-/***/ }),
-
 /***/ "../../../../../src/app/wallets/my-wallets/my-wallets.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4802,7 +4699,7 @@ module.exports = "<div>\n    <button md-raised-button color=\"primary\" (click)=
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__shared_dialog_simple_dialog_simple_component__ = __webpack_require__("../../../../../src/app/shared/dialog-simple/dialog-simple.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ss_browse_all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__market_cap_market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyWalletsComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4897,7 +4794,7 @@ MyWalletsComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/wallets/my-wallets/my-wallets.component.html"),
         styles: [__webpack_require__("../../../../../src/app/wallets/my-wallets/my-wallets.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__wallets_all_service__["a" /* WalletsAllService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__wallets_all_service__["a" /* WalletsAllService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MdDialog */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_6__ss_browse_all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__ss_browse_all_coins_service__["a" /* AllCoinsService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__wallets_all_service__["a" /* WalletsAllService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__wallets_all_service__["a" /* WalletsAllService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MdDialog */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_6__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */]) === "function" && _c || Object])
 ], MyWalletsComponent);
 
 var _a, _b, _c;
@@ -5436,8 +5333,8 @@ module.exports = "<div>\n    <span (click)=\"updateBalance()\">Balance: </span><
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wallet_service__ = __webpack_require__("../../../../../src/app/wallets/wallet/wallet.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__wallets_all_service__ = __webpack_require__("../../../../../src/app/wallets/wallets-all.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__api_server_service__ = __webpack_require__("../../../../../src/app/api-server.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ss_browse_all_coins_service__ = __webpack_require__("../../../../../src/app/ss-browse/all-coins.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__market_cap_market_cap_selected_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap-selected.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WalletComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -5515,7 +5412,7 @@ WalletComponent = __decorate([
         styles: [__webpack_require__("../../../../../src/app/wallets/wallet/wallet.component.css")],
         providers: [__WEBPACK_IMPORTED_MODULE_2__wallet_service__["a" /* WalletService */]]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__wallet_service__["a" /* WalletService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__wallet_service__["a" /* WalletService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__wallets_all_service__["a" /* WalletsAllService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__wallets_all_service__["a" /* WalletsAllService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__api_server_service__["a" /* ApiServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__api_server_service__["a" /* ApiServerService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__ss_browse_all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__ss_browse_all_coins_service__["a" /* AllCoinsService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__angular_material__["a" /* MdDialog */]) === "function" && _f || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__wallet_service__["a" /* WalletService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__wallet_service__["a" /* WalletService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__wallets_all_service__["a" /* WalletsAllService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__wallets_all_service__["a" /* WalletsAllService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__api_server_service__["a" /* ApiServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__api_server_service__["a" /* ApiServerService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__market_cap_market_cap_selected_service__["a" /* MarketCapSelectedService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__angular_material__["a" /* MdDialog */]) === "function" && _f || Object])
 ], WalletComponent);
 
 var _a, _b, _c, _d, _e, _f;

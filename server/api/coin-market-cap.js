@@ -15,7 +15,7 @@ function updateAllMarket(callBack) {
             console.error(' error from  ' + url, err);
         }
         else {
-            all_market.timestamp = Date.now();
+            all_market.timestamp = (new Date()).toISOString();
             try {
                 all_market.payload = JSON.parse(body);
             }

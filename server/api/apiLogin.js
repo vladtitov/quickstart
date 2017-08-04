@@ -75,24 +75,34 @@ function initLogin(app) {
         });
     });
     app.route("/api/login/confirm/:uid").get(function (req, resp) {
-        var uid = req.body.uid;
-        uid = app_utils_1.decryptCTR(uid);
+        var uid = req.params.uid;
+        if (!uid) {
+            resp.end('hacker');
+            return;
+        }
         var ip = app_utils_1.getIp(req);
+        console.log(uid);
+        console.log(ip);
         model_1.UserModel.findOne({ where: { uid: uid } })
             .then(function (user) {
-            if (user.confirmed) {
-                resp.json({ success: 'confirmed-before' });
+            if (user) {
+                if (user.confirmed) {
+                    resp.json({ success: 'confirmed-before' });
+                }
+                else {
+                    model_1.UserModel.update({
+                        confirmed: true,
+                        uid: uuidV4(),
+                        nickname: hri.random()
+                    }, { where: { uid: uid } })
+                        .then(function (result) {
+                        console.log(result);
+                        resp.json({ success: 'confirmed' });
+                    });
+                }
             }
             else {
-                model_1.UserModel.update({
-                    confirmed: true,
-                    uid: uuidV4(),
-                    nickname: hri.random()
-                }, { where: { uid: uid } })
-                    .then(function (result) {
-                    console.log(result);
-                    resp.json({ success: 'confirmed' });
-                });
+                resp.json({ error: 'Now are you' });
             }
         });
     });

@@ -17,9 +17,15 @@ export function encryptCTR(text){
 
 
 export function decryptCTR(text){
-  var decipher = crypto.createDecipher(algorithmCTR,PASSWORD)
-  var dec = decipher.update(text,'hex','utf8')
-  dec += decipher.final('utf8');
+  var decipher = crypto.createDecipher(algorithmCTR,PASSWORD);
+  var dec;
+  try{
+   dec = decipher.update(text,'hex','utf8')
+    dec += decipher.final('utf8');
+  }catch(e){
+    console.error(e);
+  }
+
   return dec;
 }
 

@@ -102,26 +102,40 @@ export function initLogin(app:Application){
 
 
   app.route("/api/login/confirm/:uid").get(function (req: Request, resp: Response) {
-    let uid = req.body.uid;
-    uid = decryptCTR(uid);
+    let uid = req.params.uid;
+
+   // uid = decryptCTR(uid);
+    if(!uid){
+      resp.end('hacker');
+      return;
+    }
     let ip = getIp(req);
+
+console.log(uid);
+console.log(ip);
+
 
     UserModel.findOne({where: {uid: uid}})
       .then(function (user:VOUser) {
-        if(user.confirmed){
-          resp.json({success:'confirmed-before'})
-        }else{
+        if(user){
+          if(user.confirmed){
+            resp.json({success:'confirmed-before'})
+          }else{
 
-          UserModel.update({
-            confirmed:true,
-            uid:uuidV4(),
-            nickname:hri.random()
-          },{where:{uid:uid}})
-            .then(function (result) {
-              console.log(result)
-              resp.json({success:'confirmed'});
-            })
+            UserModel.update({
+              confirmed:true,
+              uid:uuidV4(),
+              nickname:hri.random()
+            },{where:{uid:uid}})
+              .then(function (result) {
+                console.log(result)
+                resp.json({success:'confirmed'});
+              })
+          }
+        }else{
+          resp.json({error:'Now are you'});
         }
+
 
       })
 

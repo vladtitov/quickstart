@@ -1,19 +1,20 @@
 
 import * as ORM from "sequelize";
 import {Sequelize, LoggingOptions} from "sequelize";
-import {initPostModel} from './initModel';
+import * as path from 'path';
+//import {initPostModel} from './initModel';
 
 
 //const dbUrl: string = "postgres://postgres:postgres@localhost:5432/complete-typescript-course";
 
-
-/*
-const options: any = {
+let file = path.join(__dirname, '../data/posts.sqlite');
+console.log(file);
+const optionsSQLITE: any = {
   benchmark: true,
   logging:console.log,
   dialect: "sqlite",
-  storage: "server/data/posts.sqlite"
-};*/
+  storage: file
+};
 
 const options: any = {
   benchmark: true,
@@ -23,8 +24,8 @@ const options: any = {
 };
 
 
-const sequelize: Sequelize = new ORM('frontdes_callcenter','frontdes','xzsawq2!', options);
-//const sequelize: Sequelize = new ORM('','','',options);
+//const sequelize: Sequelize = new ORM('frontdes_callcenter','frontdes','xzsawq2!', options);
+const sequelizeLite: Sequelize = new ORM('','','',optionsSQLITE);
 
 function initUserModel(sequelize: Sequelize) {
   return sequelize.define("registration", {
@@ -40,8 +41,26 @@ function initUserModel(sequelize: Sequelize) {
   });
 }
 
-export const UserModel =  initUserModel(sequelize);
 
+
+function initUserModelLite(sequelize: Sequelize) {
+  return sequelize.define("registration", {
+    email:  ORM.TEXT,
+    password: ORM.TEXT,
+    role:ORM.INTEGER,
+    createdAt:ORM.INTEGER,
+    updatedAt:ORM.INTEGER,
+    uid:ORM.TEXT,
+    confirmed:ORM.INTEGER,
+    lastVisit:ORM.INTEGER,
+    nickname:ORM.TEXT
+  });
+}
+
+//export const UserModel =  initUserModel(sequelize);
+export const UserModel =  initUserModelLite(sequelizeLite);
+
+///UserModel.sync({force: true}).
 
 export interface VOUser{
   id?:number;

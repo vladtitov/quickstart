@@ -13,8 +13,14 @@ function encryptCTR(text) {
 exports.encryptCTR = encryptCTR;
 function decryptCTR(text) {
     var decipher = crypto.createDecipher(algorithmCTR, PASSWORD);
-    var dec = decipher.update(text, 'hex', 'utf8');
-    dec += decipher.final('utf8');
+    var dec;
+    try {
+        dec = decipher.update(text, 'hex', 'utf8');
+        dec += decipher.final('utf8');
+    }
+    catch (e) {
+        console.error(e);
+    }
     return dec;
 }
 exports.decryptCTR = decryptCTR;

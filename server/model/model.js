@@ -1,13 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ORM = require("sequelize");
+var path = require("path");
+var file = path.join(__dirname, '../data/posts.sqlite');
+console.log(file);
+var optionsSQLITE = {
+    benchmark: true,
+    logging: console.log,
+    dialect: "sqlite",
+    storage: file
+};
 var options = {
     benchmark: true,
     logging: console.log,
     dialect: "mysql",
     host: "front-desk.ca"
 };
-var sequelize = new ORM('frontdes_callcenter', 'frontdes', 'xzsawq2!', options);
+var sequelizeLite = new ORM('', '', '', optionsSQLITE);
 function initUserModel(sequelize) {
     return sequelize.define("registration", {
         email: ORM.STRING,
@@ -21,4 +30,17 @@ function initUserModel(sequelize) {
         nickname: ORM.STRING
     });
 }
-exports.UserModel = initUserModel(sequelize);
+function initUserModelLite(sequelize) {
+    return sequelize.define("registration", {
+        email: ORM.TEXT,
+        password: ORM.TEXT,
+        role: ORM.INTEGER,
+        createdAt: ORM.INTEGER,
+        updatedAt: ORM.INTEGER,
+        uid: ORM.TEXT,
+        confirmed: ORM.INTEGER,
+        lastVisit: ORM.INTEGER,
+        nickname: ORM.TEXT
+    });
+}
+exports.UserModel = initUserModelLite(sequelizeLite);

@@ -11,15 +11,13 @@ import {UserModel, VOUser} from '../model/model';
 //import {onError, onSuccess} from './com';
 //import * as JWT from "jsonwebtoken";
 import * as request from 'request';
-
-
 import * as crypto from 'crypto';
-import {decryptCTR, encryptCTR, getIp} from '../utils/app-utils';
+import {checkIp, decryptCTR, encryptCTR} from '../utils/app-utils';
 
 const hri = require('human-readable-ids').hri;
 const  confirmURL ='http://callcenter.front-desk.ca/api/login-confirm/';
 
-
+let confirmIps ={};
 
 export function initLogin(app:Application){
 
@@ -29,11 +27,17 @@ export function initLogin(app:Application){
     let email = req.body.email;
     let password = req.body.password;
     let deviceid = req.headers['user-agent'];
-    let ip = getIp(req);
+
+    let ip = checkIp(req, 10);
+
+    if(!ip){
+      resp.json({error: 'annoying'});
+      return;
+    }
 
     let user = {
-      email:email,
-      password:crypto.createHash('md5').update(password).digest("hex"),
+      email:encryptCTR(email),
+      password:encryptCTR(password),
       deviceid:deviceid
     }
 
@@ -69,10 +73,16 @@ export function initLogin(app:Application){
     let email = req.body.email;
     let password = req.body.password;
     let deviceid = req.headers['user-agent'];
-    let ip = getIp(req);
+
+    let ip = checkIp(req, 6);
+
+    if(!ip){
+      resp.json({error: 'annoying'});
+      return;
+    }
     let user = {
-      email:email,
-      password:crypto.createHash('md5').update(password).digest("hex"),
+      email:encryptCTR(email),
+      password:encryptCTR(password),
       deviceid:deviceid,
       nickname:'',
       uid:uuidV1()
@@ -103,15 +113,22 @@ export function initLogin(app:Application){
 
   app.route("/api/login/confirm/:uid").get(function (req: Request, resp: Response) {
     let uid = req.params.uid;
-
-   // uid = decryptCTR(uid);
+    console.log(uid);
+   uid = decryptCTR(uid);
     if(!uid){
       resp.end('hacker');
       return;
     }
-    let ip = getIp(req);
 
-console.log(uid);
+    let ip = checkIp(req, 3);
+
+    if(!ip){
+      resp.json({error: 'annoying'});
+      return;
+    }
+
+
+    console.log(uid);
 console.log(ip);
 
 
@@ -119,7 +136,7 @@ console.log(ip);
       .then(function (user:VOUser) {
         if(user){
           if(user.confirmed){
-            resp.json({success:'confirmed-before'})
+            resp.json({success:'confirmed-before'});
           }else{
 
             UserModel.update({
@@ -128,7 +145,7 @@ console.log(ip);
               nickname:hri.random()
             },{where:{uid:uid}})
               .then(function (result) {
-                console.log(result)
+                console.log(result);
                 resp.json({success:'confirmed'});
               })
           }

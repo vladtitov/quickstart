@@ -1,7 +1,7 @@
 import {Application, Request, Response} from "express";
 import * as _ from "lodash";
 import {UserModel, VOUser} from '../model/model';
-import {encryptCTR, getIp} from '../utils/app-utils';
+import {checkIp, encryptCTR} from '../utils/app-utils';
 import * as request from 'request';
 
 
@@ -14,11 +14,16 @@ export function apiSendNotification(app:Application){
     let message = req.body.message;
     let subject = req.body.subject;
     let deviceid = req.headers['user-agent'];
-    let ip = getIp(req);
 
+    let ip = checkIp(req, 300);
+
+    if(!ip){
+      resp.json({error: 'annoying'});
+      return;
+    }
 
     let user = {
-      email:email,
+      email:encryptCTR(email),
       deviceid:deviceid,
       nickname:''
     };

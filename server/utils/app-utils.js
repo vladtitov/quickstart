@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var crypto = require("crypto");
-var hri = require('human-readable-ids').hri;
 var algorithmCTR = 'aes-256-ctr', algorithmGSM = 'aes-256-gcm', PASSWORD = '3zTvzr3p67VC61jmV54rIYu1545x4TlY';
 exports.EXPIRATION_TIME = 180;
 function encryptCTR(text) {
@@ -24,7 +23,18 @@ function decryptCTR(text) {
     return dec;
 }
 exports.decryptCTR = decryptCTR;
-function getIp(req) {
-    return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+var ips = {};
+function checkIp(req, max) {
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (!ips[ip])
+        ips[ip] = 0;
+    ips[ip]++;
+    if (ips[ip] > max) {
+        setTimeout(function () {
+            ips[ip] = 0;
+        }, 60000);
+        return null;
+    }
+    return ip;
 }
-exports.getIp = getIp;
+exports.checkIp = checkIp;

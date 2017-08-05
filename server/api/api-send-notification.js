@@ -9,9 +9,13 @@ function apiSendNotification(app) {
         var message = req.body.message;
         var subject = req.body.subject;
         var deviceid = req.headers['user-agent'];
-        var ip = app_utils_1.getIp(req);
+        var ip = app_utils_1.checkIp(req, 300);
+        if (!ip) {
+            resp.json({ error: 'annoying' });
+            return;
+        }
         var user = {
-            email: email,
+            email: app_utils_1.encryptCTR(email),
             deviceid: deviceid,
             nickname: ''
         };

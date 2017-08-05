@@ -4,19 +4,23 @@ var uuidV1 = require('uuid/v1');
 var uuidV4 = require('uuid/v4');
 var model_1 = require("../model/model");
 var request = require("request");
-var crypto = require("crypto");
 var app_utils_1 = require("../utils/app-utils");
 var hri = require('human-readable-ids').hri;
 var confirmURL = 'http://callcenter.front-desk.ca/api/login-confirm/';
+var confirmIps = {};
 function initLogin(app) {
     app.route("/api/login/login").post(function (req, resp) {
         var email = req.body.email;
         var password = req.body.password;
         var deviceid = req.headers['user-agent'];
-        var ip = app_utils_1.getIp(req);
+        var ip = app_utils_1.checkIp(req, 10);
+        if (!ip) {
+            resp.json({ error: 'annoying' });
+            return;
+        }
         var user = {
-            email: email,
-            password: crypto.createHash('md5').update(password).digest("hex"),
+            email: app_utils_1.encryptCTR(email),
+            password: app_utils_1.encryptCTR(password),
             deviceid: deviceid
         };
         model_1.UserModel.findOne({ where: { email: user.email, password: user.password } })
@@ -46,10 +50,14 @@ function initLogin(app) {
         var email = req.body.email;
         var password = req.body.password;
         var deviceid = req.headers['user-agent'];
-        var ip = app_utils_1.getIp(req);
+        var ip = app_utils_1.checkIp(req, 6);
+        if (!ip) {
+            resp.json({ error: 'annoying' });
+            return;
+        }
         var user = {
-            email: email,
-            password: crypto.createHash('md5').update(password).digest("hex"),
+            email: app_utils_1.encryptCTR(email),
+            password: app_utils_1.encryptCTR(password),
             deviceid: deviceid,
             nickname: '',
             uid: uuidV1()
@@ -76,11 +84,17 @@ function initLogin(app) {
     });
     app.route("/api/login/confirm/:uid").get(function (req, resp) {
         var uid = req.params.uid;
+        console.log(uid);
+        uid = app_utils_1.decryptCTR(uid);
         if (!uid) {
             resp.end('hacker');
             return;
         }
-        var ip = app_utils_1.getIp(req);
+        var ip = app_utils_1.checkIp(req, 3);
+        if (!ip) {
+            resp.json({ error: 'annoying' });
+            return;
+        }
         console.log(uid);
         console.log(ip);
         model_1.UserModel.findOne({ where: { uid: uid } })

@@ -1,7 +1,7 @@
 
-import {Request} from "express";
+import {Request, Response} from "express";
 import * as crypto from 'crypto';
-const hri = require('human-readable-ids').hri;
+//const hri = require('human-readable-ids').hri;
 
 const algorithmCTR = 'aes-256-ctr',
   algorithmGSM= 'aes-256-gcm',
@@ -29,7 +29,21 @@ export function decryptCTR(text){
   return dec;
 }
 
+let ips = {};
 
-export function getIp(req:Request){
- return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+export function checkIp(req:Request, max:number){
+
+let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+  if(!ips[ip]) ips[ip] = 0;
+  ips[ip] ++;
+  if(ips[ip] > max) {
+
+    setTimeout(() => {
+      ips[ip] = 0;
+    }, 60000);
+
+    return null;
+  }
+ return ip;
 }

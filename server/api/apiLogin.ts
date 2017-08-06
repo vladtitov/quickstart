@@ -12,21 +12,104 @@ import {UserModel, VOUser} from '../model/model';
 //import * as JWT from "jsonwebtoken";
 import * as request from 'request';
 import * as crypto from 'crypto';
-import {checkIp, decryptCTR, encryptCTR} from '../utils/app-utils';
+import {checkIp, decryptCTR, decryptCustom, encryptCTR, encryptCustom} from '../utils/app-utils';
 
 const hri = require('human-readable-ids').hri;
-const  confirmURL ='http://callcenter.front-desk.ca/api/login-confirm/';
+
 
 let confirmIps ={};
 
 export function initLogin(app:Application){
 
+  app.route("/api/login/reset-password-confirm/").post(function (req: Request, resp: Response) {
+    let ip = checkIp(req, 10);
+
+    if(!ip){
+      resp.json({error: 'annoying'});
+      return;
+    }
+
+
+    //let email = req.body.email;
+    let password = req.body.password;
+    //let emailE = encryptCTR(email);
+    let passwordE = encryptCTR(password);
+    let uid = req.body.uid;
+    let user = decryptCustom(uid);
+
+    //if(user.email !== emailE){
+    //  resp.json({error:'email'});
+    //  return
+   // };
+
+    UserModel.findOne({where: user})
+      .then(function (user2:VOUser) {
+        if (user2) {
+          user2.password = passwordE;
+
+          UserModel.update(user,{where:{email:user2.email}})
+            .then(function (user3) {
+
+            resp.json({
+              success:'password',
+              user:{
+                nickname:user2.nickname
+              }
+            })
+          }).catch(function (error) {
+            console.error(error);
+            resp.json({error:'something'});
+          })
+
+
+        }
+      })
+
+  });
+
+
+  app.route("/api/login/reset-password").post(function (req: Request, resp: Response) {
+    let ip = checkIp(req, 10);
+
+    if(!ip){
+      resp.json({error: 'annoying'});
+      return;
+    }
+    let email = req.body.email;
+    let emailE = encryptCTR(email);
+    let host = req.get('host');
+    let confirmUrl =  req.protocol + '://' + req.get('host')  + '/#/confirm-reset-password/';
+
+    UserModel.findOne({where: {email:emailE}})
+      .then(function (user2:VOUser) {
+        if (user2) {
+
+          confirmUrl = confirmUrl+encryptCustom(emailE,user2.password);
+
+          sendResetPasswordEmail(email, host, confirmUrl, user2, function (error) {
+
+            if(error){
+              resp.json({error:'email send error'})
+            }else resp.json({
+              success:"sent",
+              user:{
+                email:email,
+                nickname:user2.nickname
+              }});
+
+          } )
+
+        } else {
+
+          resp.json({error:'wrong'});
+
+        }
+      })
+    resp.json({success: 'OK'});
+  });
+
 
   app.route("/api/login/login").post(function (req: Request, resp: Response) {
-
-    let email = req.body.email;
-    let password = req.body.password;
-    let deviceid = req.headers['user-agent'];
 
     let ip = checkIp(req, 10);
 
@@ -34,6 +117,13 @@ export function initLogin(app:Application){
       resp.json({error: 'annoying'});
       return;
     }
+
+    let email = req.body.email;
+    let password = req.body.password;
+    let deviceid = req.headers['user-agent'];
+
+
+
 
     let user = {
       email:encryptCTR(email),
@@ -49,13 +139,12 @@ export function initLogin(app:Application){
             resp.json({success:{
               token:encryptCTR(user2.uid),
               nikname:user2.nickname,
-              email:user2.email,
+              email:decryptCTR(user2.email),
               role:user2.role
             }})
           }else{
             resp.json({
-              error:'verification',
-              confirmURL:confirmURL+encryptCTR(user2.uid)
+              error:'verification'
             })
 
           }
@@ -70,39 +159,55 @@ export function initLogin(app:Application){
 
   app.route("/api/login/register").post(function (req: Request, resp: Response) {
 
-    let email = req.body.email;
-    let password = req.body.password;
-    let deviceid = req.headers['user-agent'];
-
     let ip = checkIp(req, 6);
 
     if(!ip){
       resp.json({error: 'annoying'});
       return;
     }
+
+
+    let email = req.body.email;
+    let password = req.body.password;
+    let deviceid = req.headers['user-agent'];
+
+    let confirmUrl =  req.protocol + '://' + req.get('host')  + '/#/login-confirm/';
+
+    let host =  req.get('host');
+
+    let passE = encryptCTR(password);
+    let emailE= encryptCTR(email);
+    confirmUrl = confirmUrl+encryptCustom(emailE,passE);
+
     let user = {
-      email:encryptCTR(email),
-      password:encryptCTR(password),
+      email:emailE,
+      password:passE,
       deviceid:deviceid,
-      nickname:'',
+      nickname:hri.random(),
       uid:uuidV1()
     }
 
-
-    UserModel.findOne({where: {email: email}})
-      .then(function (result) {
+    UserModel.findOne({where: {email: user.email}})
+      .then(function (result:VOUser) {
         if (result) {
-          resp.json({error: 'exists', message: email});
+
+          resp.json({error:'exists'});
+
         } else {
-
           createUser(user).then(function (user2:VOUser) {
-            console.log(user2);
-            user2.uid = encryptCTR(user2.uid);
 
-            sendConfirmationEmail(user2,function (error) {
-              console.log(error);
-              if(error) resp.json({error:error});
-              else  resp.json(user2);
+            sendConfirmationEmail(email, host, confirmUrl, user2,function (error) {
+             // console.log(error);
+              if(error) {
+                resp.json({error:'reregister'});
+                console.error(error);
+              }
+              else  resp.json({
+                success:'created',
+                user: {
+                  email:user2.email,
+                  nickname:user2.nickname
+                }});
             })
 
           })
@@ -114,7 +219,8 @@ export function initLogin(app:Application){
   app.route("/api/login/confirm/:uid").get(function (req: Request, resp: Response) {
     let uid = req.params.uid;
     console.log(uid);
-   uid = decryptCTR(uid);
+
+  // uid = decryptCTR(uid);
     if(!uid){
       resp.end('hacker');
       return;
@@ -127,12 +233,13 @@ export function initLogin(app:Application){
       return;
     }
 
+    let user = decryptCustom(uid);
 
-    console.log(uid);
-console.log(ip);
+    console.log(user);
+    console.log(ip);
 
 
-    UserModel.findOne({where: {uid: uid}})
+    UserModel.findOne({where: {email: user.email, password:user.password}})
       .then(function (user:VOUser) {
         if(user){
           if(user.confirmed){
@@ -141,9 +248,8 @@ console.log(ip);
 
             UserModel.update({
               confirmed:true,
-              uid:uuidV4(),
-              nickname:hri.random()
-            },{where:{uid:uid}})
+
+            },{where:{email: user.email, password:user.password}})
               .then(function (result) {
                 console.log(result);
                 resp.json({success:'confirmed'});
@@ -159,8 +265,6 @@ console.log(ip);
   })
 
 }
-
-
 
 
 
@@ -195,12 +299,62 @@ function createUser(user:VOUser){
 
 
 
-function sendConfirmationEmail(user, callBack:Function){
+function sendResetPasswordEmail(email, host:string, confirmUrl:string, user, callBack:Function){
+
+
 
   let message = 'Hello ' + user.nickname +
-    '. <br/> You have registered at  callcenter.front-desk.ca. <br/>'+
+    '. <br/> You are requested reset password at  '+ host +'. <br/>'+
+    '<p>Click link below <br/>'+
+    '<h2><a href="'+confirmUrl+
+    '">Re Register</a></h2></p><br/>' +
+    '<p><b>Note: this link is valid within 24h since you requested</b> <br/>';
+
+
+  let body ={
+    user:'uplight.ca@gmail.com',
+    pass:'uplight.ca@gmail.com',
+    subject:'Reset password form '+host,
+    message:message,
+    to:email
+  };
+
+
+  let options ={
+    url:'http://callcenter.front-desk.ca/send-email.php',
+    method:'POST',
+    body:JSON.stringify(body)
+  };
+
+  console.log('sendConfirmationEmail ',options);
+  request(options, function (error, object, data) {
+    console.log('sendConfirmationEmail  result ',data);
+    if(error) callBack(error)
+    else{
+      let result
+      try{
+        result = JSON.parse(data);
+
+      }catch (e){
+        callBack(e);
+      }
+      if(result.success) callBack();
+    }
+
+  })
+
+}
+
+
+
+function sendConfirmationEmail(email, host:string, confirmUrl:string, user, callBack:Function){
+
+
+
+  let message = 'Hello ' + user.nickname +
+    '. <br/> You have registered at  '+host+'. <br/>'+
     '<p>To finalize registration please click link below <br/>'+
-    '<h2><a href="'+confirmURL+user.uid+
+    '<h2><a href="'+confirmUrl+
     '">Confirm Registration</a></h2></p><br/>' +
     '<p><b>Note: this link is valid within 24h since you are registered</b> <br/>'+
     'Registration is free and does not contains any contracts </p>'
@@ -210,20 +364,33 @@ function sendConfirmationEmail(user, callBack:Function){
   let body ={
     user:'uplight.ca@gmail.com',
     pass:'uplight.ca@gmail.com',
-    subject:'Email Verification form front-desk.ca',
+    subject:'Email Verification form '+host,
     message:message,
-    to:user.email
-  }
+    to:email
+  };
 
 
   let options ={
     url:'http://callcenter.front-desk.ca/send-email.php',
     method:'POST',
     body:JSON.stringify(body)
-  }
+  };
+
+  console.log('sendConfirmationEmail ',options);
  request(options, function (error, object, data) {
-   console.log(data)
-   callBack(data);
+   console.log('sendConfirmationEmail  result ',data);
+   if(error) callBack(error)
+   else{
+     let result
+     try{
+       result = JSON.parse(data);
+
+     }catch (e){
+       callBack(e);
+     }
+     if(result.success) callBack();
+   }
+
  })
 
 }

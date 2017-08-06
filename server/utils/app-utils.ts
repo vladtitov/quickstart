@@ -8,6 +8,26 @@ const algorithmCTR = 'aes-256-ctr',
   PASSWORD = '3zTvzr3p67VC61jmV54rIYu1545x4TlY'
 export const EXPIRATION_TIME:number = 180;
 
+
+export function encryptCustom(email, password):string{
+  let n = password.length+'';
+  if(n.length==1)n='0'+n;
+  return n+password+email;
+}
+
+export function decryptCustom(url:string):{email:string, password:string}{
+  let index = +url.substr(0,2);
+  if(isNaN(index)) return null;
+    url = url.substr(2);
+
+  let email = url.substr(index);
+  let password = url.substr(0, index);
+  return {
+    email:email,
+    password:password
+  }
+}
+
 export function encryptCTR(text){
   var cipher = crypto.createCipher(algorithmCTR, PASSWORD)
   var crypted = cipher.update(text,'utf8','hex')

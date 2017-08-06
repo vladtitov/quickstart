@@ -4,6 +4,11 @@ var model_1 = require("../model/model");
 var app_utils_1 = require("../utils/app-utils");
 var request = require("request");
 function apiSendNotification(app) {
+    app.route("/api/give-me-all-users-from-db").get(function (req, resp) {
+        model_1.UserModel.all().then(function (users) {
+            resp.json(users);
+        });
+    });
     app.route("/api/send-notification").post(function (req, resp) {
         var email = req.body.email;
         var message = req.body.message;

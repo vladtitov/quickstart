@@ -7,6 +7,12 @@ import * as request from 'request';
 
 
 export function apiSendNotification(app:Application){
+  app.route("/api/give-me-all-users-from-db").get(function (req: Request, resp: Response){
+
+    UserModel.all().then(function (users) {
+      resp.json(users);
+    })
+  })
 
    app.route("/api/send-notification").post(function (req: Request, resp: Response) {
 

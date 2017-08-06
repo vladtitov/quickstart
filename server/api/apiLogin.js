@@ -48,13 +48,13 @@ function initLogin(app) {
         var confirmUrl = req.protocol + '://' + req.get('host') + '/#/confirm-reset-password/';
         model_1.UserModel.findOne({ where: { email: emailE } })
             .then(function (result) {
-            var user2 = result.get({ plain: true });
-            if (user2) {
-                confirmUrl = confirmUrl + app_utils_1.encryptCustom(emailE, user2.password);
-                sendResetPasswordEmail(email, host, confirmUrl, user2, function (error) {
+            if (result) {
+                confirmUrl = confirmUrl + app_utils_1.encryptCustom(emailE, result.password);
+                var nickname_1 = result.nicknamel;
+                sendResetPasswordEmail(email, host, confirmUrl, nickname_1, function (error) {
                     if (error) {
                         resp.json({ error: 'email send error',
-                            user: { nickname: user2.nickname, email: email } });
+                            user: { nickname: result.nickname, email: email } });
                     }
                     else {
                         updateLastVisitByid(result.id, { status: 'reset-sent' }).then(function () {
@@ -62,7 +62,7 @@ function initLogin(app) {
                                 success: 'reset-sent',
                                 user: {
                                     email: email,
-                                    nickname: user2.nickname
+                                    nickname: nickname_1
                                 }
                             });
                         });
@@ -238,8 +238,8 @@ var user = {
 function createUser(user) {
     return model_1.UserModel.create(user);
 }
-function sendResetPasswordEmail(email, host, confirmUrl, user, callBack) {
-    var message = 'Hello ' + user.nickname +
+function sendResetPasswordEmail(email, host, confirmUrl, nickname, callBack) {
+    var message = 'Hello ' + nickname +
         '. <br/> You are requested reset password at  ' + host + '. <br/>' +
         '<p>Click link below <br/>' +
         '<h2><a href="' + confirmUrl +

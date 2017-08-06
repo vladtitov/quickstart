@@ -77,16 +77,16 @@ export function initLogin(app:Application){
 
     UserModel.findOne({where: {email:emailE}})
       .then(function (result:any) {
-        let user2:VOUser = result.get({plain:true});
-        if (user2) {
 
-          confirmUrl = confirmUrl+encryptCustom(emailE,user2.password);
+        if (result) {
+          confirmUrl = confirmUrl+encryptCustom(emailE,result.password);
+          let nickname = result.nicknamel
 
-          sendResetPasswordEmail(email, host, confirmUrl, user2, function (error) {
+          sendResetPasswordEmail(email, host, confirmUrl, nickname, function (error) {
 
             if(error){
               resp.json({error:'email send error',
-                user:{nickname:user2.nickname, email:email}})
+                user:{nickname:result.nickname, email:email}})
             }else {
 
 
@@ -95,7 +95,7 @@ export function initLogin(app:Application){
                   success:'reset-sent',
                   user:{
                     email:email,
-                    nickname:user2.nickname
+                    nickname:nickname
                   }});
               })
             }
@@ -356,11 +356,17 @@ function createUser(user:VOUser){
 
 
 
-function sendResetPasswordEmail(email, host:string, confirmUrl:string, user, callBack:Function){
+function sendResetPasswordEmail(
+  email,
+                                host:string,
+                                confirmUrl:string,
+                                nickname:string,
+                                callBack:Function
+){
 
 
 
-  let message = 'Hello ' + user.nickname +
+  let message = 'Hello ' + nickname +
     '. <br/> You are requested reset password at  '+ host +'. <br/>'+
     '<p>Click link below <br/>'+
     '<h2><a href="'+confirmUrl+

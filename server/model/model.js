@@ -4,19 +4,13 @@ var ORM = require("sequelize");
 var path = require("path");
 var file = path.join(__dirname, '../data/posts.sqlite');
 console.log(file);
-var optionsSQLITE = {
-    benchmark: true,
-    logging: console.log,
-    dialect: "sqlite",
-    storage: file
-};
 var options = {
     benchmark: true,
     logging: console.log,
     dialect: "mysql",
     host: "front-desk.ca"
 };
-var sequelizeLite = new ORM('', '', '', optionsSQLITE);
+var sequelize = new ORM('frontdes_callcenter', 'frontdes', 'Xzsawq2!', options);
 function initUserModel(sequelize) {
     return sequelize.define("registration", {
         email: ORM.STRING,
@@ -44,4 +38,4 @@ function initUserModelLite(sequelize) {
         nickname: ORM.TEXT
     });
 }
-exports.UserModel = initUserModelLite(sequelizeLite);
+exports.UserModel = initUserModel(sequelize);

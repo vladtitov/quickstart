@@ -9,12 +9,14 @@ import * as path from 'path';
 
 let file = path.join(__dirname, '../data/posts.sqlite');
 console.log(file);
+/*
 const optionsSQLITE: any = {
   benchmark: true,
   logging:console.log,
   dialect: "sqlite",
   storage: file
 };
+*/
 
 const options: any = {
   benchmark: true,
@@ -24,8 +26,9 @@ const options: any = {
 };
 
 
-//const sequelize: Sequelize = new ORM('frontdes_callcenter','frontdes','xzsawq2!', options);
-const sequelizeLite: Sequelize = new ORM('','','',optionsSQLITE);
+
+const sequelize: Sequelize = new ORM('frontdes_callcenter','frontdes','Xzsawq2!', options);
+//const sequelizeLite: Sequelize = new ORM('','','',optionsSQLITE);
 
 function initUserModel(sequelize: Sequelize) {
   return sequelize.define("registration", {
@@ -58,8 +61,8 @@ function initUserModelLite(sequelize: Sequelize) {
   });
 }
 
-//export const UserModel =  initUserModel(sequelize);
-export const UserModel =  initUserModelLite(sequelizeLite);
+export const UserModel =  initUserModel(sequelize);
+//export const UserModel =  initUserModelLite(sequelizeLite);
 
 //UserModel.sync({force: true});
 

@@ -1,5 +1,6 @@
 # dependencies
 /node_modules
+/server/data
 
 # IDEs and editors
 /.idea
@@ -23,9 +24,3 @@ testem.log
 # e2e
 /e2e/*.js
 /e2e/*.map
-
-# System Files
-.DS_Store
-Thumbs.db
-
-/server/data

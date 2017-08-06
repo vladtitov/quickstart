@@ -148,12 +148,29 @@ export function initLogin(app:Application){
 
             updateLastVisitByid(user2.id,{status:'logedin'});
           }else{
+            let confirmUrl =  req.protocol + '://' + req.get('host')  + '/#/login-confirm/';
 
-            updateLastVisitByid(user2.id,{status:'verification-required'});
-            resp.json({
+            let host =  req.get('host');
+
+            sendConfirmationEmail(email, host, confirmUrl, user2,function (error) {
+              // console.log(error);
+              if (error) {
+                resp.json({error: 'sendemail', message: 'Error sending email. Please try again later'});
+                console.error(error);
+                return;
+              };
+              resp.json({
               error:'verification',
               message:'Email was sent to '+decryptCTR(user2.email)+'. Please ckick on a link "Confirm Registration" in email body'
             })
+
+            });
+
+            updateLastVisitByid(user2.id,{status:'verification-required'});
+            /*resp.json({
+              error:'verification',
+              message:'Email was sent to '+decryptCTR(user2.email)+'. Please ckick on a link "Confirm Registration" in email body'
+            })*/
 
           }
 

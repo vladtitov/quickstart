@@ -32,12 +32,13 @@ function initUserModel(sequelize) {
 }
 function initUserModelLite(sequelize) {
     return sequelize.define("registration", {
+        uid: ORM.TEXT,
         email: ORM.TEXT,
         password: ORM.TEXT,
         role: ORM.INTEGER,
+        status: ORM.TEXT,
         createdAt: ORM.INTEGER,
         updatedAt: ORM.INTEGER,
-        uid: ORM.TEXT,
         confirmed: ORM.INTEGER,
         lastVisit: ORM.INTEGER,
         nickname: ORM.TEXT

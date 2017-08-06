@@ -45,23 +45,18 @@ export function initLogin(app:Application){
     UserModel.findOne({where: user})
       .then(function (user2:VOUser) {
         if (user2) {
-          user2.password = passwordE;
+          updateLastVisitByid(user2.id,{password:passwordE,status:'newpassword'})
+            .then(function (res) {
+              resp.json({
+                success:'password',
+                user:{
+                  nickname:user2.nickname
+                }
+              })
+            });
 
-          UserModel.update(user,{where:{email:user2.email}})
-            .then(function (user3) {
-
-            resp.json({
-              success:'password',
-              user:{
-                nickname:user2.nickname
-              }
-            })
-          }).catch(function (error) {
-            console.error(error);
-            resp.json({error:'something'});
-          })
-
-
+        }else{
+          resp.json({ error:'nouser'})
         }
       })
 
@@ -81,7 +76,8 @@ export function initLogin(app:Application){
     let confirmUrl =  req.protocol + '://' + req.get('host')  + '/#/confirm-reset-password/';
 
     UserModel.findOne({where: {email:emailE}})
-      .then(function (user2:VOUser) {
+      .then(function (result:any) {
+        let user2:VOUser = result.get({plain:true});
         if (user2) {
 
           confirmUrl = confirmUrl+encryptCustom(emailE,user2.password);
@@ -89,13 +85,20 @@ export function initLogin(app:Application){
           sendResetPasswordEmail(email, host, confirmUrl, user2, function (error) {
 
             if(error){
-              resp.json({error:'email send error'})
-            }else resp.json({
-              success:"sent",
-              user:{
-                email:email,
-                nickname:user2.nickname
-              }});
+              resp.json({error:'email send error',
+                user:{nickname:user2.nickname, email:email}})
+            }else {
+
+
+              updateLastVisitByid(result.id, {status:'reset-sent'}).then(function () {
+                resp.json({
+                  success:'reset-sent',
+                  user:{
+                    email:email,
+                    nickname:user2.nickname
+                  }});
+              })
+            }
 
           } )
 
@@ -105,7 +108,7 @@ export function initLogin(app:Application){
 
         }
       })
-    resp.json({success: 'OK'});
+    //resp.json({success: 'OK'});
   });
 
 
@@ -142,7 +145,11 @@ export function initLogin(app:Application){
               email:decryptCTR(user2.email),
               role:user2.role
             }})
+
+            updateLastVisitByid(user2.id,{status:'logedin'});
           }else{
+
+            updateLastVisitByid(user2.id,{status:'verification-required'});
             resp.json({
               error:'verification',
               message:'Email was sent to '+decryptCTR(user2.email)+'. Please ckick on a link "Confirm Registration" in email body'
@@ -202,12 +209,18 @@ export function initLogin(app:Application){
           return;
         }
 
-        createUser(user).then(function (user2:VOUser) {
+        createUser(user).then(function (result:any) {
+          let user2:VOUser = result.get({ plain: true});
+
+          console.log(user2)
           if(!user2 || !user2.uid){
             console.error('error create user ' +JSON.stringify(user));
             resp.json({error:'dberror', message:'Database error. Please try again later'});
             return
           }
+
+
+          updateLastVisitByid(user2.id, {status:'created'});
 
           sendConfirmationEmail(email, host, confirmUrl, user2,function (error) {
            // console.log(error);
@@ -217,6 +230,8 @@ export function initLogin(app:Application){
               return;
             }
 
+            ;
+            updateLastVisitByid(user2.id, {status:'confirmation new user sent '});
             resp.json({
               success:'created',
               user: {
@@ -254,21 +269,23 @@ export function initLogin(app:Application){
 
 
     UserModel.findOne({where: {email: user.email, password:user.password}})
-      .then(function (user:VOUser) {
-        if(user){
-          if(user.confirmed){
-            resp.json({success:'confirmed-before'});
+      .then(function (result:any) {
+
+        let user2:VOUser  = result.get({plain:true});
+        if(user2){
+          if(user2.confirmed){
+            resp.json({success:'confirmed-before', user:{nickname:user2.nickname}});
           }else{
 
-            UserModel.update({
-              confirmed:true,
-
-            },{where:{email: user.email, password:user.password}})
-              .then(function (result) {
-                console.log(result);
-                resp.json({success:'confirmed'});
-              })
+            updateLastVisitByid(user2.id, {status:'confirmed', confirmed: 1 }).then(function () {
+              resp.json({success:'confirmed', user:{
+                nickname:user2.nickname
+                //email:decryptCTR(user2.email)
+              }});
+            });
           }
+
+
         }else{
           resp.json({error:'Now are you'});
         }
@@ -283,9 +300,14 @@ export function initLogin(app:Application){
 
 
 
-function updateUserByUid(user){
 
-  return UserModel.update(user ,{where:{uid:user.uid}})
+
+function updateLastVisitByid(id:number, user:VOUser){
+
+  user.lastVisit = Date.now();
+
+
+  return UserModel.update(user ,{where:{id:id}})
     .then(function (result) {
       console.log(result)
 

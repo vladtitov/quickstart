@@ -45,12 +45,13 @@ function initUserModel(sequelize: Sequelize) {
 
 function initUserModelLite(sequelize: Sequelize) {
   return sequelize.define("registration", {
+    uid:ORM.TEXT,
     email:  ORM.TEXT,
     password: ORM.TEXT,
     role:ORM.INTEGER,
+    status: ORM.TEXT,
     createdAt:ORM.INTEGER,
     updatedAt:ORM.INTEGER,
-    uid:ORM.TEXT,
     confirmed:ORM.INTEGER,
     lastVisit:ORM.INTEGER,
     nickname:ORM.TEXT
@@ -60,13 +61,14 @@ function initUserModelLite(sequelize: Sequelize) {
 //export const UserModel =  initUserModel(sequelize);
 export const UserModel =  initUserModelLite(sequelizeLite);
 
-///UserModel.sync({force: true}).
+//UserModel.sync({force: true});
 
 export interface VOUser{
   id?:number;
   nickname?:string;
   email?:string;
   role?:number;
+  status?:string;
   password?:string;
   uid?:string;
   createdAt?:number;

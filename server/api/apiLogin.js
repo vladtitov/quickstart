@@ -21,19 +21,18 @@ function initLogin(app) {
         model_1.UserModel.findOne({ where: user })
             .then(function (user2) {
             if (user2) {
-                user2.password = passwordE;
-                model_1.UserModel.update(user, { where: { email: user2.email } })
-                    .then(function (user3) {
+                updateLastVisitByid(user2.id, { password: passwordE, status: 'newpassword' })
+                    .then(function (res) {
                     resp.json({
                         success: 'password',
                         user: {
                             nickname: user2.nickname
                         }
                     });
-                }).catch(function (error) {
-                    console.error(error);
-                    resp.json({ error: 'something' });
                 });
+            }
+            else {
+                resp.json({ error: 'nouser' });
             }
         });
     });
@@ -48,28 +47,32 @@ function initLogin(app) {
         var host = req.get('host');
         var confirmUrl = req.protocol + '://' + req.get('host') + '/#/confirm-reset-password/';
         model_1.UserModel.findOne({ where: { email: emailE } })
-            .then(function (user2) {
+            .then(function (result) {
+            var user2 = result.get({ plain: true });
             if (user2) {
                 confirmUrl = confirmUrl + app_utils_1.encryptCustom(emailE, user2.password);
                 sendResetPasswordEmail(email, host, confirmUrl, user2, function (error) {
                     if (error) {
-                        resp.json({ error: 'email send error' });
+                        resp.json({ error: 'email send error',
+                            user: { nickname: user2.nickname, email: email } });
                     }
-                    else
-                        resp.json({
-                            success: "sent",
-                            user: {
-                                email: email,
-                                nickname: user2.nickname
-                            }
+                    else {
+                        updateLastVisitByid(result.id, { status: 'reset-sent' }).then(function () {
+                            resp.json({
+                                success: 'reset-sent',
+                                user: {
+                                    email: email,
+                                    nickname: user2.nickname
+                                }
+                            });
                         });
+                    }
                 });
             }
             else {
                 resp.json({ error: 'wrong' });
             }
         });
-        resp.json({ success: 'OK' });
     });
     app.route("/api/login/login").post(function (req, resp) {
         var ip = app_utils_1.checkIp(req, 10);
@@ -95,8 +98,10 @@ function initLogin(app) {
                             email: app_utils_1.decryptCTR(user2.email),
                             role: user2.role
                         } });
+                    updateLastVisitByid(user2.id, { status: 'logedin' });
                 }
                 else {
+                    updateLastVisitByid(user2.id, { status: 'verification-required' });
                     resp.json({
                         error: 'verification',
                         message: 'Email was sent to ' + app_utils_1.decryptCTR(user2.email) + '. Please ckick on a link "Confirm Registration" in email body'
@@ -142,18 +147,23 @@ function initLogin(app) {
                     });
                 return;
             }
-            createUser(user).then(function (user2) {
+            createUser(user).then(function (result) {
+                var user2 = result.get({ plain: true });
+                console.log(user2);
                 if (!user2 || !user2.uid) {
                     console.error('error create user ' + JSON.stringify(user));
                     resp.json({ error: 'dberror', message: 'Database error. Please try again later' });
                     return;
                 }
+                updateLastVisitByid(user2.id, { status: 'created' });
                 sendConfirmationEmail(email, host, confirmUrl, user2, function (error) {
                     if (error) {
                         resp.json({ error: 'sendemail', message: 'Error sending email. Please try again later' });
                         console.error(error);
                         return;
                     }
+                    ;
+                    updateLastVisitByid(user2.id, { status: 'confirmation new user sent ' });
                     resp.json({
                         success: 'created',
                         user: {
@@ -181,18 +191,17 @@ function initLogin(app) {
         console.log(user);
         console.log(ip);
         model_1.UserModel.findOne({ where: { email: user.email, password: user.password } })
-            .then(function (user) {
-            if (user) {
-                if (user.confirmed) {
-                    resp.json({ success: 'confirmed-before' });
+            .then(function (result) {
+            var user2 = result.get({ plain: true });
+            if (user2) {
+                if (user2.confirmed) {
+                    resp.json({ success: 'confirmed-before', user: { nickname: user2.nickname } });
                 }
                 else {
-                    model_1.UserModel.update({
-                        confirmed: true,
-                    }, { where: { email: user.email, password: user.password } })
-                        .then(function (result) {
-                        console.log(result);
-                        resp.json({ success: 'confirmed' });
+                    updateLastVisitByid(user2.id, { status: 'confirmed', confirmed: 1 }).then(function () {
+                        resp.json({ success: 'confirmed', user: {
+                                nickname: user2.nickname
+                            } });
                     });
                 }
             }
@@ -203,8 +212,9 @@ function initLogin(app) {
     });
 }
 exports.initLogin = initLogin;
-function updateUserByUid(user) {
-    return model_1.UserModel.update(user, { where: { uid: user.uid } })
+function updateLastVisitByid(id, user) {
+    user.lastVisit = Date.now();
+    return model_1.UserModel.update(user, { where: { id: id } })
         .then(function (result) {
         console.log(result);
     });

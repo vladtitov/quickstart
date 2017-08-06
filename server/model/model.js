@@ -13,15 +13,16 @@ var options = {
 var sequelize = new ORM('frontdes_callcenter', 'frontdes', 'Xzsawq2!', options);
 function initUserModel(sequelize) {
     return sequelize.define("registration", {
+        status: ORM.STRING,
+        nickname: ORM.STRING,
+        confirmed: ORM.BOOLEAN,
+        lastVisit: ORM.DATE,
         email: ORM.STRING,
         password: ORM.TEXT,
         role: ORM.INTEGER,
         createdAt: ORM.DATE,
         updatedAt: ORM.DATE,
-        uid: ORM.STRING,
-        confirmed: ORM.BOOLEAN,
-        lastVisit: ORM.DATE,
-        nickname: ORM.STRING
+        uid: ORM.STRING
     });
 }
 function initUserModelLite(sequelize) {

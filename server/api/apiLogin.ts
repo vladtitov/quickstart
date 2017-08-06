@@ -247,14 +247,14 @@ export function initLogin(app:Application){
            // console.log(error);
             if(error) {
               resp.json({error:'sendemail', message:'Error sending email. Please try again later'});
-              console.error(error);
+              console.error('ERROR send confirmation email ' + error);
               return;
             }
 
-            ;
-            updateLastVisitByid(user2.id, {status:'confirmation new user sent '});
+
+            updateLastVisitByid(user2.id, {status:'confirmation sent'});
             resp.json({
-              success:'created',
+              success:'confirmation sent',
               user: {
                 email:email,
                 nickname:user2.nickname

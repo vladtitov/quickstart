@@ -9,7 +9,7 @@ var hri = require('human-readable-ids').hri;
 var confirmIps = {};
 function initLogin(app) {
     app.route("/api/login/reset-password-confirm/").post(function (req, resp) {
-        var ip = app_utils_1.checkIp(req, 10);
+        var ip = app_utils_1.checkIp(req, 100);
         if (!ip) {
             resp.json({ error: 'annoying' });
             return;
@@ -37,7 +37,7 @@ function initLogin(app) {
         });
     });
     app.route("/api/login/reset-password").post(function (req, resp) {
-        var ip = app_utils_1.checkIp(req, 10);
+        var ip = app_utils_1.checkIp(req, 100);
         if (!ip) {
             resp.json({ error: 'annoying' });
             return;
@@ -75,7 +75,7 @@ function initLogin(app) {
         });
     });
     app.route("/api/login/login").post(function (req, resp) {
-        var ip = app_utils_1.checkIp(req, 10);
+        var ip = app_utils_1.checkIp(req, 100);
         if (!ip) {
             resp.json({ error: 'annoying' });
             return;
@@ -125,7 +125,7 @@ function initLogin(app) {
         });
     });
     app.route("/api/login/register").post(function (req, resp) {
-        var ip = app_utils_1.checkIp(req, 6);
+        var ip = app_utils_1.checkIp(req, 60);
         if (!ip) {
             resp.json({ error: 'annoying' });
             return;
@@ -193,7 +193,7 @@ function initLogin(app) {
             resp.end('hacker');
             return;
         }
-        var ip = app_utils_1.checkIp(req, 3);
+        var ip = app_utils_1.checkIp(req, 100);
         if (!ip) {
             resp.json({ error: 'annoying' });
             return;

@@ -22,7 +22,7 @@ let confirmIps ={};
 export function initLogin(app:Application){
 
   app.route("/api/login/reset-password-confirm/").post(function (req: Request, resp: Response) {
-    let ip = checkIp(req, 10);
+    let ip = checkIp(req, 100);
 
     if(!ip){
       resp.json({error: 'annoying'});
@@ -64,7 +64,7 @@ export function initLogin(app:Application){
 
 
   app.route("/api/login/reset-password").post(function (req: Request, resp: Response) {
-    let ip = checkIp(req, 10);
+    let ip = checkIp(req, 100);
 
     if(!ip){
       resp.json({error: 'annoying'});
@@ -114,7 +114,7 @@ export function initLogin(app:Application){
 
   app.route("/api/login/login").post(function (req: Request, resp: Response) {
 
-    let ip = checkIp(req, 10);
+    let ip = checkIp(req, 100);
 
     if(!ip){
       resp.json({error: 'annoying'});
@@ -185,7 +185,7 @@ export function initLogin(app:Application){
 
   app.route("/api/login/register").post(function (req: Request, resp: Response) {
 
-    let ip = checkIp(req, 6);
+    let ip = checkIp(req, 60);
 
     if(!ip){
       resp.json({error: 'annoying'});
@@ -277,7 +277,7 @@ export function initLogin(app:Application){
       return;
     }
 
-    let ip = checkIp(req, 3);
+    let ip = checkIp(req, 100);
 
     if(!ip){
       resp.json({error: 'annoying'});

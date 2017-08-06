@@ -246,6 +246,7 @@ export function initLogin(app:Application){
           sendConfirmationEmail(email, host, confirmUrl, user2,function (error) {
            // console.log(error);
             if(error) {
+              UserModel.destroy({where:{id:user2.id}});
               resp.json({error:'sendemail', message:'Error sending email. Please try again later'});
               console.error('ERROR send confirmation email ' + error);
               return;

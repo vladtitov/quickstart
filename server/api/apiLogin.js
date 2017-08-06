@@ -169,6 +169,7 @@ function initLogin(app) {
                 confirmUrl = confirmUrl + app_utils_1.encryptCustom(emailE, passE);
                 sendConfirmationEmail(email, host, confirmUrl, user2, function (error) {
                     if (error) {
+                        model_1.UserModel.destroy({ where: { id: user2.id } });
                         resp.json({ error: 'sendemail', message: 'Error sending email. Please try again later' });
                         console.error('ERROR send confirmation email ' + error);
                         return;

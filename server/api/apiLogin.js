@@ -102,6 +102,7 @@ function initLogin(app) {
                 }
                 else {
                     var confirmUrl = req.protocol + '://' + req.get('host') + '/#/login-confirm/';
+                    confirmUrl = confirmUrl + app_utils_1.encryptCustom(user2.email, user2.password);
                     var host = req.get('host');
                     sendConfirmationEmail(email, host, confirmUrl, user2, function (error) {
                         if (error) {
@@ -132,11 +133,9 @@ function initLogin(app) {
         var email = req.body.email;
         var password = req.body.password;
         var deviceid = req.headers['user-agent'];
-        var confirmUrl = req.protocol + '://' + req.get('host') + '/#/login-confirm/';
         var host = req.get('host');
         var passE = app_utils_1.encryptCTR(password);
         var emailE = app_utils_1.encryptCTR(email);
-        confirmUrl = confirmUrl + app_utils_1.encryptCustom(emailE, passE);
         var user = {
             email: emailE,
             password: passE,
@@ -166,6 +165,8 @@ function initLogin(app) {
                     return;
                 }
                 updateLastVisitByid(user2.id, { status: 'created' });
+                var confirmUrl = req.protocol + '://' + req.get('host') + '/#/login-confirm/';
+                confirmUrl = confirmUrl + app_utils_1.encryptCustom(emailE, passE);
                 sendConfirmationEmail(email, host, confirmUrl, user2, function (error) {
                     if (error) {
                         resp.json({ error: 'sendemail', message: 'Error sending email. Please try again later' });

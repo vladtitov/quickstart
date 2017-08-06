@@ -148,8 +148,9 @@ export function initLogin(app:Application){
 
             updateLastVisitByid(user2.id,{status:'logedin'});
           }else{
-            let confirmUrl =  req.protocol + '://' + req.get('host')  + '/#/login-confirm/';
 
+            let confirmUrl =  req.protocol + '://' + req.get('host')  + '/#/login-confirm/';
+            confirmUrl = confirmUrl+encryptCustom(user2.email, user2.password);
             let host =  req.get('host');
 
             sendConfirmationEmail(email, host, confirmUrl, user2,function (error) {
@@ -196,13 +197,13 @@ export function initLogin(app:Application){
     let password = req.body.password;
     let deviceid = req.headers['user-agent'];
 
-    let confirmUrl =  req.protocol + '://' + req.get('host')  + '/#/login-confirm/';
+
 
     let host =  req.get('host');
 
     let passE = encryptCTR(password);
     let emailE= encryptCTR(email);
-    confirmUrl = confirmUrl+encryptCustom(emailE,passE);
+
 
     let user = {
       email:emailE,
@@ -238,6 +239,9 @@ export function initLogin(app:Application){
 
 
           updateLastVisitByid(user2.id, {status:'created'});
+
+          let confirmUrl =  req.protocol + '://' + req.get('host')  + '/#/login-confirm/';
+          confirmUrl = confirmUrl+encryptCustom(emailE,passE);
 
           sendConfirmationEmail(email, host, confirmUrl, user2,function (error) {
            // console.log(error);

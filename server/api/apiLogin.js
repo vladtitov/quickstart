@@ -89,16 +89,17 @@ function initLogin(app) {
             .then(function (user2) {
             if (user2) {
                 if (user2.confirmed) {
-                    resp.json({ success: {
+                    resp.json({ success: 'logedin', user: {
                             token: app_utils_1.encryptCTR(user2.uid),
-                            nikname: user2.nickname,
+                            nickname: user2.nickname,
                             email: app_utils_1.decryptCTR(user2.email),
                             role: user2.role
                         } });
                 }
                 else {
                     resp.json({
-                        error: 'verification'
+                        error: 'verification',
+                        message: 'Email was sent to ' + app_utils_1.decryptCTR(user2.email) + '. Please ckick on a link "Confirm Registration" in email body'
                     });
                 }
             }
@@ -131,26 +132,37 @@ function initLogin(app) {
         model_1.UserModel.findOne({ where: { email: user.email } })
             .then(function (result) {
             if (result) {
-                resp.json({ error: 'exists' });
+                if (result.confirmed) {
+                    resp.json({ error: 'exists' });
+                }
+                else
+                    resp.json({
+                        error: 'need-confirm',
+                        message: 'Email was sent to ' + app_utils_1.decryptCTR(result.email) + '.  Please ckick on a link "Confirm Registration" in email body'
+                    });
+                return;
             }
-            else {
-                createUser(user).then(function (user2) {
-                    sendConfirmationEmail(email, host, confirmUrl, user2, function (error) {
-                        if (error) {
-                            resp.json({ error: 'reregister' });
-                            console.error(error);
+            createUser(user).then(function (user2) {
+                if (!user2 || !user2.uid) {
+                    console.error('error create user ' + JSON.stringify(user));
+                    resp.json({ error: 'dberror', message: 'Database error. Please try again later' });
+                    return;
+                }
+                sendConfirmationEmail(email, host, confirmUrl, user2, function (error) {
+                    if (error) {
+                        resp.json({ error: 'sendemail', message: 'Error sending email. Please try again later' });
+                        console.error(error);
+                        return;
+                    }
+                    resp.json({
+                        success: 'created',
+                        user: {
+                            email: email,
+                            nickname: user2.nickname
                         }
-                        else
-                            resp.json({
-                                success: 'created',
-                                user: {
-                                    email: user2.email,
-                                    nickname: user2.nickname
-                                }
-                            });
                     });
                 });
-            }
+            });
         });
     });
     app.route("/api/login/confirm/:uid").get(function (req, resp) {

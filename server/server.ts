@@ -18,6 +18,8 @@ import {apiSendNotification} from './api/api-send-notification';
 import {coinMarketCap} from './api/coin-market-cap';
 import {initPoloniex} from './api/poloniex';
 import {initCoinbase} from './api/coinbase';
+import {initHitBTC} from './api/hit-btc';
+import {initYoBit} from './api/yo-bit';
 
 const app: Application = express();
 const cors = require('cors');
@@ -90,6 +92,10 @@ if(Array.isArray(ar)) apis = apis.concat(ar);
 
 ar = initCoinbase(app);
 if(Array.isArray(ar)) apis = apis.concat(ar);
+
+
+apis = apis.concat(initHitBTC(app));
+apis = apis.concat(initYoBit(app));
 
 app.use(apiErrorHandler);
 

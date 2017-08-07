@@ -15,6 +15,8 @@ var api_send_notification_1 = require("./api/api-send-notification");
 var coin_market_cap_1 = require("./api/coin-market-cap");
 var poloniex_1 = require("./api/poloniex");
 var coinbase_1 = require("./api/coinbase");
+var hit_btc_1 = require("./api/hit-btc");
+var yo_bit_1 = require("./api/yo-bit");
 var app = express();
 var cors = require('cors');
 app.use(bodyParser.json());
@@ -61,6 +63,8 @@ if (Array.isArray(ar))
 ar = coinbase_1.initCoinbase(app);
 if (Array.isArray(ar))
     apis = apis.concat(ar);
+apis = apis.concat(hit_btc_1.initHitBTC(app));
+apis = apis.concat(yo_bit_1.initYoBit(app));
 app.use(apiErrorHandler_1.apiErrorHandler);
 app.listen(app.get('port'), function () {
     console.log("Server now running on port " + app.get('port'));

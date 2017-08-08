@@ -1,9 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var apicache = require("apicache");
+var cache = apicache.middleware;
 var Changelly = require('../libs/changelly');
 var changelly = new Changelly('23c7a086c98b4f07963208522a42cda0', 'c1fe7209b388e0792883a1b3f0c3a6a27d9bb0476f39ca6d8a4329f97084e7dc');
 function initChangelly(app) {
-    app.route("/api/exchange/changelly/getCurrencies").get(function (req, res) {
+    app.get("/api/exchange/changelly/getCurrencies", cache('1 hour'), function (req, res) {
+        console.log("/api/exchange/changelly/getCurrencies");
         changelly.getCurrencies(function (err, data) {
             if (err) {
                 res.json({ error: err });

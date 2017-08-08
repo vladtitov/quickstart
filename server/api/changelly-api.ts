@@ -2,6 +2,9 @@
  * Created by Vlad on 7/1/2017.
  */
 import {Application, Response, Request} from "express";
+import * as apicache from 'apicache';
+let cache = apicache.middleware;
+
 var Changelly = require('../libs/changelly');
 
 var changelly = new Changelly(
@@ -10,9 +13,12 @@ var changelly = new Changelly(
 );
 
 
-export function initChangelly(app: Application): void {
-  app.route("/api/exchange/changelly/getCurrencies").get(function (req: Request, res: Response) {
 
+export function initChangelly(app: Application): void {
+
+  app.get("/api/exchange/changelly/getCurrencies", cache('1 hour'), function (req: Request, res: Response) {
+
+    console.log("/api/exchange/changelly/getCurrencies");
     changelly.getCurrencies(function (err, data) {
       if (err) {
         res.json({error: err});

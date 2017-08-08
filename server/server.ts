@@ -5,6 +5,9 @@ import {Application, Response} from "express";
 import {initRestApi} from "./api/api";
 import {apiErrorHandler} from "./utils/apiErrorHandler";
 
+//import apicache from 'apicache';
+//let cache = apicache.middleware;
+
 const bodyParser:any = require("body-parser");
 //import * as JWT from "jsonwebtoken";
 import {initLogin} from './api/apiLogin';
@@ -23,6 +26,7 @@ import {initYoBit} from './api/yo-bit';
 
 const app: Application = express();
 const cors = require('cors');
+
 app.use(bodyParser.json());
 
 //app.use('/node_modules',express.static('./client/node_modules'));

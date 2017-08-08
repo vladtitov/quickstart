@@ -16,6 +16,7 @@
     "b-buffer": "browserify node_modules/buffer/index.js -s buffer | uglifyjs -c > ./pub/libs/buffer.min.js"
   },
   "dependencies": {
+    "apicache": "^0.8.7",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "cors": "^2.8.3",

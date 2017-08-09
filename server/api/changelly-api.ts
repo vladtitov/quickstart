@@ -2,8 +2,10 @@
  * Created by Vlad on 7/1/2017.
  */
 import {Application, Response, Request} from "express";
+import * as _ from 'lodash'
 import * as apicache from 'apicache';
 let cache = apicache.middleware;
+
 
 var Changelly = require('../libs/changelly');
 
@@ -14,87 +16,92 @@ var changelly = new Changelly(
 
 
 
+
+
+
 export function initChangelly(app: Application): void {
 
-  app.get("/api/exchange/changelly/getCurrencies", cache('1 hour'), function (req: Request, res: Response) {
+  let onRespond = function ( resp, err, data) {
+    if (err) {
+      resp.json({error: err});
+    } else {
+      resp.json(data.result || data);
 
-    console.log("/api/exchange/changelly/getCurrencies");
-    changelly.getCurrencies(function (err, data) {
-      if (err) {
-        res.json({error: err});
-      } else {
-        res.json(data.result || data);
+    }
+  };
 
-      }
-    });
+
+ app.get("/api/exchange/changelly/getCurrencies", cache('1 hour'), function (req: Request, resp: Response) {
+
+    changelly.getCurrencies(_.partial(onRespond,resp));
   });
 
-  app.route("/api/exchange/changelly/getMinAmount/:from_to").get(function (req: Request, res: Response) {
-
-console.log(req.params.from_to);
-
+ app.get("/api/exchange/changelly/getMinAmount/:from_to", cache('1 hour'), function (req: Request, resp: Response) {
+     // console.log(req.params.from_to);
     let ar = req.params.from_to.split("_");
-
-    changelly.getMinAmount(ar[0], ar[1], function (err, data) {
-      if (err) {
-        res.json({error: err});
-      } else {
-        res.json(data.result || data);
-
-      }
-    });
+    changelly.getMinAmount(ar[0], ar[1],_.partial(onRespond, resp))
   });
 
-
-  app.route("/api/exchange/changelly/getExchangeAmount/:from_to/:amount").get(function (req: Request, res: Response) {
-
+  app.get("/api/exchange/changelly/getExchangeAmount/:from_to/:amount", cache('1 hour'), function (req: Request, resp: Response) {
 
     let ar = req.params.from_to.split('_');
     let amount = +req.params.amount;
 
-    changelly.getExchangeAmount(ar[0], ar[1], amount, function (err, data) {
-      if (err) {
-        res.json({error: err});
-      } else {
-        res.json(data.result || data);
-
-      }
-    });
+    changelly.getExchangeAmount(ar[0], ar[1], amount, _.partial(onRespond, resp));
   });
 
-  app.route("/api/exchange/changelly/generateAddress/:from_to/:address").get(function (req: Request, res: Response) {
+  app.get("/api/exchange/changelly/generateAddress/:from_to/:address", cache('1 hour'),function (req: Request, resp: Response) {
 
 
     let ar = req.params.from_to.split('_');
     let address = req.params.address;
 
-    changelly.generateAddress(ar[0], ar[1], address, function (err, data) {
-      if (err) {
-        res.json({error: err});
-      } else {
-        res.json(data.result || data);
-
-      }
-    });
+    changelly.generateAddress(ar[0], ar[1], address,  _.partial(onRespond, resp));
   });
 
-  app.route("/api/exchange/changelly/getTransactions/:currency/:address").get(function (req: Request, res: Response) {
-
+  app.get("/api/exchange/changelly/getTransactions/:currency/:address", cache('1 hour'), function (req: Request, resp: Response) {
 
     let currency = req.params.currency;
     let address = req.params.address;
 
-    changelly.getTransactions(currency, address, function (err, data) {
-      if (err) {
-        res.json({error: err});
-      } else {
-        res.json(data.result || data);
-
-      }
-    });
+    changelly.getTransactions(currency, address,  _.partial(onRespond, resp));
   });
 
 }
+
+
+const APIs=[
+  {
+    api:'/api/exchange/changelly/getCurrencies',
+    func:"getMinAmount",
+    name:'market',
+    cache:'1 hour',
+    args:null
+  },
+  {
+    api:"/api/exchange/changelly/getMinAmount/:from_to",
+    func:'getMinAmount',
+    name:'minimum',
+    cache:'1 hour',
+    args:function (params) {
+      return params.from_to.split('_')
+    }
+    },
+    {
+    api:"/api/exchange/changelly/getExchangeAmount/:from_to/:amount",
+    func:'getExchangeAmount',
+    name:'exchange',
+    cache:'1 hour',
+    args:function (params) {
+      let ar = params.from_to.split('_');
+      ar.push(+params.amount);
+      //let amount = +params.amount;
+      return ar;
+    }
+  }
+];
+
+
 
 
 

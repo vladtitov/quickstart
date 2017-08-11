@@ -4,7 +4,8 @@
 import {Application, Response, Request} from "express";
 
 import * as request from 'request';
-
+import * as apicache from 'apicache';
+let cache = apicache.middleware;
 
 let all_market:any ={
   timestamp:0,
@@ -60,7 +61,7 @@ export function initShapeSift(app: Application): void {
 
 
 
-  app.route("/api/exchange-1/getcoins").get(function (req: Request, res: Response) {
+  app.route("/api/exchange/shapeshift/getcoins").get(function (req: Request, res: Response) {
 
     request.get('https://shapeshift.io/getcoins',function (err,r,body){
       res.end(body);
@@ -69,7 +70,7 @@ export function initShapeSift(app: Application): void {
 
 
 
-  app.route("/api/exchange-1/rate/:from_to").get(function (req: Request, res: Response) {
+  app.route("/api/exchange/shapeshift/rate/:from_to").get(function (req: Request, res: Response) {
 
     request.get('https://shapeshift.io/rate/'+req.params.from_to,function (err,r,body){
       res.end(body);
@@ -77,7 +78,7 @@ export function initShapeSift(app: Application): void {
   });
 
 
-  app.route("/api/exchange-1/marketinfo/:from_to/").get(function (req: Request, res: Response) {
+  app.get("/api/exchange/shapeshift/marketinfo/:from_to/", cache('1 hour'), function (req: Request, res: Response) {
 
     request.get('https://shapeshift.io/marketinfo/'+req.params.from_to,function (err,r,body){
       res.end(body);
@@ -85,6 +86,7 @@ export function initShapeSift(app: Application): void {
   });
 
   app.route("/api/exchange-1/shift").post(function (req: Request, res: Response) {
+
 
     var options = {
       uri: 'https://shapeshift.io/shift/',

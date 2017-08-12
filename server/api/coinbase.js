@@ -1,11 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var request = require("request");
+var _ = require("lodash");
 var apicache = require("apicache");
 var cache = apicache.middleware;
 function initCoinbase(app) {
     APIs.forEach(function (item) {
         app.get(item.api, cache(item.cache), function (req, resp) {
+            var values = _.values(req.params);
+            console.log(values);
             var options = {
                 url: item.url
             };
@@ -18,8 +21,8 @@ exports.initCoinbase = initCoinbase;
 var APIs = [
     {
         name: 'exchange-rates',
-        api: '/api/coinbase/exchange-rates',
-        url: 'https://api.coinbase.com/v2/exchange-rates',
+        api: '/api/coinbase/exchange-rates/:id',
+        url: 'https://api.coinbase.com/v2/exchange-rates/',
         cache: '1 hour'
     },
     {

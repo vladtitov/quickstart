@@ -8,9 +8,10 @@ function initCoinbase(app) {
     APIs.forEach(function (item) {
         app.get(item.api, cache(item.cache), function (req, resp) {
             var values = _.values(req.params);
-            console.log(values);
+            var url = item.url + values.length ? '/' + values.join('/') : '';
+            console.log(url);
             var options = {
-                url: item.url
+                url: url
             };
             request(options).pipe(resp);
         });

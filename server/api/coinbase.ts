@@ -14,16 +14,13 @@ export function initCoinbase(app:Application){
 
     app.get(item.api, cache(item.cache), function (req: Request, resp: Response) {
 
-     /* let id =''
-      if(item.api.indexOf(':id')!==-1){
-        id= req.params['id'];
-      }*/
-
      let values = _.values(req.params);
-     console.log(values);
+
+     let url =  item.url+values.length?'/'+values.join('/'):'';
+console.log(url);
 
       let options = {
-        url: item.url
+        url:url
       };
 
       request(options).pipe(resp);

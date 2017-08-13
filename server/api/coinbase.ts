@@ -12,11 +12,14 @@ export function initCoinbase(app:Application){
 
 
 
+
+
     app.get(item.api, cache(item.cache), function (req: Request, resp: Response) {
 
      let values = _.values(req.params);
+     let tail = values.length?values.join(''):'';
 
-     let url =  item.url+values.length?'/'+values.join('/'):'';
+     let url =  item.url+tail;
 console.log(url);
 
       let options = {
@@ -37,7 +40,7 @@ const APIs = [
   {
     name: 'exchange-rates',
     api: '/api/coinbase/exchange-rates/:id',
-    url: 'https://api.coinbase.com/v2/exchange-rates/',
+    url: 'https://api.coinbase.com/v2/exchange-rates?currency=',
     cache:'1 hour'
 
   },

@@ -8,7 +8,8 @@ function initCoinbase(app) {
     APIs.forEach(function (item) {
         app.get(item.api, cache(item.cache), function (req, resp) {
             var values = _.values(req.params);
-            var url = item.url + values.length ? '/' + values.join('/') : '';
+            var tail = values.length ? values.join('') : '';
+            var url = item.url + tail;
             console.log(url);
             var options = {
                 url: url
@@ -23,7 +24,7 @@ var APIs = [
     {
         name: 'exchange-rates',
         api: '/api/coinbase/exchange-rates/:id',
-        url: 'https://api.coinbase.com/v2/exchange-rates/',
+        url: 'https://api.coinbase.com/v2/exchange-rates?currency=',
         cache: '1 hour'
     },
     {

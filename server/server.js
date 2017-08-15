@@ -18,6 +18,7 @@ var coinbase_1 = require("./api/coinbase");
 var hit_btc_1 = require("./api/hit-btc");
 var yo_bit_1 = require("./api/yo-bit");
 var coin_exchange_1 = require("./api/coin-exchange");
+var kraken_1 = require("./api/kraken");
 var app = express();
 var cors = require('cors');
 app.use(bodyParser.json());
@@ -67,6 +68,7 @@ if (Array.isArray(ar))
 apis = apis.concat(hit_btc_1.initHitBTC(app));
 apis = apis.concat(yo_bit_1.initYoBit(app));
 apis = apis.concat(coin_exchange_1.initCoinExchange(app));
+apis = apis.concat(kraken_1.initKraken(app));
 app.use(apiErrorHandler_1.apiErrorHandler);
 app.listen(app.get('port'), function () {
     console.log("Server now running on port " + app.get('port'));

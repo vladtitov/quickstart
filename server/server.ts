@@ -24,6 +24,7 @@ import {initCoinbase} from './api/coinbase';
 import {initHitBTC} from './api/hit-btc';
 import {initYoBit} from './api/yo-bit';
 import {initCoinExchange} from './api/coin-exchange';
+import {initKraken} from './api/kraken';
 
 const app: Application = express();
 const cors = require('cors');
@@ -102,6 +103,8 @@ if(Array.isArray(ar)) apis = apis.concat(ar);
 apis = apis.concat(initHitBTC(app));
 apis = apis.concat(initYoBit(app));
 apis = apis.concat(initCoinExchange(app));
+apis = apis.concat(initKraken(app));
+
 
 
 app.use(apiErrorHandler);

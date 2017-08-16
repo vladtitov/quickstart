@@ -1,7 +1,7 @@
 
 import * as path from 'path';
 import * as express from "express";
-import {Application, Response} from "express";
+import {Application} from "express";
 import {initRestApi} from "./api/api";
 import {apiErrorHandler} from "./utils/apiErrorHandler";
 
@@ -11,7 +11,7 @@ import {apiErrorHandler} from "./utils/apiErrorHandler";
 const bodyParser:any = require("body-parser");
 //import * as JWT from "jsonwebtoken";
 import {initLogin} from './api/apiLogin';
-import {onSuccess} from "./utils/com";
+
 import {initChangelly} from './api/changelly-api';
 import {initShapeSift} from './api/shapeshift-api';
 import {initEther} from './api/api-ether';
@@ -25,6 +25,7 @@ import {initHitBTC} from './api/hit-btc';
 import {initYoBit} from './api/yo-bit';
 import {initCoinExchange} from './api/coin-exchange';
 import {initKraken} from './api/kraken';
+import {initBitFinrx} from './api/bitfinex';
 
 const app: Application = express();
 const cors = require('cors');
@@ -61,51 +62,46 @@ app.get('/index', function(req,res) {
 
 app.use(express.static(path.join(__dirname, '../pub')));
 
-/*app.get('/apis-info', function(req,resp) {
+app.get('/apis-info', function(req, resp) {
 
   resp.json({
     title:'APIS Available',
     timestamp:(new Date()).toISOString(),
     data:apis
-  })
+  });
+});
 
-});*/
 
-let ar:any;
 
-ar = initLogin(app);
-if(Array.isArray(ar)) apis = apis.concat(ar);
-ar = apiSendNotification(app);
-if(Array.isArray(ar)) apis = apis.concat(ar);
+initLogin(app);
 
-ar = initRestApi(app);
-if(Array.isArray(ar)) apis = apis.concat(ar);
-ar = initChangelly(app);
-if(Array.isArray(ar)) apis = apis.concat(ar);
-ar = initShapeSift(app);
-if(Array.isArray(ar)) apis = apis.concat(ar);
-ar = initEther(app);
-if(Array.isArray(ar)) apis = apis.concat(ar);
-ar = apiSave(app);
-if(Array.isArray(ar)) apis = apis.concat(ar);
-ar = bittrexApi(app);
-if(Array.isArray(ar)) apis = apis.concat(ar);
-ar = coinMarketCap(app);
-if(Array.isArray(ar)) apis = apis.concat(ar);
+apiSendNotification(app);
+initRestApi(app);
 
-ar = initPoloniex(app);
-if(Array.isArray(ar)) apis = apis.concat(ar);
 
-ar = initCoinbase(app);
-if(Array.isArray(ar)) apis = apis.concat(ar);
 
+initEther(app);
+
+apiSave(app);
+
+
+apis = apis.concat(initChangelly(app));
+
+apis = apis.concat(initShapeSift(app));
+
+apis = apis.concat(bittrexApi(app));
+
+
+apis = apis.concat(coinMarketCap(app));
+
+apis = apis.concat(initPoloniex(app));
+apis = apis.concat(initCoinbase(app));
 
 apis = apis.concat(initHitBTC(app));
 apis = apis.concat(initYoBit(app));
 apis = apis.concat(initCoinExchange(app));
 apis = apis.concat(initKraken(app));
-
-
+apis = apis.concat(initBitFinrx(app));
 
 app.use(apiErrorHandler);
 

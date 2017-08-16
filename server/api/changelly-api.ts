@@ -19,7 +19,7 @@ var changelly = new Changelly(
 
 
 
-export function initChangelly(app: Application): void {
+export function initChangelly(app: Application): any[] {
 
   let onRespond = function ( resp, err, data) {
     if (err) {
@@ -66,6 +66,8 @@ export function initChangelly(app: Application): void {
 
     changelly.getTransactions(currency, address,  _.partial(onRespond, resp));
   });
+
+  return APIs;
 
 }
 

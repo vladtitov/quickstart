@@ -76,6 +76,8 @@ export function bittrexApi(app:Application){
     })*/
   })
 
-
+return APIs;
 }
 
+
+const APIs=[];

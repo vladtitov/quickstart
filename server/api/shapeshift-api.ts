@@ -12,33 +12,8 @@ let all_market:any ={
   payload:'[]'
 }
 
-/*
-function updateAllMarket(callBack?:Function){
-  let url = 'https://api.coinmarketcap.com/v1/ticker/';
-  console.log(url)
-  
-  request.get(url,function (err,r,body){
 
-    if(err){
-     console.error(' error from https://api.coinmarketcap.com/v1/ticker/ ', err);
-     //console.log(body);
-    // console.log(body);
-    }else{
-     // console.log(body)
-      all_market.timestamp = Date.now();
-      try{
-        all_market.payload = JSON.parse(body);
-      }catch (e){
-        all_market.error =  body
-      }
-
-      if(callBack)callBack(all_market)
-    }
-
-  })
-}*/
-
-export function initShapeSift(app: Application): void {
+export function initShapeSift(app: Application): any[] {
 
 
   /*setInterval(updateAllMarket, 60000);
@@ -113,4 +88,9 @@ export function initShapeSift(app: Application): void {
 
   });
 
+  return []
+
 }
+
+
+

@@ -46,5 +46,6 @@ function initShapeSift(app) {
             res.end(body);
         });
     });
+    return [];
 }
 exports.initShapeSift = initShapeSift;

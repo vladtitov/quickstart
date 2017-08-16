@@ -36,6 +36,7 @@ function initChangelly(app) {
         var address = req.params.address;
         changelly.getTransactions(currency, address, _.partial(onRespond, resp));
     });
+    return APIs;
 }
 exports.initChangelly = initChangelly;
 var APIs = [

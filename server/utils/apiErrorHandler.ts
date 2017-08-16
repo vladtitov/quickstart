@@ -12,7 +12,7 @@ export function apiErrorHandler(
 
     console.error("API error handler triggered", err);
 
-    res.status(500).json({errorCode:'ERR-001',
+    res.status(500).json({errorCode:'ERR-001-Vlad',
         message: 'Internal Server Error'});
 
 }

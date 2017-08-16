@@ -35,5 +35,7 @@ function bittrexApi(app) {
         console.log(options);
         request(options).pipe(res);
     });
+    return APIs;
 }
 exports.bittrexApi = bittrexApi;
+var APIs = [];

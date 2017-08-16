@@ -53,7 +53,7 @@ const APIs=[
     cache:'1 hour'
   },
   {
-    api:'/api/kraken/last/:pair',
+    api:'/api/kraken/recent/:pair',
     url:'https://api.bitfinex.com/v1/trades/',
     name:'recent trades ',
     cache:'1 hour'

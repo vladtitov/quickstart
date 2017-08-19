@@ -35,11 +35,5 @@ var APIs = [
         url: 'https://api.bitfinex.com/v1/pubticker/',
         name: 'markets',
         cache: '1 hour'
-    },
-    {
-        api: '/api/kraken/recent/:pair',
-        url: 'https://api.bitfinex.com/v1/trades/',
-        name: 'recent trades ',
-        cache: '1 hour'
     }
 ];

@@ -10,10 +10,6 @@ export function initCoinbase(app:Application){
 
   APIs.forEach(function (item) {
 
-
-
-
-
     app.get(item.api, cache(item.cache), function (req: Request, resp: Response) {
 
      let values = _.values(req.params);

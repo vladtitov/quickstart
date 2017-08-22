@@ -28,12 +28,12 @@ import {initKraken} from './api/kraken';
 import {initBitFinrx} from './api/bitfinex';
 
 const app: Application = express();
-const cors = require('cors');
+//const cors = require('cors');
 
 app.use(bodyParser.json());
 
 //app.use('/node_modules',express.static('./client/node_modules'));
-app.use(cors({credentials:true}));
+//app.use(cors({credentials:true}));
 
 
 app.set('port', (process.env.PORT || 5000));

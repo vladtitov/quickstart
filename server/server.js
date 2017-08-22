@@ -21,9 +21,7 @@ var coin_exchange_1 = require("./api/coin-exchange");
 var kraken_1 = require("./api/kraken");
 var bitfinex_1 = require("./api/bitfinex");
 var app = express();
-var cors = require('cors');
 app.use(bodyParser.json());
-app.use(cors({ credentials: true }));
 app.set('port', (process.env.PORT || 5000));
 var apis = [];
 app.get('/index', function (req, res) {

@@ -1,19 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var _ = require("lodash");
-var com_1 = require("../utils/com");
-var com_2 = require("../utils/com");
-var model_1 = require("../model/model");
+const _ = require("lodash");
+const com_1 = require("../utils/com");
+const com_2 = require("../utils/com");
+const model_1 = require("../model/model");
 function apiGetAllPosts(req, res) {
-    var userId = req.decoded.userId;
+    let userId = req.decoded.userId;
     console.log('userId  ' + userId);
     model_1.PostModel.findAll({
         where: { userId: userId }
     })
-        .then(function (res) {
-        return res.map(function (_a) {
-            var id = _a.id, description = _a.description;
-            return { id: id, description: description };
+        .then((res) => {
+        return res.map(function ({ id, description }) {
+            return { id, description };
         });
     })
         .then(_.partial(com_2.onSuccess, res))

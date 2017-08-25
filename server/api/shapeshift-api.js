@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var request = require("request");
-var apicache = require("apicache");
-var cache = apicache.middleware;
-var all_market = {
+const request = require("request");
+const apicache = require("apicache");
+let cache = apicache.middleware;
+let all_market = {
     timestamp: 0,
     payload: '[]'
 };

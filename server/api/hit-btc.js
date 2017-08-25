@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var request = require("request");
-var apicache = require("apicache");
-var cache = apicache.middleware;
+const request = require("request");
+const apicache = require("apicache");
+let cache = apicache.middleware;
 function initHitBTC(app) {
     APIs.forEach(function (item) {
         app.get(item.api, cache(item.cache), function (req, resp) {
-            var options = {
+            let options = {
                 url: item.url
             };
             request(options).pipe(resp);
@@ -15,7 +15,7 @@ function initHitBTC(app) {
     return APIs;
 }
 exports.initHitBTC = initHitBTC;
-var APIs = [
+const APIs = [
     {
         api: '/api/hit-btc/all',
         url: 'https://api.hitbtc.com//api/1/public/symbols',

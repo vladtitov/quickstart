@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var model_1 = require("../model/model");
-var app_utils_1 = require("../utils/app-utils");
-var request = require("request");
+const model_1 = require("../model/model");
+const app_utils_1 = require("../utils/app-utils");
+const request = require("request");
 function apiSendNotification(app) {
     app.route("/api/give-me-all-users-from-db").get(function (req, resp) {
         model_1.UserModel.all().then(function (users) {
@@ -10,16 +10,16 @@ function apiSendNotification(app) {
         });
     });
     app.route("/api/send-notification").post(function (req, resp) {
-        var email = req.body.email;
-        var message = req.body.message;
-        var subject = req.body.subject;
-        var deviceid = req.headers['user-agent'];
-        var ip = app_utils_1.checkIp(req, 300);
+        let email = req.body.email;
+        let message = req.body.message;
+        let subject = req.body.subject;
+        let deviceid = req.headers['user-agent'];
+        let ip = app_utils_1.checkIp(req, 300);
         if (!ip) {
             resp.json({ error: 'annoying' });
             return;
         }
-        var user = {
+        let user = {
             email: app_utils_1.encryptCTR(email),
             deviceid: deviceid,
             nickname: ''
@@ -46,17 +46,17 @@ function apiSendNotification(app) {
 }
 exports.apiSendNotification = apiSendNotification;
 function sendNotificationEmail(user, subject, content, callBack) {
-    var message = 'Hello ' + user.nickname +
+    let message = 'Hello ' + user.nickname +
         '. <br/>' + content +
         ' <br/>Notification form callcenter.front-desk.ca. <br/>';
-    var body = {
+    let body = {
         user: 'uplight.ca@gmail.com',
         pass: 'uplight.ca@gmail.com',
         subject: subject,
         message: message,
         to: user.email
     };
-    var options = {
+    let options = {
         url: 'http://callcenter.front-desk.ca/send-email.php',
         method: 'POST',
         body: JSON.stringify(body)
@@ -66,7 +66,7 @@ function sendNotificationEmail(user, subject, content, callBack) {
             callBack(error);
         else {
             try {
-                var result = JSON.parse(data);
+                let result = JSON.parse(data);
                 if (result.success && result.success === 'success') {
                     callBack({ success: message });
                 }

@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ORM = require("sequelize");
-var path = require("path");
-var file = path.join(__dirname, '../data/posts.sqlite');
+const ORM = require("sequelize");
+const path = require("path");
+let file = path.join(__dirname, '../data/posts.sqlite');
 console.log(file);
-var options = {
+const options = {
     benchmark: true,
     logging: console.log,
     dialect: "mysql",
     host: "front-desk.ca"
 };
-var sequelize = new ORM('frontdes_callcenter', 'frontdes', 'Xzsawq2!', options);
+const sequelize = new ORM('frontdes_callcenter', 'frontdes', 'Xzsawq2!', options);
 function initUserModel(sequelize) {
     return sequelize.define("registration", {
         status: ORM.STRING,

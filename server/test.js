@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var request = require("request");
-var qs = require('qs');
-var apicache = require("apicache");
-var cache = apicache.middleware;
-var url = 'https://api.coinmarketcap.com/v1/ticker/';
-var all_market = {};
+const request = require("request");
+const qs = require('qs');
+const apicache = require("apicache");
+let cache = apicache.middleware;
+let url = 'https://api.coinmarketcap.com/v1/ticker/';
+let all_market = {};
 console.log(url);
 request.get(url, function (err, r, body) {
     if (err) {

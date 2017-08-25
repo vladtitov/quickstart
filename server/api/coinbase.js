@@ -1,17 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var request = require("request");
-var _ = require("lodash");
-var apicache = require("apicache");
-var cache = apicache.middleware;
+const request = require("request");
+const _ = require("lodash");
+const apicache = require("apicache");
+let cache = apicache.middleware;
 function initCoinbase(app) {
     APIs.forEach(function (item) {
         app.get(item.api, cache(item.cache), function (req, resp) {
-            var values = _.values(req.params);
-            var tail = values.length ? values.join('') : '';
-            var url = item.url + tail;
+            let values = _.values(req.params);
+            let tail = values.length ? values.join('') : '';
+            let url = item.url + tail;
             console.log(url);
-            var options = {
+            let options = {
                 url: url
             };
             request(options).pipe(resp);
@@ -20,7 +20,7 @@ function initCoinbase(app) {
     return APIs;
 }
 exports.initCoinbase = initCoinbase;
-var APIs = [
+const APIs = [
     {
         name: 'exchange-rates',
         api: '/api/coinbase/exchange-rates/:id',

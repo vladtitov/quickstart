@@ -1,23 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var uuidV1 = require('uuid/v1');
-var uuidV4 = require('uuid/v4');
-var model_1 = require("../model/model");
-var request = require("request");
-var app_utils_1 = require("../utils/app-utils");
-var hri = require('human-readable-ids').hri;
-var confirmIps = {};
+const uuidV1 = require('uuid/v1');
+const uuidV4 = require('uuid/v4');
+const model_1 = require("../model/model");
+const request = require("request");
+const app_utils_1 = require("../utils/app-utils");
+const hri = require('human-readable-ids').hri;
+let confirmIps = {};
 function initLogin(app) {
     app.route("/api/login/reset-password-confirm/").post(function (req, resp) {
-        var ip = app_utils_1.checkIp(req, 100);
+        let ip = app_utils_1.checkIp(req, 100);
         if (!ip) {
             resp.json({ error: 'annoying' });
             return;
         }
-        var password = req.body.password;
-        var passwordE = app_utils_1.encryptCTR(password);
-        var uid = req.body.uid;
-        var user = app_utils_1.decryptCustom(uid);
+        let password = req.body.password;
+        let passwordE = app_utils_1.encryptCTR(password);
+        let uid = req.body.uid;
+        let user = app_utils_1.decryptCustom(uid);
         model_1.UserModel.findOne({ where: user })
             .then(function (user2) {
             if (user2) {
@@ -37,21 +37,21 @@ function initLogin(app) {
         });
     });
     app.route("/api/login/reset-password").post(function (req, resp) {
-        var ip = app_utils_1.checkIp(req, 100);
+        let ip = app_utils_1.checkIp(req, 100);
         if (!ip) {
             resp.json({ error: 'annoying' });
             return;
         }
-        var email = req.body.email;
-        var emailE = app_utils_1.encryptCTR(email);
-        var host = req.get('host');
-        var confirmUrl = req.protocol + '://' + req.get('host') + '/#/confirm-reset-password/';
+        let email = req.body.email;
+        let emailE = app_utils_1.encryptCTR(email);
+        let host = req.get('host');
+        let confirmUrl = req.protocol + '://' + req.get('host') + '/#/confirm-reset-password/';
         model_1.UserModel.findOne({ where: { email: emailE } })
             .then(function (result) {
             if (result) {
                 confirmUrl = confirmUrl + app_utils_1.encryptCustom(emailE, result.password);
-                var nickname_1 = result.nicknamel;
-                sendResetPasswordEmail(email, host, confirmUrl, nickname_1, function (error) {
+                let nickname = result.nicknamel;
+                sendResetPasswordEmail(email, host, confirmUrl, nickname, function (error) {
                     if (error) {
                         resp.json({ error: 'email send error',
                             user: { nickname: result.nickname, email: email } });
@@ -62,7 +62,7 @@ function initLogin(app) {
                                 success: 'reset-sent',
                                 user: {
                                     email: email,
-                                    nickname: nickname_1
+                                    nickname: nickname
                                 }
                             });
                         });
@@ -75,15 +75,15 @@ function initLogin(app) {
         });
     });
     app.route("/api/login/login").post(function (req, resp) {
-        var ip = app_utils_1.checkIp(req, 100);
+        let ip = app_utils_1.checkIp(req, 100);
         if (!ip) {
             resp.json({ error: 'annoying' });
             return;
         }
-        var email = req.body.email;
-        var password = req.body.password;
-        var deviceid = req.headers['user-agent'];
-        var user = {
+        let email = req.body.email;
+        let password = req.body.password;
+        let deviceid = req.headers['user-agent'];
+        let user = {
             email: app_utils_1.encryptCTR(email),
             password: app_utils_1.encryptCTR(password),
             deviceid: deviceid
@@ -101,9 +101,9 @@ function initLogin(app) {
                     updateLastVisitByid(user2.id, { status: 'logedin' });
                 }
                 else {
-                    var confirmUrl = req.protocol + '://' + req.get('host') + '/#/login-confirm/';
+                    let confirmUrl = req.protocol + '://' + req.get('host') + '/#/login-confirm/';
                     confirmUrl = confirmUrl + app_utils_1.encryptCustom(user2.email, user2.password);
-                    var host = req.get('host');
+                    let host = req.get('host');
                     sendConfirmationEmail(email, host, confirmUrl, user2, function (error) {
                         if (error) {
                             resp.json({ error: 'sendemail', message: 'Error sending email. Please try again later' });
@@ -125,18 +125,18 @@ function initLogin(app) {
         });
     });
     app.route("/api/login/register").post(function (req, resp) {
-        var ip = app_utils_1.checkIp(req, 60);
+        let ip = app_utils_1.checkIp(req, 60);
         if (!ip) {
             resp.json({ error: 'annoying' });
             return;
         }
-        var email = req.body.email;
-        var password = req.body.password;
-        var deviceid = req.headers['user-agent'];
-        var host = req.get('host');
-        var passE = app_utils_1.encryptCTR(password);
-        var emailE = app_utils_1.encryptCTR(email);
-        var user = {
+        let email = req.body.email;
+        let password = req.body.password;
+        let deviceid = req.headers['user-agent'];
+        let host = req.get('host');
+        let passE = app_utils_1.encryptCTR(password);
+        let emailE = app_utils_1.encryptCTR(email);
+        let user = {
             email: emailE,
             password: passE,
             deviceid: deviceid,
@@ -157,7 +157,7 @@ function initLogin(app) {
                 return;
             }
             createUser(user).then(function (result) {
-                var user2 = result.get({ plain: true });
+                let user2 = result.get({ plain: true });
                 console.log(user2);
                 if (!user2 || !user2.uid) {
                     console.error('error create user ' + JSON.stringify(user));
@@ -165,7 +165,7 @@ function initLogin(app) {
                     return;
                 }
                 updateLastVisitByid(user2.id, { status: 'created' });
-                var confirmUrl = req.protocol + '://' + req.get('host') + '/#/login-confirm/';
+                let confirmUrl = req.protocol + '://' + req.get('host') + '/#/login-confirm/';
                 confirmUrl = confirmUrl + app_utils_1.encryptCustom(emailE, passE);
                 sendConfirmationEmail(email, host, confirmUrl, user2, function (error) {
                     if (error) {
@@ -187,23 +187,23 @@ function initLogin(app) {
         });
     });
     app.route("/api/login/confirm/:uid").get(function (req, resp) {
-        var uid = req.params.uid;
+        let uid = req.params.uid;
         console.log(uid);
         if (!uid) {
             resp.end('hacker');
             return;
         }
-        var ip = app_utils_1.checkIp(req, 100);
+        let ip = app_utils_1.checkIp(req, 100);
         if (!ip) {
             resp.json({ error: 'annoying' });
             return;
         }
-        var user = app_utils_1.decryptCustom(uid);
+        let user = app_utils_1.decryptCustom(uid);
         console.log(user);
         console.log(ip);
         model_1.UserModel.findOne({ where: { email: user.email, password: user.password } })
             .then(function (result) {
-            var user2 = result.get({ plain: true });
+            let user2 = result.get({ plain: true });
             if (user2) {
                 if (user2.confirmed) {
                     resp.json({ success: 'confirmed-before', user: { nickname: user2.nickname } });
@@ -230,7 +230,7 @@ function updateLastVisitByid(id, user) {
         console.log(result);
     });
 }
-var user = {
+let user = {
     confirmed: 1,
     email: 'vladstitov@gmail.com',
     uid: '4476d200-6f1a-11e7-b958-a3fb439b8f27'
@@ -239,20 +239,20 @@ function createUser(user) {
     return model_1.UserModel.create(user);
 }
 function sendResetPasswordEmail(email, host, confirmUrl, nickname, callBack) {
-    var message = 'Hello ' + nickname +
+    let message = 'Hello ' + nickname +
         '. <br/> You are requested reset password at  ' + host + '. <br/>' +
         '<p>Click link below <br/>' +
         '<h2><a href="' + confirmUrl +
         '">Re Register</a></h2></p><br/>' +
         '<p><b>Note: this link is valid within 24h since you requested</b> <br/>';
-    var body = {
+    let body = {
         user: 'uplight.ca@gmail.com',
         pass: 'uplight.ca@gmail.com',
         subject: 'Reset password form ' + host,
         message: message,
         to: email
     };
-    var options = {
+    let options = {
         url: 'http://callcenter.front-desk.ca/send-email.php',
         method: 'POST',
         body: JSON.stringify(body)
@@ -263,7 +263,7 @@ function sendResetPasswordEmail(email, host, confirmUrl, nickname, callBack) {
         if (error)
             callBack(error);
         else {
-            var result = void 0;
+            let result;
             try {
                 result = JSON.parse(data);
             }
@@ -276,21 +276,21 @@ function sendResetPasswordEmail(email, host, confirmUrl, nickname, callBack) {
     });
 }
 function sendConfirmationEmail(email, host, confirmUrl, user, callBack) {
-    var message = 'Hello ' + user.nickname +
+    let message = 'Hello ' + user.nickname +
         '. <br/> You have registered at  ' + host + '. <br/>' +
         '<p>To finalize registration please click link below <br/>' +
         '<h2><a href="' + confirmUrl +
         '">Confirm Registration</a></h2></p><br/>' +
         '<p><b>Note: this link is valid within 24h since you are registered</b> <br/>' +
         'Registration is free and does not contains any contracts </p>';
-    var body = {
+    let body = {
         user: 'uplight.ca@gmail.com',
         pass: 'uplight.ca@gmail.com',
         subject: 'Email Verification form ' + host,
         message: message,
         to: email
     };
-    var options = {
+    let options = {
         url: 'http://callcenter.front-desk.ca/send-email.php',
         method: 'POST',
         body: JSON.stringify(body)
@@ -301,7 +301,7 @@ function sendConfirmationEmail(email, host, confirmUrl, user, callBack) {
         if (error)
             callBack(error);
         else {
-            var result = void 0;
+            let result;
             try {
                 result = JSON.parse(data);
             }

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var model_1 = require("../model/model");
+const model_1 = require("../model/model");
 function createLesson(props) {
     return model_1.LessonModel.create(props);
 }

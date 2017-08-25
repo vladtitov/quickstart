@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var request = require("request");
-var qs = require('qs');
-var apicache = require("apicache");
-var cache = apicache.middleware;
+const request = require("request");
+const qs = require('qs');
+const apicache = require("apicache");
+let cache = apicache.middleware;
 function initKraken(app) {
     APIs.forEach(function (item) {
         app.get(item.api, cache(item.cache), function (req, resp) {
-            var body = req.params;
-            var url = item.url;
+            let body = req.params;
+            let url = item.url;
             console.log(url);
-            var options = {
+            let options = {
                 url: url,
                 method: 'POST',
                 body: qs.stringify(body),
@@ -24,7 +24,7 @@ function initKraken(app) {
     return APIs;
 }
 exports.initKraken = initKraken;
-var APIs = [
+const APIs = [
     {
         api: '/api/kraken/currencies',
         url: 'https://api.kraken.com/0/public/Assets',

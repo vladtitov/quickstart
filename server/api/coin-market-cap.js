@@ -1,17 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var requestOrig = require("request");
-var request = requestOrig;
-var apicache = require("apicache");
-var cache = apicache.middleware;
-var all_market = {
+const requestOrig = require("request");
+let request = requestOrig;
+const apicache = require("apicache");
+let cache = apicache.middleware;
+let all_market = {
     timestamp: 0,
     payload: '[]'
 };
 function coinMarketCap(app) {
     app.get("/api/all-coins/market/minute", cache('5 minutes'), function (req, resp) {
-        var url = 'https://api.coinmarketcap.com/v1/ticker/';
-        var all_market = {};
+        let url = 'https://api.coinmarketcap.com/v1/ticker/';
+        let all_market = {};
         console.log(url);
         request.get(url, function (err, r, body) {
             if (err) {
@@ -32,7 +32,7 @@ function coinMarketCap(app) {
     return APIs;
 }
 exports.coinMarketCap = coinMarketCap;
-var APIs = [
+const APIs = [
     {
         api: "/api/all-coins/market/minute",
         cache: '5 minutes',

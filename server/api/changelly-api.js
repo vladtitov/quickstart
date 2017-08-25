@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var _ = require("lodash");
-var apicache = require("apicache");
-var cache = apicache.middleware;
+const _ = require("lodash");
+const apicache = require("apicache");
+let cache = apicache.middleware;
 var Changelly = require('../libs/changelly');
 var changelly = new Changelly('23c7a086c98b4f07963208522a42cda0', 'c1fe7209b388e0792883a1b3f0c3a6a27d9bb0476f39ca6d8a4329f97084e7dc');
 function initChangelly(app) {
-    var onRespond = function (resp, err, data) {
+    let onRespond = function (resp, err, data) {
         if (err) {
             resp.json({ error: err });
         }
@@ -18,28 +18,28 @@ function initChangelly(app) {
         changelly.getCurrencies(_.partial(onRespond, resp));
     });
     app.get("/api/exchange/changelly/getMinAmount/:from_to", cache('1 hour'), function (req, resp) {
-        var ar = req.params.from_to.split("_");
+        let ar = req.params.from_to.split("_");
         changelly.getMinAmount(ar[0], ar[1], _.partial(onRespond, resp));
     });
     app.get("/api/exchange/changelly/getExchangeAmount/:from_to/:amount", cache('1 hour'), function (req, resp) {
-        var ar = req.params.from_to.split('_');
-        var amount = +req.params.amount;
+        let ar = req.params.from_to.split('_');
+        let amount = +req.params.amount;
         changelly.getExchangeAmount(ar[0], ar[1], amount, _.partial(onRespond, resp));
     });
     app.get("/api/exchange/changelly/generateAddress/:from_to/:address", cache('1 hour'), function (req, resp) {
-        var ar = req.params.from_to.split('_');
-        var address = req.params.address;
+        let ar = req.params.from_to.split('_');
+        let address = req.params.address;
         changelly.generateAddress(ar[0], ar[1], address, _.partial(onRespond, resp));
     });
     app.get("/api/exchange/changelly/getTransactions/:currency/:address", cache('1 hour'), function (req, resp) {
-        var currency = req.params.currency;
-        var address = req.params.address;
+        let currency = req.params.currency;
+        let address = req.params.address;
         changelly.getTransactions(currency, address, _.partial(onRespond, resp));
     });
     return APIs;
 }
 exports.initChangelly = initChangelly;
-var APIs = [
+const APIs = [
     {
         api: '/api/exchange/changelly/getCurrencies',
         func: "getMinAmount",
@@ -62,7 +62,7 @@ var APIs = [
         name: 'exchange',
         cache: '1 hour',
         args: function (params) {
-            var ar = params.from_to.split('_');
+            let ar = params.from_to.split('_');
             ar.push(+params.amount);
             return ar;
         }

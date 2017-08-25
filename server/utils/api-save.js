@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs = require("fs");
-var path = require("path");
+const fs = require("fs");
+const path = require("path");
 function apiSave(app) {
     app.route("/api/wallet/save").post(function (req, res) {
         console.log(req.body);
-        var email = req.body.email;
-        var payload = req.body.payload;
-        var filename = email.replace('@', '-').replace('.', '_');
+        let email = req.body.email;
+        let payload = req.body.payload;
+        let filename = email.replace('@', '-').replace('.', '_');
         fs.writeFile(path.join(__dirname, '../data/' + filename + '.dat'), payload, function (err) {
             console.log(arguments);
             if (err)
@@ -17,9 +17,9 @@ function apiSave(app) {
         });
     });
     app.route("/api/wallet/get/:email").post(function (req, res) {
-        var email = req.body.email;
+        let email = req.body.email;
         console.log(email);
-        var filename = email.replace('@', '-').replace('.', '_');
+        let filename = email.replace('@', '-').replace('.', '_');
         console.log(filename);
         fs.readFile(path.join(__dirname, '../data/' + filename + '.dat'), 'utf8', function (err, data) {
             if (err)

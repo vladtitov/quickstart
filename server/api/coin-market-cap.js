@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const requestOrig = require("request");
+const fs = require("fs");
+const path = require("path");
 let request = requestOrig;
 const apicache = require("apicache");
 let cache = apicache.middleware;
@@ -9,6 +11,16 @@ let all_market = {
     payload: '[]'
 };
 function coinMarketCap(app) {
+    app.get("/api/marketcap/all-coins", cache('1 day'), function (req, resp) {
+        fs.readFile(path.join(__dirname, '../crawl/'), function (err, dataStr) {
+            if (err) {
+                resp.json({ error: 'cant read data' });
+                return;
+            }
+            let data = JSON.parse(String(dataStr));
+            resp.json({ data: data });
+        });
+    });
     app.get("/api/all-coins/market/minute", cache('5 minutes'), function (req, resp) {
         let url = 'https://api.coinmarketcap.com/v1/ticker/';
         let all_market = {};

@@ -40,7 +40,7 @@ let parseRows = function (rows) {
     console.log(ids.length);
     console.log(out.length);
     let fileData = JSON.stringify(out);
-    fs.writeFile('exchanges.json', fileData, function (err) {
+    fs.writeFile('all-coins.json', fileData, function (err) {
         console.log(err);
     });
 };

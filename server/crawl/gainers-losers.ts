@@ -17,6 +17,7 @@ request('https://coinmarketcap.com/gainers-losers/', function (err, r, body) {
 
   let data = [];
   ids.forEach(function (topic) {
+    data.push([topic]);
     let rows = $(ids[i]+' table>tbody').children('tr');
     let table = parseTableRows(rows);
     data = data.concat(table);

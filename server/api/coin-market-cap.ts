@@ -16,7 +16,7 @@ let cache = apicache.middleware;
 let all_market:any ={
   timestamp:0,
   payload:'[]'
-}
+};
 
 
 

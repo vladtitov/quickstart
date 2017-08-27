@@ -23,12 +23,11 @@ let all_market:any ={
 export function coinMarketCap(app: Application) {
 
  // setInterval(updateAllMarket, 5*60*1000);
-
   //updateAllMarket();
 
-  app.get("/api/marketcap/all-coins",cache('1 day'), function (req: Request, resp: Response) {
+  app.get("/api/marketcap/gainers-losers",cache('1 day'), function (req: Request, resp: Response) {
 
-    fs.readFile(path.join(__dirname, '../crawl/'),function (err, dataStr) {
+    fs.readFile(path.join(__dirname, '../crawl/gainers-losers.json'),function (err, dataStr) {
       if(err){
         resp.json({error:'cant read data'});
         return
@@ -38,16 +37,28 @@ export function coinMarketCap(app: Application) {
 
       resp.json({data:data});
     })
-    
 
+  });
+
+  app.get("/api/marketcap/all-coins",cache('1 day'), function (req: Request, resp: Response) {
+
+    fs.readFile(path.join(__dirname, '../crawl/all-coins.json'),function (err, dataStr) {
+      if(err){
+        resp.json({error:'cant read data'});
+        return
+      }
+
+      let data = JSON.parse(String(dataStr));
+
+      resp.json({data:data});
+    })
 
   });
 
 
-    app.get("/api/all-coins/market/minute",cache('5 minutes'), function (req: Request, resp: Response) {
+    app.get("/api/marketcap/ticker",cache('5 minutes'), function (req: Request, resp: Response) {
 
     let url = 'https://api.coinmarketcap.com/v1/ticker/';
-
 
     let all_market:any = {};
     console.log(url);
@@ -92,8 +103,18 @@ export function coinMarketCap(app: Application) {
 
 const APIs=[
   {
-    api:"/api/all-coins/market/minute",
+    api:'/api/marketcap/ticker',
     cache:'5 minutes',
     function:"updateAllMarket"
+  },
+  {
+    api:"/api/marketcap/all-coins",
+    cache:'1 day',
+    function:""
+  },
+  {
+    api:"/api/marketcap/gainers-losers",
+    cache:'1 day',
+    function:""
   }
 ]

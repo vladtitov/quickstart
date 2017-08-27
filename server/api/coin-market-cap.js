@@ -11,8 +11,8 @@ let all_market = {
     payload: '[]'
 };
 function coinMarketCap(app) {
-    app.get("/api/marketcap/all-coins", cache('1 day'), function (req, resp) {
-        fs.readFile(path.join(__dirname, '../crawl/'), function (err, dataStr) {
+    app.get("/api/marketcap/gainers-losers", cache('1 day'), function (req, resp) {
+        fs.readFile(path.join(__dirname, '../crawl/gainers-losers.json'), function (err, dataStr) {
             if (err) {
                 resp.json({ error: 'cant read data' });
                 return;
@@ -21,7 +21,17 @@ function coinMarketCap(app) {
             resp.json({ data: data });
         });
     });
-    app.get("/api/all-coins/market/minute", cache('5 minutes'), function (req, resp) {
+    app.get("/api/marketcap/all-coins", cache('1 day'), function (req, resp) {
+        fs.readFile(path.join(__dirname, '../crawl/all-coins.json'), function (err, dataStr) {
+            if (err) {
+                resp.json({ error: 'cant read data' });
+                return;
+            }
+            let data = JSON.parse(String(dataStr));
+            resp.json({ data: data });
+        });
+    });
+    app.get("/api/marketcap/ticker", cache('5 minutes'), function (req, resp) {
         let url = 'https://api.coinmarketcap.com/v1/ticker/';
         let all_market = {};
         console.log(url);
@@ -46,8 +56,18 @@ function coinMarketCap(app) {
 exports.coinMarketCap = coinMarketCap;
 const APIs = [
     {
-        api: "/api/all-coins/market/minute",
+        api: '/api/marketcap/ticker',
         cache: '5 minutes',
         function: "updateAllMarket"
+    },
+    {
+        api: "/api/marketcap/all-coins",
+        cache: '1 day',
+        function: ""
+    },
+    {
+        api: "/api/marketcap/gainers-losers",
+        cache: '1 day',
+        function: ""
     }
 ];

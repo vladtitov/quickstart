@@ -17,9 +17,8 @@ request('https://coinmarketcap.com/gainers-losers/', function (err, r, body) {
 
   let data = [];
   ids.forEach(function (topic) {
-    data.push([topic]);
-    let rows = $(ids[i]+' table>tbody').children('tr');
-    let table = parseTableRows(rows);
+    let rows = $(ids[i++]+' table>tbody').children('tr');
+    let table = parseTableRows(rows, topic.substr(1));
     data = data.concat(table);
   });
 
@@ -34,37 +33,22 @@ let fileData = JSON.stringify(data);
 
 
 
-/*let  prseDiv = function (rows) {
-
-  let dataAr = [];
-
-  rows.forEach(function ( row, j) {
-    row = $(row);
-    row.find('a').each(function (i, el) {
-      let $el = $(el);
-
-      dataAr.push(i+'__'+$el.attr('href') + '__'+$el.text());
-    })
-  })
-
-  //console.log(dataAr);
-  return dataAr;
-}*/
-
-
-let parseTableRows = function ($rows) {
+let parseTableRows = function ($rows, topic) {
   console.log($rows.length);
   let rows = [];
   $rows.each(function (i, item) {
 
-    let cols =[];
+    let cols =[topic];
     $(item).children('td').each(function (j, item) {
 
       let cell = $(item);
       let a = cell.find('a');
       let str = a.length?a.text()+'__'+a.attr('href'):cell.text();
-      cols.push(str);
+      //console.log(str);
+      if(str.indexOf('DDF') == 0) console.log(topic);
+
     });
+    console.log(cols);
     rows.push(cols);
   });
 

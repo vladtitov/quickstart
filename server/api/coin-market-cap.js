@@ -11,18 +11,8 @@ let all_market = {
     payload: '[]'
 };
 function coinMarketCap(app) {
-    app.get("/api/marketcap/gainers-losers", cache('1 day'), function (req, resp) {
-        fs.readFile(path.join(__dirname, '../crawl/gainers-losers.json'), function (err, dataStr) {
-            if (err) {
-                resp.json({ error: 'cant read data' });
-                return;
-            }
-            let data = JSON.parse(String(dataStr));
-            resp.json({ data: data });
-        });
-    });
-    app.get("/api/marketcap/all-coins", cache('1 day'), function (req, resp) {
-        fs.readFile(path.join(__dirname, '../crawl/all-coins.json'), function (err, dataStr) {
+    app.get("/api/marketcap/all-exchanges", cache('1 day'), function (req, resp) {
+        fs.readFile(path.join(__dirname, '../crawl/exchanges.json'), function (err, dataStr) {
             if (err) {
                 resp.json({ error: 'cant read data' });
                 return;

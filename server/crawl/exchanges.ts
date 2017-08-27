@@ -5,27 +5,39 @@ import * as fs from 'fs';
 
 let $;
 
-request('https://coinmarketcap.com/gainers-losers/', function (err, r, body) {
+fs.readFile('CoinMarketCap.html', function (err, body) {
 
 
   //console.log(body) // 200
-  $ = cheerio.load(body);
-
-  let ids =['#gainers-1h', '#gainers-24h', '#gainers-7d', '#losers-1h', '#losers-24','#losers-7d']
-
-  let i =0;
+  $ = cheerio.load(body.toString());
 
   let data = [];
-  ids.forEach(function (topic) {
-    let rows = $(ids[i++]+' table>tbody').children('tr');
-    let table = parseTableRows(rows, topic.substr(1));
-    data = data.concat(table);
-  });
 
-  //console.log(data);
+  let id;
+  let rows = $('table>tbody').children('tr').each(function (i, row) {
+    let $row = $(row);
+    let idValue = $row.attr('id');
+    if(idValue) id = idValue;
+    let  cells = [id];
+    $row.children('td').each(function (j, item) {
+      let cell = $(item);
+      let a = cell.find('a');
+      let str = a.length?a.text()+'__'+a.attr('href'):cell.text();
+      cells.push(str);
+      //console.log(str);
+     // if(str.indexOf('DDF') == 0) console.log(topic);
+
+    });
+    data.push(cells);
+if(i<130) console.log($row.attr('id'));
+
+  })
+
+  console.log(rows.length)
+  console.log(data.length)
 
 let fileData = JSON.stringify(data);
-  fs.writeFile('gainers-losers.json',fileData,function (err) {
+  fs.writeFile('exchanges.json',fileData,function (err) {
     console.log(err);
   })
 

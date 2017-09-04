@@ -146,6 +146,7 @@ export function initLogin(app:Application){
               role:user2.role
             }})
 
+
             updateLastVisitByid(user2.id,{status:'logedin'});
           }else{
 

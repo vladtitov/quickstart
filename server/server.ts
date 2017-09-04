@@ -7,8 +7,9 @@ import {apiErrorHandler} from "./utils/apiErrorHandler";
 
 //import apicache from 'apicache';
 //let cache = apicache.middleware;
-
 const bodyParser:any = require("body-parser");
+const cookieParser = require('cookie-parser');
+
 //import * as JWT from "jsonwebtoken";
 import {initLogin} from './api/apiLogin';
 
@@ -30,6 +31,8 @@ import {initBitFinrx} from './api/bitfinex';
 const app: Application = express();
 //const cors = require('cors');
 
+
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 //app.use('/node_modules',express.static('./client/node_modules'));

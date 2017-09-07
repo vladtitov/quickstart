@@ -27,6 +27,7 @@ import {initYoBit} from './api/yo-bit';
 import {initCoinExchange} from './api/coin-exchange';
 import {initKraken} from './api/kraken';
 import {initBitFinrx} from './api/bitfinex';
+import {initNovoExchange} from './api/novaexchange';
 
 const app: Application = express();
 //const cors = require('cors');
@@ -105,6 +106,8 @@ apis = apis.concat(initYoBit(app));
 apis = apis.concat(initCoinExchange(app));
 apis = apis.concat(initKraken(app));
 apis = apis.concat(initBitFinrx(app));
+apis = apis.concat(initNovoExchange(app));
+
 
 app.use(apiErrorHandler);
 

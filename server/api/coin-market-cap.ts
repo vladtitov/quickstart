@@ -25,9 +25,26 @@ export function coinMarketCap(app: Application) {
  // setInterval(updateAllMarket, 5*60*1000);
   //updateAllMarket();
 
+
+  app.get("/api/marketcap/all-coins", cache('1 day'), function (req: Request, resp: Response) {
+
+    fs.readFile(path.join(__dirname, '../data/coins.json'),function (err, dataStr) {
+      if(err){
+        resp.json({error:'cant read data'});
+        return
+      }
+
+      let data = JSON.parse(String(dataStr));
+
+      resp.json({payload:data});
+    })
+
+  });
+
+
   app.get("/api/marketcap/all-exchanges",cache('1 day'), function (req: Request, resp: Response) {
 
-    fs.readFile(path.join(__dirname, '../crawl/exchanges.json'),function (err, dataStr) {
+    fs.readFile(path.join(__dirname, '../data/exchanges.json'),function (err, dataStr) {
       if(err){
         resp.json({error:'cant read data'});
         return

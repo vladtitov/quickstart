@@ -17,7 +17,7 @@ import {initChangelly} from './api/changelly-api';
 import {initShapeSift} from './api/shapeshift-api';
 import {initEther} from './api/api-ether';
 import {apiSave} from './utils/api-save';
-import {bittrexApi} from './api/bittrex-proxy';
+import {initBittrex} from './api/bittrex';
 import {apiSendNotification} from './api/api-send-notification';
 import {coinMarketCap} from './api/coin-market-cap';
 import {initPoloniex} from './api/poloniex';
@@ -94,7 +94,7 @@ apis = apis.concat(initChangelly(app));
 
 apis = apis.concat(initShapeSift(app));
 
-apis = apis.concat(bittrexApi(app));
+apis = apis.concat(initBittrex(app));
 
 
 apis = apis.concat(coinMarketCap(app));

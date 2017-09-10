@@ -5,9 +5,7 @@ const crypto = require("crypto");
 const apicache = require("apicache");
 let cache = apicache.middleware;
 const qs = require('qs');
-function bittrexApi(app) {
-    let apikey = 'c23dd9ea28924ae2bc2474a333c99062';
-    let srverpassword = 'myserver password';
+function initBittrex(app) {
     let hash_hmac = function (text, apisecret) {
         return crypto
             .createHmac('sha512', apisecret)
@@ -30,7 +28,7 @@ function bittrexApi(app) {
     });
     return APIs;
 }
-exports.bittrexApi = bittrexApi;
+exports.initBittrex = initBittrex;
 const APIs = [
     {
         api: '/api/bittrex/markets',

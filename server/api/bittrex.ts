@@ -10,9 +10,6 @@ const qs     = require('qs');
 
 export function initBittrex(app:Application){
 
- // let apikey='c23dd9ea28924ae2bc2474a333c99062';
-  //let apisecret='42e47e93bcaf4a2b995b7177d20d1d74';
-  //let srverpassword= 'myserver password';
 
   let hash_hmac = function (text, apisecret) {
     return crypto

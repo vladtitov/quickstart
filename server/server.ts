@@ -28,6 +28,7 @@ import {initCoinExchange} from './api/coin-exchange';
 import {initKraken} from './api/kraken';
 import {initBitFinrx} from './api/bitfinex';
 import {initNovoExchange} from './api/novaexchange';
+import {initCryptopia} from './api/cryptopia';
 
 const app: Application = express();
 //const cors = require('cors');
@@ -107,6 +108,8 @@ apis = apis.concat(initCoinExchange(app));
 apis = apis.concat(initKraken(app));
 apis = apis.concat(initBitFinrx(app));
 apis = apis.concat(initNovoExchange(app));
+apis = apis.concat(initCryptopia(app));
+
 
 
 app.use(apiErrorHandler);

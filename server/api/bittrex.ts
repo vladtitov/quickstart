@@ -17,7 +17,7 @@ export function initBittrex(app:Application){
       .update(text)
       .digest('hex');
 
-  }
+  };
 /*
  "https://bittrex.com/api/v1.1/account/getorderhistory";
   var options = {
@@ -30,14 +30,8 @@ export function initBittrex(app:Application){
 
 
   APIs.forEach(function (item) {
-
     app.get(item.api, cache(item.cache), function (req: Request, resp: Response) {
-
-
       let params:string = qs.stringify(req.params);
-
-
-
       //let body = req.params;
       let url =  item.url+params;
       console.log(url);

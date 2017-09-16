@@ -18,6 +18,7 @@ export function initBittrex(app:Application){
       .digest('hex');
 
   };
+
 /*
  "https://bittrex.com/api/v1.1/account/getorderhistory";
   var options = {
@@ -31,15 +32,20 @@ export function initBittrex(app:Application){
 
   APIs.forEach(function (item) {
     app.get(item.api, cache(item.cache), function (req: Request, resp: Response) {
+      console.log(req.params);
+
       let params:string = qs.stringify(req.params);
+
       //let body = req.params;
+      console.log(params);
+
       let url =  item.url+params;
+
+
       console.log(url);
 
       let options = {
         url:url,
-        // method: 'POST',
-        //body:qs.stringify(body),
         headers: {
           'User-Agent': 'request'
         }
@@ -50,22 +56,47 @@ export function initBittrex(app:Application){
   });
 
 
+  app.post("/api/bittrex/private", cache('1 hour'),function (req: Request, resp: Response) {
+
+    let url = req.body.uri;
+    let signed = req.body.signed;
+
+   // console.log(url, signed);
 
 
- /* app.route("/api/bittrex/!*").get(function (req: Request, res: Response) {
-    console.log(req.url);
+
+      var options = {
+      url:url,
+      headers: {
+        'User-Agent': 'request',
+        'apisign':signed
+      }
+    };
+
+    request(options).pipe(resp);
+  })
+
+
+
+
+
+ // app.route("/api/bittrex/!*").get(function (req: Request, res: Response) {
+
+
+
+
+/*
+
     let nonce=Math.floor(Date.now()/1000);
-    let url = req.url;
-    url = url.replace('/api/bittrex/', 'https://bittrex.com/api/v1.1/');
+    let url = 'https://bittrex.com/api/v1.1/market/getopenorders?apikey=c23dd9ea28924ae2bc2474a333c99062&nonce='+nonce;
 
-    let apisecret = req.headers['apisecret'];
 
-    if(apisecret){
-      if(url.indexOf('?') ===-1)url+='?apikey='+apikey;
-      else url+='&apikey='+apikey;
-      url+='&nonce='+nonce;
+
+
+    let apisecret = '42e47e93bcaf4a2b995b7177d20d1d74';
+
       var sign = hash_hmac(url, apisecret);
-    }
+console.log(sign);
 
     var options = {
       url:url,
@@ -77,8 +108,11 @@ export function initBittrex(app:Application){
 
      console.log(options);
 
-    request(options).pipe(res);
+    request(options, function (err, respond, data) {
+      console.log(data);
+    })
 */
+
 
     //res.end(req.url);
 
@@ -128,8 +162,19 @@ const APIs=[
     api:'/api/bittrex/market/:market',
     url:'https://bittrex.com/api/v1.1/public/getmarketsummary?',
     name:'recent trades ',
-    cache:'1 hour'
+    cache:'10 minutes'
+  },
+  {
+    api:'/api/bittrex/getmarkethistory/:market',
+    url:'https://bittrex.com/api/v1.1/public/getmarkethistory?',
+    name:'recent trades ',
+    cache:'10 minutes'
+  },
+  {
+    api:'/api/bittrex/getorderbook/:market/:depth',
+    url:'https://bittrex.com/api/v1.1/public/getorderbook?market={{market}}&type=both&depth={{depth}}',
+    name:'recent trades ',
+    cache:'10 minutes'
   }
-
 
 ];

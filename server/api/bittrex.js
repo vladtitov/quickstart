@@ -1,17 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const request = require("request");
-const crypto = require("crypto");
 const apicache = require("apicache");
 let cache = apicache.middleware;
 const qs = require('qs');
 function initBittrex(app) {
-    let hash_hmac = function (text, apisecret) {
-        return crypto
-            .createHmac('sha512', apisecret)
-            .update(text)
-            .digest('hex');
-    };
     APIs.forEach(function (item) {
         app.get(item.api, cache(item.cache), function (req, resp) {
             console.log(req.params);

@@ -11,6 +11,7 @@ const qs     = require('qs');
 export function initBittrex(app:Application){
 
 
+/*
   let hash_hmac = function (text, apisecret) {
     return crypto
       .createHmac('sha512', apisecret)
@@ -18,6 +19,7 @@ export function initBittrex(app:Application){
       .digest('hex');
 
   };
+*/
 
 
   APIs.forEach(function (item) {

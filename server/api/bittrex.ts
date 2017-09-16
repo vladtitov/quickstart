@@ -80,59 +80,6 @@ export function initBittrex(app:Application){
 
 
 
- // app.route("/api/bittrex/!*").get(function (req: Request, res: Response) {
-
-
-
-
-/*
-
-    let nonce=Math.floor(Date.now()/1000);
-    let url = 'https://bittrex.com/api/v1.1/market/getopenorders?apikey=c23dd9ea28924ae2bc2474a333c99062&nonce='+nonce;
-
-
-
-
-    let apisecret = '42e47e93bcaf4a2b995b7177d20d1d74';
-
-      var sign = hash_hmac(url, apisecret);
-console.log(sign);
-
-    var options = {
-      url:url,
-      headers: {
-        'User-Agent': 'request',
-        'apisign':sign
-      }
-    };
-
-     console.log(options);
-
-    request(options, function (err, respond, data) {
-      console.log(data);
-    })
-*/
-
-
-    //res.end(req.url);
-
-    /*let contractAddress = tokens[req.params.symbol];
-
-    if (contractAddress) getTokenBalance(contractAddress, req.params.address, function (err, result) {
-      if (err) res.json({error: err});
-      else {
-
-        res.end(result);
-      }
-    })
-    else getCoinBalance(coins[req.params.symbol], req.params.address, function (err, result) {
-      if(err) res.json({error: err});
-      else {
-        res.end(result);
-      }
-    })*/
- // })
-
 return APIs;
 }
 

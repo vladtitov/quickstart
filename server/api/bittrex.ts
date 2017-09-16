@@ -19,16 +19,6 @@ export function initBittrex(app:Application){
 
   };
 
-/*
- "https://bittrex.com/api/v1.1/account/getorderhistory";
-  var options = {
-    url: 'https://api.github.com/repos/request/request',
-    headers: {
-      'User-Agent': 'request'
-    }
-  };*/
-
-
 
   APIs.forEach(function (item) {
     app.get(item.api, cache(item.cache), function (req: Request, resp: Response) {

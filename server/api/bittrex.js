@@ -69,7 +69,7 @@ const APIs = [
     },
     {
         api: '/api/bittrex/getorderbook/:market/:depth',
-        url: 'https://bittrex.com/api/v1.1/public/getorderbook?market={{market}}&type=both&depth={{depth}}',
+        url: 'https://bittrex.com/api/v1.1/public/getorderbook?type=both&',
         name: 'recent trades ',
         cache: '10 minutes'
     }

@@ -48,7 +48,7 @@ export function initBittrex(app:Application){
   });
 
 
-  app.post("/api/bittrex/private", cache('100 second'),function (req: Request, resp: Response) {
+  app.post("/api/bittrex/private", cache('10 second'),function (req: Request, resp: Response) {
 
     let url = req.body.uri;
     let signed = req.body.signed;

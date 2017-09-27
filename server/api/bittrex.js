@@ -21,9 +21,10 @@ function initBittrex(app) {
             request(options).pipe(resp);
         });
     });
-    app.post("/api/bittrex/private", cache('1 hour'), function (req, resp) {
+    app.post("/api/bittrex/private", cache('100 second'), function (req, resp) {
         let url = req.body.uri;
         let signed = req.body.signed;
+        console.log(url);
         var options = {
             url: url,
             headers: {

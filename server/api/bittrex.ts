@@ -48,13 +48,14 @@ export function initBittrex(app:Application){
   });
 
 
-  app.post("/api/bittrex/private", cache('1 hour'),function (req: Request, resp: Response) {
+  app.post("/api/bittrex/private", cache('100 second'),function (req: Request, resp: Response) {
 
     let url = req.body.uri;
     let signed = req.body.signed;
 
    // console.log(url, signed);
 
+    console.log(url);
 
 
       var options = {

@@ -24,14 +24,18 @@ function apiSendNotification(app) {
             deviceid: deviceid,
             nickname: ''
         };
-        model_1.UserModel.findOne({ where: { email: email } })
+        model_1.UserModel.findOne({ where: { email: app_utils_1.encryptCTR(email) } })
             .then(function (result) {
             if (result) {
                 if (result.confirmed) {
                     user.nickname = result.nickname;
-                    sendNotificationEmail(user, subject, message, function (res) {
+                    sendNotificationEmai(email, user.nickname, subject, message, function (res) {
                         res.ip = ip;
-                        resp.json(res);
+                        if (res.success) {
+                            resp.json({ success: 'success', message: 'Emeil sent to ' + email });
+                        }
+                        else
+                            resp.json({ error: 'Error', message: 'Error send Email to ' + email });
                     });
                 }
                 else {
@@ -45,19 +49,17 @@ function apiSendNotification(app) {
     });
 }
 exports.apiSendNotification = apiSendNotification;
-function sendNotificationEmail(user, subject, content, callBack) {
-    let message = 'Hello ' + user.nickname +
-        '. <br/>' + content +
-        ' <br/>Notification form callcenter.front-desk.ca. <br/>';
+function sendNotificationEmai(email, nickname, subject, content, callBack) {
+    let message = 'Hello ' + nickname + "\n" + content;
     let body = {
         user: 'uplight.ca@gmail.com',
         pass: 'uplight.ca@gmail.com',
         subject: subject,
         message: message,
-        to: user.email
+        to: email
     };
     let options = {
-        url: 'http://callcenter.front-desk.ca/send-email.php',
+        url: 'http://callcenter.front-desk.ca/send-notification.php',
         method: 'POST',
         body: JSON.stringify(body)
     };
@@ -65,16 +67,14 @@ function sendNotificationEmail(user, subject, content, callBack) {
         if (error)
             callBack(error);
         else {
+            console.log(data);
             try {
                 let result = JSON.parse(data);
-                if (result.success && result.success === 'success') {
-                    callBack({ success: message });
-                }
+                callBack(result);
             }
             catch (e) {
                 callBack({ error: e.toString() });
             }
         }
-        console.log(data);
     });
 }

@@ -2135,7 +2135,8 @@ var CreateWatchdogComponent = (function () {
                 if (!res)
                     return;
                 _this.watchDogs = res;
-                _this.setCurrentById(uid);
+                if (!_this.watchDog.uid)
+                    _this.setCurrentById(uid);
             });
         });
         /*
@@ -2145,7 +2146,8 @@ var CreateWatchdogComponent = (function () {
             });*/
     };
     CreateWatchdogComponent.prototype.setCurrentById = function (uid) {
-        if (!uid || !this.watchDog || this.watchDogs.length === 0)
+        console.log(uid);
+        if (!uid || !this.watchDogs || this.watchDogs.length === 0)
             return;
         uid = uid.toUpperCase();
         var dog = this.watchDogs.find(function (item) {
@@ -2179,9 +2181,14 @@ var CreateWatchdogComponent = (function () {
     
       }*/
     CreateWatchdogComponent.prototype.saveDogClick = function () {
+        var exists = this.emailService._getDogByUid(this.watchDog.uid);
+        if (!exists) {
+            this.emailService.addDog(this.watchDog);
+        }
+        this.emailService.saveData();
         // this.watchDog.market = this.coinMarket;
         // this.watchDog.uid = this.emailService.createUid(this.watchDog.symbol);
-        this.emailService.editDog(this.watchDog);
+        ;
     };
     /*onClickHeader(criteria:string):void{
   
@@ -2995,15 +3002,27 @@ var EmailServiceService = (function () {
        //this.watchDogs  = _.orderBy(ar, this.sortCriteria, this.asc_desc);
    
      }*/
-    EmailServiceService.prototype.editDog = function (dog) {
-        var exists = this.getDogByUid(dog.uid);
-        if (!exists) {
-            dog.marketCap = this.data[dog.coinId];
-            this.watchDogs.push(dog);
-        }
-        this.saveData();
+    EmailServiceService.prototype.addDog = function (dog) {
+        dog.scriptIcon = dog.scriptText ? 'fa fa-battery-full' : 'fa fa-battery-empty';
+        dog.statusIcon = dog.status !== 'active' ? 'fa fa-play' : 'fa fa-pause';
+        dog.marketCap = this.data[dog.coinId];
+        this.watchDogs.push(dog);
         this.watchDogsSub.next(this.watchDogs);
     };
+    /*editDog(dog:WatchDog){
+      if(!dog) return;
+      console.log(dog);
+  
+     // this.getDogByUid(dog.uid).subscribe(res=>{
+       // console.log(res);
+       //if(!res) {
+         dog.marketCap =  this.data[dog.coinId];
+  
+  
+       //}
+       this.saveData();
+     //});
+    }*/
     EmailServiceService.prototype.createUid = function (symbol) {
         var indexed = __WEBPACK_IMPORTED_MODULE_3_lodash__["keyBy"](this.watchDogs, 'uid');
         var i = 0;
@@ -3018,20 +3037,27 @@ var EmailServiceService = (function () {
         this.saveData();
         this.watchDogsSub.next(this.watchDogs);
     };
-    EmailServiceService.prototype.getDogByUid = function (uid) {
-        var sub = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
-        this.getWatchDogs().subscribe(function (dogs) {
-            // console.log(dogs);
-            if (!dogs)
-                return;
-            var dog = dogs.find(function (item) {
-                return item.uid === uid;
-            });
-            if (!dog)
-                return;
-            // console.log(dog.marketCap)
-            setTimeout(function () { sub.next(dog); }, 50);
+    EmailServiceService.prototype._getDogByUid = function (uid) {
+        return this.watchDogs.find(function (item) {
+            return item.uid === uid;
         });
+    };
+    EmailServiceService.prototype.getDogByUid = function (uid) {
+        var _this = this;
+        console.warn(uid);
+        var sub;
+        if (!this.watchDogs) {
+            sub = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
+            this.getWatchDogs().subscribe(function (dogs) {
+                console.log(dogs);
+                if (!dogs)
+                    return;
+                sub.next(_this._getDogByUid(uid));
+            });
+        }
+        else {
+            sub = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["BehaviorSubject"](this._getDogByUid(uid));
+        }
         return sub.asObservable();
         /* return this.getWatchDogs().switchMap((dogs)=>{
            return dogs.find(function (item) {

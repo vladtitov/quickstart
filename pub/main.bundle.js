@@ -2659,7 +2659,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/email-service/email-main/email-main.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n\n    <nav>\n        <md-toolbar>\n            <a md-button routerLink=\"/email-service/selected-coins\" routerLinkActive=\"active-link\" >Seleced Coins</a>\n            <a md-button  routerLink='/email-service/edit-watchdogs'  routerLinkActive=\"active-link\">Edit Watchdogs</a>\n            <a md-button routerLink='/email-service/run-watchdogs'  routerLinkActive=\"active-link\">Run</a>\n            <a md-button routerLink=\"//market-cap/all-coins\"  routerLinkActive=\"active-link\" title=\"Select more Coins\">More Coins</a>\n\n            <div class=\"small\" style=\"margin-left: auto; order: 2;\">\n                <a  routerLink='/login/sign-in' class=\"btn\" *ngIf=\"!(isLoggedIn$ | async)\" >Login</a>\n                <a class=\"btn\" *ngIf=\"!!(isLoggedIn$ | async)\"  (click)=\"onLogoutClick()\" >Logout</a>\n            </div>\n\n        </md-toolbar>\n\n    </nav>\n    <router-outlet></router-outlet>\n</div>\n"
+module.exports = "<div>\n\n    <nav>\n        <md-toolbar>\n            <a md-button routerLink=\"/email-service/selected-coins\" routerLinkActive=\"active-link\" >Seleced Coins</a>\n            <a md-button  routerLink='/email-service/edit-watchdogs'  routerLinkActive=\"active-link\">Edit Watchdogs</a>\n            <a md-button routerLink='/email-service/run-watchdogs'  routerLinkActive=\"active-link\">Run</a>\n            <a md-button routerLink=\"//market-cap/all-coins\"  routerLinkActive=\"active-link\" title=\"Select more Coins\">More Coins</a>\n\n            <div class=\"small\" style=\"margin-left: auto; order: 2;\">\n                <a  routerLink='/login/sign-in' class=\"btn\" *ngIf=\"!(isLoggedIn$ | async)\" >Login Email Service</a>\n                <a class=\"btn\" *ngIf=\"!!(isLoggedIn$ | async)\"  (click)=\"onLogoutClick()\" >Logout Email Service</a>\n            </div>\n\n        </md-toolbar>\n\n    </nav>\n    <router-outlet></router-outlet>\n</div>\n"
 
 /***/ }),
 
@@ -3066,14 +3066,20 @@ var EmailServiceService = (function () {
          })*/
     };
     EmailServiceService.prototype.sendNotification = function (subject, message) {
-        var url = '/api/send-notification';
-        var payload = {
-            email: this.http.getUserEmail(),
-            subject: subject,
-            message: message
-        };
-        console.log(' sendNotification ' + url, payload);
-        return this.http.post(url, payload).map(function (res) { return res.json(); });
+        if (this.http.isLogedIn()) {
+            var url = '/api/send-notification';
+            var payload = {
+                email: this.http.getUserEmail(),
+                subject: subject,
+                message: message
+            };
+            console.log(' sendNotification ' + url, payload);
+            return this.http.post(url, payload).map(function (res) { return res.json(); });
+        }
+        else {
+            var sub = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["BehaviorSubject"]({ error: 'login', message: 'Please login into email service' });
+            return sub.asObservable();
+        }
     };
     EmailServiceService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
@@ -8388,6 +8394,8 @@ var StorageService = (function () {
             else
                 return null;
         }
+        else
+            s = __WEBPACK_IMPORTED_MODULE_1_crypto_js__["HmacSHA1"](s, this.simplePass).toString();
         return localStorage.getItem(s);
     };
     StorageService.prototype.setItem = function (s, data, secure) {
@@ -8401,9 +8409,21 @@ var StorageService = (function () {
             data = __WEBPACK_IMPORTED_MODULE_1_crypto_js__["AES"].encrypt(data, this.salt).toString();
             s = __WEBPACK_IMPORTED_MODULE_1_crypto_js__["HmacSHA1"](s, this.salt).toString();
         }
+        else
+            s = __WEBPACK_IMPORTED_MODULE_1_crypto_js__["HmacSHA1"](s, this.simplePass).toString();
         return localStorage.setItem(s, data);
     };
-    StorageService.prototype.removeItem = function (s) {
+    StorageService.prototype.removeItem = function (s, secure) {
+        if (secure === void 0) { secure = false; }
+        if (secure) {
+            if (!this.salt) {
+                alert('Please login in Application');
+                return;
+            }
+            s = __WEBPACK_IMPORTED_MODULE_1_crypto_js__["HmacSHA1"](s, this.salt).toString();
+        }
+        else
+            s = __WEBPACK_IMPORTED_MODULE_1_crypto_js__["HmacSHA1"](s, this.simplePass).toString();
         return localStorage.removeItem(s);
     };
     StorageService = __decorate([
@@ -8455,6 +8475,7 @@ export function decryptCTR(text){
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_storage_service__ = __webpack_require__("../../../../../src/app/services/app-storage.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8468,6 +8489,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var GUEST = {
     id: undefined,
     email: '',
@@ -8476,17 +8498,21 @@ var GUEST = {
     token: ''
 };
 var AuthHttpService = (function () {
-    function AuthHttpService(http, router, route) {
+    function AuthHttpService(http, router, route, storage) {
         var _this = this;
         this.http = http;
         this.router = router;
         this.route = route;
+        this.storage = storage;
         this.user = null;
         this.userSub = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["BehaviorSubject"](GUEST);
         this.user$ = this.userSub.asObservable();
         this.isLogedIn$ = this.user$.map(function (user) { return !!user; });
         setTimeout(function () { return _this.autoLogin(); }, 2000);
     }
+    AuthHttpService.prototype.isLogedIn = function () {
+        return !!this.user;
+    };
     AuthHttpService.prototype.getUserEmail = function () {
         return this.user.email;
     };
@@ -8506,6 +8532,7 @@ var AuthHttpService = (function () {
     AuthHttpService.prototype.autoLogin = function () {
         var lastVisited = this.getLastVisited();
         var user = this.getUser();
+        console.log(user);
         this.user = user;
         this.dispatchUser();
         if (user && lastVisited && lastVisited !== 'undefined') {
@@ -8519,6 +8546,7 @@ var AuthHttpService = (function () {
     };
     AuthHttpService.prototype.logout = function () {
         this.user = null;
+        this.removeAuthentication();
         this.dispatchUser();
     };
     AuthHttpService.prototype.getToken = function () {
@@ -8527,26 +8555,27 @@ var AuthHttpService = (function () {
     };
     AuthHttpService.prototype.getUser = function () {
         if (!this.user) {
-            var str = localStorage.getItem('authentication');
-            try {
-                if (str)
+            var str = this.storage.getItem('authentication');
+            if (str) {
+                try {
                     this.user = JSON.parse(atob(str));
-                // /   new VOUser(JSON.parse(atob(str)));
-            }
-            catch (e) {
-                console.error(e);
-                //this.removeAuthentication();
+                    // /   new VOUser(JSON.parse(atob(str)));
+                }
+                catch (e) {
+                    console.error(e);
+                    //this.removeAuthentication();
+                }
             }
         }
         return this.user;
     };
     AuthHttpService.prototype.removeAuthentication = function () {
-        this.logout();
-        localStorage.removeItem('authentication');
-        this.userSub.next(GUEST);
+        this.storage.removeItem('authentication');
+        this.user = null;
+        this.userSub.next(null);
     };
     AuthHttpService.prototype.saveUser = function () {
-        localStorage.setItem('authentication', btoa(JSON.stringify(this.user)));
+        this.storage.setItem('authentication', btoa(JSON.stringify(this.user)));
     };
     AuthHttpService.prototype.getHeaders = function () {
         if (!this.headers) {
@@ -8605,10 +8634,10 @@ var AuthHttpService = (function () {
     };
     AuthHttpService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__app_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__app_storage_service__["a" /* StorageService */]) === "function" && _d || Object])
     ], AuthHttpService);
     return AuthHttpService;
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=auth-http.service.js.map

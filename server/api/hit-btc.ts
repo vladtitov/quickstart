@@ -25,8 +25,14 @@ export function initHitBTC(app:Application) {
 
 const APIs=[
   {
-    api:'/api/hit-btc/all',
-    url:'https://api.hitbtc.com//api/1/public/symbols',
+    api:'/api/hitbtc/currencies',
+    url:'https://api.hitbtc.com/api/1/public/symbols',
+    name:'coins',
+    cache:'1 hour'
+  },
+  {
+    api:'/api/hitbtc/markets',
+    url:'https://api.hitbtc.com/api/1/public/ticker',
     name:'market',
     cache:'1 hour'
   }

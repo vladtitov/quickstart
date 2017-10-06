@@ -7,7 +7,8 @@ const qs = require('qs');
 function initBittrex(app) {
     APIs.forEach(function (item) {
         app.get(item.api, cache(item.cache), function (req, resp) {
-            console.log(req.params);
+            if (req.params && req.params.market)
+                req.params.market = req.params.market.replace('_', '-');
             let params = qs.stringify(req.params);
             console.log(params);
             let url = item.url + params;

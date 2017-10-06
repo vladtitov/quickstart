@@ -24,7 +24,8 @@ export function initBittrex(app:Application){
 
   APIs.forEach(function (item) {
     app.get(item.api, cache(item.cache), function (req: Request, resp: Response) {
-      console.log(req.params);
+      //console.log(req.params);
+      if(req.params &&  req.params.market) req.params.market =  req.params.market.replace('_','-');
 
       let params:string = qs.stringify(req.params);
 

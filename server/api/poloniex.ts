@@ -4,53 +4,106 @@ import * as request from 'request';
 import * as _ from 'lodash';
 import * as apicache from 'apicache';
 let cache = apicache.middleware;
-
+const qs     = require('qs');
 
 export function initPoloniex(app: Application) {
 
-  let apis = _.keyBy(APIS, 'name');
-  APIS.forEach(function (item) {
-    if(item.cache){
+  APIs.forEach(function (item) {
+    app.get(item.api, cache(item.cache), function (req: Request, resp: Response) {
+      console.log(req.params);
 
-      app.get(item.api, cache(item.cache),function (req: Request, resp: Response) {
+      let params:string = qs.stringify(req.params);
 
-        request(item.url, function (err, respond, body) {
-          if (err) {
-            resp.json({error: err});
-          } else {
-            resp.end(body);
+      //let body = req.params;
+      console.log(params);
 
-          }
-        });
-      });
-    }else{
-      app.route(item.api).get(function (req: Request, resp: Response) {
-
-        request(item.url, function (err, respond, body) {
-          if (err) {
-            resp.json({error: err});
-          } else {
-            resp.end(body);
-
-          }
-        });
-      });
-    }
+      let url =  item.url+params;
 
 
+      console.log(url);
+
+      let options = {
+        url:url,
+        headers: {
+          'User-Agent': 'request'
+        }
+      };
+
+      request(options).pipe(resp);
+    });
   });
 
-  return APIS;
+
+  app.post("/api/poloniex/private", cache('10 second'),function (req: Request, resp: Response) {
+
+    // let url = req.body.uri;
+    let signed = req.body.signed;
+    let key = req.body.key;
+    let postData = req.body.postData;
+
+    // console.log(url, signed);
+
+    // console.log(url);
+
+    let url = 'https://poloniex.com/tradingApi';
+
+    var options = {
+      url:url,
+      method: 'POST',
+      body:postData,
+      headers: {
+        'User-Agent': 'request',
+        'Sign':signed,
+        'Key':key
+      }
+    };
+
+    request(options).pipe(resp);
+  })
+
+
+
+
+
+
+  return APIs;
 }
 
 
-const APIS = [
+const APIs = [
   {
     name: 'returnTicker',
     api: '/api/poloniex/returnTicker',
     cache:'1 hour',
     url: 'https://poloniex.com/public?command=returnTicker'
 
+  },
+  {
+    name: 'currencies',
+    api: '/api/poloniex/currencies',
+    cache:'1 hour',
+    url: 'https://poloniex.com/public?command=returnCurrencies'
+
+  },
+  {
+    name: 'return24hVolume',
+    api: '/api/poloniex/volume24h',
+    cache:'1 hour',
+    url: 'https://poloniex.com/public?command=return24hVolume'
+
+  },
+  {
+    name: 'orderBook',
+    api: '/api/poloniex/orderBook/:currencyPair/:depth',
+    cache:'1 minute',
+    url: 'https://poloniex.com/public?command=returnOrderBook&'
+
+  },
+  {
+    name: 'tradeHistory',
+    api: '/api/poloniex/tradeHistory/:currencyPair/:start/:end',
+    cache:'1 hour',
+    url: ' https://poloniex.com/public?command=returnTradeHistory&'
+
   }
 ]
-

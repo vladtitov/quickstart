@@ -641,7 +641,7 @@ var ApiServerService = (function () {
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<diV>\r\n    <div>\r\n\r\n    </div>\r\n    {{menu | async}}\r\n    <md-sidenav-container >\r\n        <md-sidenav #sidenav>\r\n            <md-list>\r\n\r\n                <a md-list-item routerLink='/market-cap/selected'>Coin Market Cap</a>\r\n                <a md-list-item routerLink='/all-in-one'>All In One&nbsp; </a>\r\n\r\n                <hr/>\r\n                <a md-list-item routerLink='/my-bittrex'>Bittrex &nbsp; <small> (Las Vegas, USA)</small></a>\r\n\r\n                <a md-list-item routerLink='/shape-shift-market-cap'>ShapeShift &nbsp; <small>(Switzerland) </small></a>\r\n\r\n                <a md-list-item routerLink='/changelly'>Changelly &nbsp;<small> (Prague, Czech Rep.)</small></a>\r\n                <a md-list-item routerLink='poloniex/data'>Poloniex  &nbsp;<small>(Delaware, USA)</small></a>\r\n                <a md-list-item routerLink='hit-btc/market'>Hit BTC &nbsp;<small>(Copenhagen, Denmark)</small> </a>\r\n                <a md-list-item routerLink='yo-bit/market'>Yo Bit &nbsp; <small>(Moscow, Russia)</small></a>\r\n                <a md-list-item routerLink='coin-exchange/markets'>CoinExchange &nbsp; <small></small></a>\r\n                <a md-list-item routerLink='exchanges/kraken'>Kraken &nbsp; <small>(San Fran, USA)</small></a>\r\n                <a md-list-item routerLink='exchanges/bitfinex'>BitFinex &nbsp; <small>(Hong-Kong)</small></a>\r\n                <a md-list-item routerLink='exchanges/novaexchange'>Nova Exchange &nbsp;<small>(Sweden)</small></a>\r\n                <a md-list-item routerLink='exchanges/cryptopia'>Cryptopia &nbsp;<small>(New Zealand)</small></a>\r\n\r\n                <hr/>\r\n\r\n                <a md-list-item routerLink='/coinbase/currencies'>Coinbase &nbsp;<small> (San Fran, USA)</small></a>\r\n                <a md-list-item routerLink='/exchanges/search'>Search &nbsp;</a>\r\n\r\n                <hr/>\r\n\r\n                <a md-list-item routerLink='/login/sign-in'>Login</a>\r\n                <a md-list-item routerLink='/email-service'>Email Service</a>\r\n                <a md-list-item routerLink='/login/register'>Register</a>\r\n                <a md-list-item [routerLink]=\"['/login/forgot-password']\">Forgot Password</a>\r\n                <a md-list-item [routerLink]=\"['/login/logout']\">Logout</a>\r\n\r\n            </md-list>\r\n\r\n        </md-sidenav>\r\n\r\n        <div class=\"navbar\">\r\n            <div (click)=\"sidenav.open()\" class=\"fa fa-bars btn\">  </div>\r\n\r\n\r\n                <div class=\"right\">\r\n                    <a routerLink='/email-service' class=\"watchdog\">    </a>\r\n                    <a *ngIf=\"!(isLogedIn$ | async)\" class=\"btn\" (click)=\"onLogin()\">Security Login</a>\r\n                    <a *ngIf=\"!!(isLogedIn$ | async)\" class=\"btn\" (click)=\"onLogout()\">Security Logout</a>\r\n                    <a  class=\"btn dred small \" (click)=\"onClearStorage()\">Clear Storage</a>\r\n                </div>\r\n\r\n\r\n        </div>\r\n        <div id=\"MainOutlet\">\r\n            <router-outlet></router-outlet>\r\n        </div>\r\n\r\n    </md-sidenav-container>\r\n</diV>"
+module.exports = "<diV>\r\n    <div>\r\n\r\n    </div>\r\n    {{menu | async}}\r\n    <md-sidenav-container >\r\n        <md-sidenav #sidenav>\r\n            <md-list>\r\n\r\n                <a md-list-item routerLink='/market-cap/selected'>Coin Market Cap</a>\r\n                <a md-list-item routerLink='/all-in-one'>All In One&nbsp; </a>\r\n\r\n                <hr/>\r\n                <a md-list-item routerLink='/my-bittrex'>Bittrex &nbsp; <small> (Las Vegas, USA)</small></a>\r\n\r\n                <a md-list-item routerLink='/shape-shift-market-cap'>ShapeShift &nbsp; <small>(Switzerland) </small></a>\r\n\r\n                <a md-list-item routerLink='/changelly'>Changelly &nbsp;<small> (Prague, Czech Rep.)</small></a>\r\n                <a md-list-item routerLink='poloniex/data'>Poloniex  &nbsp;<small>(Delaware, USA)</small></a>\r\n                <a md-list-item routerLink='hit-btc/market'>Hit BTC &nbsp;<small>(Copenhagen, Denmark)</small> </a>\r\n                <a md-list-item routerLink='yo-bit/market'>Yo Bit &nbsp; <small>(Moscow, Russia)</small></a>\r\n                <a md-list-item routerLink='coin-exchange/markets'>CoinExchange &nbsp; <small></small></a>\r\n                <a md-list-item routerLink='exchanges/kraken'>Kraken &nbsp; <small>(San Fran, USA)</small></a>\r\n                <a md-list-item routerLink='exchanges/bitfinex'>BitFinex &nbsp; <small>(Hong-Kong)</small></a>\r\n                <a md-list-item routerLink='exchanges/novaexchange'>Nova Exchange &nbsp;<small>(Sweden)</small></a>\r\n                <a md-list-item routerLink='exchanges/cryptopia'>Cryptopia &nbsp;<small>(New Zealand)</small></a>\r\n\r\n                <hr/>\r\n\r\n                <a md-list-item routerLink='/coinbase/currencies'>Coinbase &nbsp;<small> (San Fran, USA)</small></a>\r\n                <a md-list-item routerLink='/exchanges/search'>Search &nbsp;</a>\r\n\r\n                <hr/>\r\n\r\n                <a md-list-item routerLink='/login/sign-in'>Login</a>\r\n                <a md-list-item routerLink='/email-service'>Email Service</a>\r\n                <a md-list-item routerLink='/login/register'>Register</a>\r\n                <a md-list-item [routerLink]=\"['/login/forgot-password']\">Forgot Password</a>\r\n                <a md-list-item [routerLink]=\"['/login/logout']\">Logout</a>\r\n\r\n            </md-list>\r\n\r\n        </md-sidenav>\r\n\r\n        <div class=\"navbar\">\r\n            <div (click)=\"sidenav.open()\" class=\"fa fa-bars btn\">  </div>\r\n\r\n\r\n                <div class=\"right\">\r\n                    <a routerLink='/email-service' class=\"watchdog\">    </a>\r\n\r\n                    <strong class=\"small\">{{nickname}}</strong>\r\n\r\n                    <a *ngIf=\"!(isLogedIn$ | async)\" class=\"btn\" (click)=\"onLogin()\">Security Login</a>\r\n                    <a *ngIf=\"!!(isLogedIn$ | async)\" class=\"btn\" (click)=\"onLogout()\">Security Logout</a>\r\n                    <a  class=\"btn dred small \" (click)=\"onClearStorage()\">Clear Storage</a>\r\n                </div>\r\n\r\n\r\n        </div>\r\n        <div id=\"MainOutlet\">\r\n            <router-outlet></router-outlet>\r\n        </div>\r\n\r\n    </md-sidenav-container>\r\n</diV>"
 
 /***/ }),
 
@@ -679,7 +679,6 @@ var AppComponent = (function () {
         this.router = router;
         this.dialog = dialog;
         this.title = 'app works!';
-        this.user$ = service.user$;
         this.isLogedIn$ = storage.isLogedIn$;
     }
     AppComponent.prototype.onLogin = function () {
@@ -707,6 +706,7 @@ var AppComponent = (function () {
         }
     };
     AppComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.storage.isLogedIn$.subscribe(function (res) {
             console.warn(res);
         });
@@ -714,6 +714,12 @@ var AppComponent = (function () {
         //console.log(user);
         if (user && user.u && user.p)
             this.storage.login(user.u, user.p);
+        this.service.user$.subscribe(function (user) {
+            // console.log(user)
+            if (!user.token)
+                return;
+            _this.nickname = user.nickname;
+        });
         /*   this.http.authError.subscribe((err:any)=>{
              console.warn(err);
              this.router.navigateByUrl('/login');
@@ -9284,7 +9290,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var GUEST = {
     id: undefined,
     email: '',
-    nikname: '',
+    nickname: '',
     password: '',
     token: ''
 };
@@ -9323,11 +9329,11 @@ var AuthHttpService = (function () {
     AuthHttpService.prototype.autoLogin = function () {
         var lastVisited = this.getLastVisited();
         var user = this.getUser();
-        console.log(user);
+        //console.log(user);
         this.user = user;
         this.dispatchUser();
         if (user && lastVisited && lastVisited !== 'undefined') {
-            console.warn(lastVisited);
+            // console.warn(lastVisited);
             //this.router.navigate([lastVisited]);
         }
     };

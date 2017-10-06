@@ -715,8 +715,7 @@ var AppComponent = (function () {
         if (user && user.u && user.p)
             this.storage.login(user.u, user.p);
         this.service.user$.subscribe(function (user) {
-            // console.log(user)
-            if (!user.token)
+            if (!user || !user.token)
                 return;
             _this.nickname = user.nickname;
         });

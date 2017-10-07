@@ -75,8 +75,9 @@ export function initLogin(app:Application){
     }
     let email = req.body.email;
     let uid = req.body.uid;
+    let nickname = req.body.nickname;
 
-   logout(uid, email, function (result) { resp.json(result); });
+   logout(uid, email, nickname, function (result) { resp.json(result); });
   });
 
 

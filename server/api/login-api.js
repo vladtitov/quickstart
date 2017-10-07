@@ -37,7 +37,8 @@ function initLogin(app) {
         }
         let email = req.body.email;
         let uid = req.body.uid;
-        login_db_1.logout(uid, email, function (result) { resp.json(result); });
+        let nickname = req.body.nickname;
+        login_db_1.logout(uid, email, nickname, function (result) { resp.json(result); });
     });
     app.route("/api/login/login").post(function (req, resp) {
         let ip = app_utils_1.checkIp(req, 100);

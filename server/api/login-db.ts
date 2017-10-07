@@ -144,7 +144,7 @@ export function requestResetPassword(email, confirmUrl, host, callBack:Function)
 }
 
 
-export function logout(uid:string, email:string, callBack:Function){
+export function logout(uid:string, email:string, nickname:string, callBack:Function){
 
   let user = {
     uid: uuidV1(),
@@ -156,7 +156,7 @@ export function logout(uid:string, email:string, callBack:Function){
       console.log(' logout ' , result);
       if (Array.isArray(result) && result[0]) callBack({
         success: 'logout',
-        message:'logout '+ email
+        message:nickname+' Logged out'
       });
       else callBack({error: 'dberror', message: 'no user with email '+email})
 

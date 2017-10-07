@@ -5,32 +5,53 @@ const uuidV1 = require('uuid/v1');
 const hri = require('human-readable-ids').hri;
 
 
-export function newNikname(email:string, password:string, callBack:Function){
+export function newNikname(email:string, password:string, callBack:Function) {
 
-  let nickname =  hri.random();
-  hashPassword(password, function (hashed:{hash:string}) {
+  let nickname = hri.random();
+
+  hashPassword(password, function (hashed: { hash: string }) {
     password = hashed.hash;
-    UserModel.update({
-      nickname: nickname
-    }, {where: {
-      email: email,
-      password:password
-    }})
-      .then(function (result) {
-      //  console.log(Array.isArray(result));
-        if(Array.isArray(result)){
 
-          if (result[0]) callBack({
-            success: 'password',
-            message:'New nickname: '+nickname,
-            nickname:nickname
-          });
-          else  callBack({error: 'nouser', message: 'username or password incorrect'})
+    UserModel.findOne({where: {email: email, password: password}})
+      .then(function (result: VOUser) {
+        ////////////////////////////////////////////
+        if(result){
 
-        }else callBack({error: 'dberror', message: 'Error database, Try later'})
+          if(result.confirmed){
+
+            UserModel.update({
+              nickname: nickname
+            }, {
+              where: {
+                email: email,
+                password: password
+              }
+            })
+              .then(function (result) {
+                //  console.log(Array.isArray(result));
+                if (Array.isArray(result)) {
+
+                  if (result[0]) callBack({
+                    success: 'password',
+                    message: 'New nickname: ' + nickname,
+                    nickname: nickname
+                  });
+
+                } else callBack({error: 'nouser', message: 'username or password incorrect'})
+
+                //} else callBack({error: 'dberror', message: 'Error database, Try later'})
+
+              });
+
+          }else callBack({error:'notconfirmed', message:'Please Confirm email first'})
+
+        }else callBack({error:'not registered', message:'Please Register'})
+
+        ////////////////////////////////////////////////
 
       });
   });
+
 }
 
 
@@ -239,18 +260,17 @@ export function registerUser(
                               confirmUrl:string,
                               host:string,
                               callBack:Function
-                            ){
+                            ) {
   // console.log(user);
 
 
-
-  hashPassword(password, function (hashed:{hash:string}) {
+  hashPassword(password, function (hashed: { hash: string }) {
     password = hashed.hash;
 
     UserModel.findOne({where: {email: email}})
       .then(function (result: VOUser) {
         if (result) {
-          callBack({error: 'exists',message:'Please login'});
+          callBack({error: 'exists', message: 'Please login'});
           return;
         }
 
@@ -283,7 +303,7 @@ export function registerUser(
             if (error) {
               UserModel.destroy({where: {id: createdUser.id}});
               callBack({error: 'sendemail', message: 'Please re register, Registration Error'});
-             // console.error('ERROR send confirmation email ' + error);
+              // console.error('ERROR send confirmation email ' + error);
               return;
             }
 
@@ -291,7 +311,7 @@ export function registerUser(
             callBack({
               success: 'confirmationsent',
               message: 'Confirmation sent to ' + email + ' ' + createdUser.nickname,
-              nickname:createdUser.nickname
+              nickname: createdUser.nickname
             });
           });
 

@@ -9,25 +9,36 @@ function newNikname(email, password, callBack) {
     let nickname = hri.random();
     app_utils_1.hashPassword(password, function (hashed) {
         password = hashed.hash;
-        model_1.UserModel.update({
-            nickname: nickname
-        }, { where: {
-                email: email,
-                password: password
-            } })
+        model_1.UserModel.findOne({ where: { email: email, password: password } })
             .then(function (result) {
-            if (Array.isArray(result)) {
-                if (result[0])
-                    callBack({
-                        success: 'password',
-                        message: 'New nickname: ' + nickname,
+            if (result) {
+                if (result.confirmed) {
+                    model_1.UserModel.update({
                         nickname: nickname
+                    }, {
+                        where: {
+                            email: email,
+                            password: password
+                        }
+                    })
+                        .then(function (result) {
+                        if (Array.isArray(result)) {
+                            if (result[0])
+                                callBack({
+                                    success: 'password',
+                                    message: 'New nickname: ' + nickname,
+                                    nickname: nickname
+                                });
+                        }
+                        else
+                            callBack({ error: 'nouser', message: 'username or password incorrect' });
                     });
+                }
                 else
-                    callBack({ error: 'nouser', message: 'username or password incorrect' });
+                    callBack({ error: 'notconfirmed', message: 'Please Confirm email first' });
             }
             else
-                callBack({ error: 'dberror', message: 'Error database, Try later' });
+                callBack({ error: 'not registered', message: 'Please Register' });
         });
     });
 }

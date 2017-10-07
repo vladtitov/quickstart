@@ -155,7 +155,7 @@ export function logout(uid:string, email:string, callBack:Function){
     .then(function (result) {
       console.log(' logout ' , result);
       if (Array.isArray(result) && result[0]) callBack({
-        success: 'logout'
+        success: 'logout',
         message:'logout '+ email
       });
       else callBack({error: 'dberror', message: 'no user with email '+email})

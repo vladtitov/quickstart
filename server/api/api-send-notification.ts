@@ -3,20 +3,22 @@ import * as _ from "lodash";
 import {UserModel, VOUser} from '../model/model';
 import {checkIp, encryptCTR} from '../utils/app-utils';
 import * as request from 'request';
+import {sendNotificationEmai} from './login-email';
 
 
 
 export function apiSendNotification(app:Application){
-  app.route("/api/give-me-all-users-from-db").get(function (req: Request, resp: Response){
+ /* app.route("/api/give-me-all-users-from-db").get(function (req: Request, resp: Response){
 
     UserModel.all().then(function (users) {
       resp.json(users);
     })
-  })
+  })*/
 
    app.route("/api/send-notification").post(function (req: Request, resp: Response) {
 
     let email = req.body.email;
+    let uid =  req.body.uid;
     let message = req.body.message;
     let subject = req.body.subject;
     let deviceid = req.headers['user-agent'];
@@ -24,30 +26,24 @@ export function apiSendNotification(app:Application){
     let ip = checkIp(req, 300);
 
     if(!ip){
-      resp.json({error: 'annoying'});
+      resp.json({error: 'annoying', message:'ip hacker'});
       return;
     }
 
-    let user = {
-      email:encryptCTR(email),
-      deviceid:deviceid,
-      nickname:''
-    };
-
-    UserModel.findOne({where: {email: encryptCTR(email)}})
+    UserModel.findOne({where: {email: email}})
       .then(function (result:VOUser) {
        // console.log(result);
 
         if (result) {
           if(result.confirmed){
 
-            user.nickname = result.nickname;
+            //user.nickname = result.nickname;
 
             /*UserModel.update({
               confirmed:true,
             },{where:{email:email}});*/
 
-            sendNotificationEmai(email, user.nickname, subject, message, function (res) {
+            sendNotificationEmai(email, result.nickname, subject, message, function (res) {
               res.ip=ip;
 
               if(res.success){
@@ -55,7 +51,7 @@ export function apiSendNotification(app:Application){
               }else resp.json({error:'Error', message:'Error send Email to ' + email});
             })
           }else{
-            resp.json({error:'need-confirmation'});
+            resp.json({error:'need-confirmation', message:'Please confirm your email'});
           }
 
         } else {
@@ -70,39 +66,3 @@ export function apiSendNotification(app:Application){
 
 
 
-function sendNotificationEmai(email, nickname,  subject, content ,  callBack:Function){
-
-  let message = 'Hello ' + nickname + "\n" +content;
-
-  let body ={
-    user:'uplight.ca@gmail.com',
-    pass:'uplight.ca@gmail.com',
-    subject:subject,
-    message:message,
-    to:email
-  }
-
-
-  let options ={
-    url:'http://callcenter.front-desk.ca/send-notification.php',
-    method:'POST',
-    body:JSON.stringify(body)
-  }
-
-  request(options, function (error, object, data) {
-    if(error) callBack(error);
-    else {
-      console.log(data);
-      try{
-        let result = JSON.parse(data);
-        callBack(result);
-      }catch (e){
-
-        callBack({error:e.toString()})
-      }
-    }
-  //  console.log(data)
-
-  })
-
-}

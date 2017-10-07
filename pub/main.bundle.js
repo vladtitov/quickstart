@@ -715,8 +715,10 @@ var AppComponent = (function () {
         if (user && user.u && user.p)
             this.storage.login(user.u, user.p);
         this.service.user$.subscribe(function (user) {
-            if (!user || !user.token)
+            if (!user) {
+                _this.nickname = '';
                 return;
+            }
             _this.nickname = user.nickname;
         });
         /*   this.http.authError.subscribe((err:any)=>{
@@ -3410,6 +3412,7 @@ module.exports = "<div>\n\n    <nav>\n        <md-toolbar>\n            <a md-bu
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EmailMainComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_http_service__ = __webpack_require__("../../../../../src/app/services/auth-http.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3421,9 +3424,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var EmailMainComponent = (function () {
-    function EmailMainComponent(auth) {
+    function EmailMainComponent(auth, snackBar) {
         this.auth = auth;
+        this.snackBar = snackBar;
         this.isLoggedIn$ = auth.isLogedIn$;
     }
     EmailMainComponent.prototype.ngOnInit = function () {
@@ -3432,8 +3437,13 @@ var EmailMainComponent = (function () {
   
     }*/
     EmailMainComponent.prototype.onLogoutClick = function () {
-        if (confirm('You want to logout from Email Service?'))
-            this.auth.logout();
+        var _this = this;
+        if (confirm('You want to logout from Email Service?')) {
+            this.auth.logout().subscribe(function (res) {
+                var color = res.error ? 'red' : 'black';
+                _this.snackBar.open(res.message, 'x');
+            });
+        }
     };
     EmailMainComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
@@ -3441,10 +3451,10 @@ var EmailMainComponent = (function () {
             template: __webpack_require__("../../../../../src/app/email-service/email-main/email-main.component.html"),
             styles: [__webpack_require__("../../../../../src/app/email-service/email-main/email-main.component.css")]
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_auth_http_service__["a" /* AuthHttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_auth_http_service__["a" /* AuthHttpService */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_auth_http_service__["a" /* AuthHttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_auth_http_service__["a" /* AuthHttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["s" /* MdSnackBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["s" /* MdSnackBar */]) === "function" && _b || Object])
     ], EmailMainComponent);
     return EmailMainComponent;
-    var _a;
+    var _a, _b;
 }());
 
 //# sourceMappingURL=email-main.component.js.map
@@ -7195,7 +7205,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/login/confirm-reset-password/confirm-reset-password.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <h3>Reset Password</h3>\n    <br>\n    <h3>{{message}}</h3>\n    <form #f2=\"ngForm\"  autocomplete=\"off\">\n\n        <md-list>\n            <md-list-item>\n                <md-input-container>\n                    <input mdInput\n                           (blur)=\"checkPassword()\"\n                           placeholder=\"Password\"\n                           name=\"password\"\n                           [(ngModel)]=\"login.password\"\n                           required\n                           minlength=\"6\"\n                           [type]=\"showPass ? 'text': 'password'\"\n                           style=\"width: 100%\"/>\n                </md-input-container>\n            </md-list-item>\n            <md-list-item>\n                <md-input-container>\n                    <input mdInput\n                           (blur)=\"checkPassword()\"\n                           placeholder=\"Confirm Password\"\n                           name=\"password\"\n                           [(ngModel)]=\"confirmPassword\"\n                           required\n                           minlength=\"6\"\n                           [type]=\"showPass ? 'text': 'password'\"\n                           style=\"width: 100%\"/>\n                </md-input-container>\n            </md-list-item>\n            <md-list-item>\n                <md-checkbox #showpass (change)=\"onShowPasswordChanged($event, showpass)\">Show password\n                </md-checkbox>\n            </md-list-item>\n\n            <md-list-item>\n                <button md-raised-button color=\"accent\" [disabled]=\"!f2.valid || notMatch\"\n                        (click)=\"onSubmit()\">\n                    Register\n                </button>\n            </md-list-item>\n        </md-list>\n    </form>\n</div>"
+module.exports = "<div>\n    <h3>Reset Password</h3>\n    <br>\n    <h3>{{message}}</h3>\n    <form #f2=\"ngForm\" >\n\n        <md-list>\n            <md-list-item>\n                <md-input-container>\n                    <input mdInput\n                           (blur)=\"checkPassword()\"\n                           placeholder=\"Password\"\n                           name=\"password\"\n                           [(ngModel)]=\"login.password\"\n                           required\n                           minlength=\"6\"\n                           [type]=\"showPass ? 'text': 'password'\"\n                           style=\"width: 100%\"/>\n                </md-input-container>\n            </md-list-item>\n            <md-list-item>\n                <md-input-container>\n                    <input mdInput\n                           (blur)=\"checkPassword()\"\n                           placeholder=\"Confirm Password\"\n                           name=\"password\"\n                           [(ngModel)]=\"confirmPassword\"\n                           required\n                           minlength=\"6\"\n                           [type]=\"showPass ? 'text': 'password'\"\n                           style=\"width: 100%\"/>\n                </md-input-container>\n            </md-list-item>\n            <md-list-item>\n                <md-checkbox #showpass (change)=\"onShowPasswordChanged($event, showpass)\">Show password\n                </md-checkbox>\n            </md-list-item>\n\n            <md-list-item>\n                <button md-raised-button color=\"accent\" [disabled]=\"!f2.valid || notMatch\"\n                        (click)=\"onSubmit()\">\n                    Submit new password\n                </button>\n            </md-list-item>\n        </md-list>\n    </form>\n</div>"
 
 /***/ }),
 
@@ -7207,6 +7217,7 @@ module.exports = "<div>\n    <h3>Reset Password</h3>\n    <br>\n    <h3>{{messag
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7219,11 +7230,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ConfirmResetPasswordComponent = (function () {
-    function ConfirmResetPasswordComponent(route, router, http) {
+    function ConfirmResetPasswordComponent(route, router, http, snakBar) {
         this.route = route;
         this.router = router;
         this.http = http;
+        this.snakBar = snakBar;
         this.login = { password: '', uid: '' };
         this.notMatch = true;
         this.showPass = false;
@@ -7240,11 +7253,11 @@ var ConfirmResetPasswordComponent = (function () {
         var _this = this;
         var url = 'api/login/reset-password-confirm/';
         this.http.post(url, this.login).map(function (res) { return res.json(); }).subscribe(function (res) {
+            _this.snakBar.open(res.message, 'x');
             if (res.success) {
-                _this.router.navigateByUrl('/login/login');
-            }
-            else {
-                _this.message = 'Error reset password';
+                setTimeout(function () {
+                    _this.router.navigateByUrl('/login/login');
+                }, 3000);
             }
         });
     };
@@ -7263,10 +7276,10 @@ var ConfirmResetPasswordComponent = (function () {
             template: __webpack_require__("../../../../../src/app/login/confirm-reset-password/confirm-reset-password.component.html"),
             styles: [__webpack_require__("../../../../../src/app/login/confirm-reset-password/confirm-reset-password.component.css")]
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__angular_material__["s" /* MdSnackBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_material__["s" /* MdSnackBar */]) === "function" && _d || Object])
     ], ConfirmResetPasswordComponent);
     return ConfirmResetPasswordComponent;
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=confirm-reset-password.component.js.map
@@ -7308,6 +7321,7 @@ module.exports = "<div>\n    <h3>Confirmation Sent</h3>\n    <br>\n\n    <h3>{{m
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_timers__ = __webpack_require__("../../../../timers-browserify/main.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_timers___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_timers__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7321,11 +7335,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ConfirmComponent = (function () {
-    function ConfirmComponent(route, router, http) {
+    function ConfirmComponent(route, router, http, snackBar) {
         this.route = route;
         this.router = router;
         this.http = http;
+        this.snackBar = snackBar;
     }
     ConfirmComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -7334,18 +7350,12 @@ var ConfirmComponent = (function () {
             console.log(uid);
             var url = '/api/login/confirm/' + uid;
             _this.http.get(url).map(function (res) { return res.json(); }).subscribe(function (res) {
-                if (res.success === 'confirmed' || res.success === 'confirmed-before') {
-                    _this.message = 'Confirmed';
+                if (res.success) {
                     Object(__WEBPACK_IMPORTED_MODULE_3_timers__["setTimeout"])(function () {
                         _this.router.navigateByUrl('/login/login');
                     }, 5000);
                 }
-                else {
-                    _this.message = 'Confirmation Failed. Please Register';
-                    Object(__WEBPACK_IMPORTED_MODULE_3_timers__["setTimeout"])(function () {
-                        //  this.router.navigateByUrl('/login/register');
-                    }, 5000);
-                }
+                _this.snackBar.open(res.message, 'x');
             });
         });
     };
@@ -7355,10 +7365,10 @@ var ConfirmComponent = (function () {
             template: __webpack_require__("../../../../../src/app/login/confirm/confirm.component.html"),
             styles: [__webpack_require__("../../../../../src/app/login/confirm/confirm.component.css")]
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__angular_material__["s" /* MdSnackBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_material__["s" /* MdSnackBar */]) === "function" && _d || Object])
     ], ConfirmComponent);
     return ConfirmComponent;
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=confirm.component.js.map
@@ -7442,7 +7452,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/login/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"LoginScreen\">\n    <small *ngIf=\"login?.nickname\">Registered as {{login.nickname}}</small>\n    <md-tab-group [selectedIndex]=\"selectedTab\">\n        <md-tab label=\"Login\">\n            <form #f1=\"ngForm\" (ngSubmit)=\"signUp()\" autocomplete=\"off\">\n                <md-list>\n                    <md-list-item>\n                        <md-input-container>\n                            <input #username\n                                   mdInput\n                                   [(ngModel)]=\"login.email\"\n                                   required\n                                   minlength=\"6\" type=\"text\" placeholder=\"email\" name=\"email\" type=\"email\"/>\n                        </md-input-container>\n                    </md-list-item>\n\n                    <md-list-item>\n                        <md-input-container>\n                            <input mdInput\n                                   (blur)=\"checkPassword()\"\n                                   placeholder=\"Password\"\n                                   name=\"password\"\n                                   [(ngModel)]=\"login.password\"\n                                   required\n                                   minlength=\"6\"\n                                   [type]=\"showPass ? 'text': 'password'\"\n                                   style=\"width: 100%\"/>\n                        </md-input-container>\n                    </md-list-item>\n                    <md-list-item>\n                        <md-checkbox #showpass (change)=\"onShowPasswordChanged($event, showpass)\">Show password\n                        </md-checkbox>\n                    </md-list-item>\n\n                    <md-list-item>\n                        <button md-raised-button color=\"accent\" [disabled]=\"!f1.valid\" (click)=\"onSubmit()\">\n                            Sign In\n                        </button>\n                    </md-list-item>\n                </md-list>\n\n            </form>\n        </md-tab>\n        <md-tab label=\"Register\">\n            <form #f2=\"ngForm\" (ngSubmit)=\"signUp()\" autocomplete=\"off\">\n\n                <md-list>\n                    <md-list-item>\n                        <md-chip-list *ngIf=\"exists\">\n                            <md-chip color=\"accent\" selected=\"true\">\n                                User with this email exists\n                                <!--  <br/>\n                                  <a  [routerLink]=\"['/login/forgot-password']\">Reset Password</a>-->\n                            </md-chip>\n\n                        </md-chip-list>\n\n                        <md-input-container>\n                            <input #username\n                                   mdInput\n                                   [(ngModel)]=\"login.email\"\n                                   required\n                                   minlength=\"6\" type=\"text\"\n                                   placeholder=\"email\"\n                                   name=\"email\"\n                                   type=\"email\"/>\n                        </md-input-container>\n\n                    </md-list-item>\n\n\n                    <md-list-item>\n                        <md-input-container>\n                            <input mdInput\n                                   (blur)=\"checkPassword()\"\n                                   placeholder=\"Password\"\n                                   name=\"password\"\n                                   [(ngModel)]=\"login.password\"\n                                   required\n                                   minlength=\"6\"\n                                   [type]=\"showPass ? 'text': 'password'\"\n                                   style=\"width: 100%\"/>\n                        </md-input-container>\n                    </md-list-item>\n                    <md-list-item>\n                        <md-input-container>\n                            <input mdInput\n                                   (blur)=\"checkPassword()\"\n                                   placeholder=\"Confirm Password\"\n                                   name=\"password\"\n                                   [(ngModel)]=\"confirmPassword\"\n                                   required\n                                   minlength=\"6\"\n                                   [type]=\"showPass ? 'text': 'password'\"\n                                   style=\"width: 100%\"/>\n                        </md-input-container>\n                    </md-list-item>\n                    <md-list-item>\n                        <md-checkbox #showpass (change)=\"onShowPasswordChanged($event, showpass)\">Show password\n                        </md-checkbox>\n                    </md-list-item>\n\n                    <md-list-item>\n                        <button md-raised-button color=\"accent\" [disabled]=\"!f2.valid || notMatch\"\n                                (click)=\"onRegister()\">\n                            Register\n                        </button>\n                    </md-list-item>\n                </md-list>\n            </form>\n        </md-tab>\n        <md-tab label=\"Forget Password\">\n            <form #f3=\"ngForm\" (ngSubmit)=\"signUp()\" autocomplete=\"off\">\n\n                <md-list>\n                    <md-list-item>\n                        <md-input-container>\n                            <input #username mdInput [(ngModel)]=\"login.email\" required\n                                   minlength=\"6\" type=\"text\" placeholder=\"Email\" name=\"email\" type=\"email\"/>\n                        </md-input-container>\n                    </md-list-item>\n\n                    <md-list-item>\n                        <button md-raised-button color=\"accent\" [disabled]=\"!f3.valid\" (click)=\"onRestPassword()\">\n                            Reset Password\n                        </button>\n                    </md-list-item>\n                </md-list>\n\n            </form>\n        </md-tab>\n\n    </md-tab-group>\n</div>"
+module.exports = "<div id=\"LoginScreen\">\n    <small *ngIf=\"login?.nickname\">Registered as {{login.nickname}}</small>\n    <md-tab-group [selectedIndex]=\"selectedTab\">\n        <md-tab label=\"Login\">\n            <form #f1=\"ngForm\"  autocomplete=\"off\">\n                <md-list>\n                    <md-list-item>\n                        <md-input-container>\n                            <input #username\n                                   mdInput\n                                   [(ngModel)]=\"login.email\"\n                                   required\n                                   minlength=\"6\" type=\"text\" placeholder=\"email\" name=\"email\" type=\"email\"/>\n                        </md-input-container>\n                    </md-list-item>\n\n                    <md-list-item>\n                        <md-input-container>\n                            <input mdInput\n                                   (blur)=\"checkPassword()\"\n                                   placeholder=\"Password\"\n                                   name=\"password\"\n                                   [(ngModel)]=\"login.password\"\n                                   required\n                                   minlength=\"6\"\n                                   type =\"password\"\n                                   style=\"width: 100%\"/>\n                        </md-input-container>\n                    </md-list-item>\n\n                    <br/>\n                    <md-list-item>\n                        <button md-raised-button color=\"accent\" [disabled]=\"!f1.valid\" (click)=\"onLogin()\">\n                            Sign In\n                        </button>\n                    </md-list-item>\n                </md-list>\n\n            </form>\n        </md-tab>\n        <md-tab label=\"Register\">\n            <form #f2=\"ngForm\"  autocomplete=\"off\">\n\n                <md-list>\n                    <md-list-item>\n                        <md-chip-list *ngIf=\"exists\">\n                            <md-chip color=\"accent\" selected=\"true\">\n                                User with this email exists\n                                <!--  <br/>\n                                  <a  [routerLink]=\"['/login/forgot-password']\">Reset Password</a>-->\n                            </md-chip>\n\n                        </md-chip-list>\n\n                        <md-input-container>\n                            <input #username\n                                   mdInput\n                                   [(ngModel)]=\"login.email\"\n                                   required\n                                   minlength=\"6\" type=\"text\"\n                                   placeholder=\"email\"\n                                   name=\"email\"\n                                   type=\"email\"/>\n                        </md-input-container>\n\n                    </md-list-item>\n\n\n                    <md-list-item>\n                        <md-input-container>\n                            <input mdInput\n                                   (blur)=\"checkPassword()\"\n                                   placeholder=\"Password\"\n                                   name=\"password\"\n                                   [(ngModel)]=\"login.password\"\n                                   required\n                                   minlength=\"6\"\n                                   type =\"password\"\n                                   style=\"width: 100%\"/>\n                        </md-input-container>\n                    </md-list-item>\n                    <md-list-item>\n                        <md-input-container>\n                            <input mdInput\n                                   (blur)=\"checkPassword()\"\n                                   placeholder=\"Confirm Password\"\n                                   name=\"password\"\n                                   [(ngModel)]=\"confirmPassword\"\n                                   required\n                                   minlength=\"6\"\n                                   type =\"password\"\n                                   style=\"width: 100%\"/>\n                        </md-input-container>\n                    </md-list-item>\n\n                    <br/>\n                    <md-list-item>\n                        <button md-raised-button color=\"accent\" [disabled]=\"!f2.valid || notMatch\"\n                                (click)=\"onRegister()\">\n                            Register\n                        </button>\n                    </md-list-item>\n                </md-list>\n            </form>\n        </md-tab>\n        <md-tab label=\"Forget Password\">\n            <form #f3=\"ngForm\" >\n\n                <md-list>\n                    <md-list-item>\n                        <md-input-container>\n                            <input #username mdInput [(ngModel)]=\"login.email\" required\n                                   minlength=\"6\" type=\"text\" placeholder=\"Email\" name=\"email\" type=\"email\"/>\n                        </md-input-container>\n                    </md-list-item>\n                    <br/>\n                    <md-list-item>\n                        <button md-raised-button color=\"accent\" [disabled]=\"!f3.valid\" (click)=\"onRestPassword()\">\n                            Reset Password\n                        </button>\n                    </md-list-item>\n                </md-list>\n\n            </form>\n        </md-tab>\n\n\n\n\n\n        <md-tab label=\"New nickname\">\n            <form #f5=\"ngForm\"  autocomplete=\"off\">\n                <md-list>\n                    <md-list-item>\n                        <md-input-container>\n                            <input #username\n                                   mdInput\n                                   [(ngModel)]=\"login.email\"\n                                   required\n                                   minlength=\"6\" type=\"text\" placeholder=\"email\" name=\"email\" type=\"email\"/>\n                        </md-input-container>\n                    </md-list-item>\n\n                    <md-list-item>\n                        <md-input-container>\n                            <input mdInput\n                                   (blur)=\"checkPassword()\"\n                                   placeholder=\"Password\"\n                                   name=\"password\"\n                                   [(ngModel)]=\"login.password\"\n                                   required\n                                   minlength=\"6\"\n                                   type =\"password\"\n                                   style=\"width: 100%\"/>\n                        </md-input-container>\n                    </md-list-item>\n\n                    <br/>\n                    <md-list-item>\n                        <button md-raised-button color=\"accent\" [disabled]=\"!f5.valid\" (click)=\"onRequestNewNickname()\">\n                           Request nickname\n                        </button>\n                    </md-list-item>\n                </md-list>\n\n            </form>\n        </md-tab>\n\n    </md-tab-group>\n</div>"
 
 /***/ }),
 
@@ -7465,6 +7475,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+///<reference path="../../services/auth-http.service.ts"/>
 
 
 
@@ -7526,6 +7537,9 @@ var LoginComponent = (function () {
                     case 'register':
                         _this.selectedTab = 1;
                         break;
+                    case 'nickname':
+                        _this.selectedTab = 3;
+                        break;
                     default:
                         _this.selectedTab = 0;
                         break;
@@ -7537,14 +7551,13 @@ var LoginComponent = (function () {
     LoginComponent.prototype.onShowPasswordChanged = function ($evt, chbox) {
         this.showPass = chbox.checked;
     };
-    LoginComponent.prototype.onSubmit = function () {
+    LoginComponent.prototype.onLogin = function () {
         var _this = this;
         this.authHttp.login(this.login.email, this.login.password).subscribe(function (res) {
             console.log(res);
+            _this.snakBar.open(res.message, 'x');
             if (res.success) {
                 _this.authHttp.setUser(res.user);
-                _this.login.nickname = res.user ? res.user.nickname : null;
-                _this.snakBar.open("You are logged in " + _this.login.nickname + '!', '', { duration: 3000 });
                 var url_1 = _this.authHttp.getLastVisited();
                 if (!url_1)
                     url_1 = '/email-service';
@@ -7552,21 +7565,21 @@ var LoginComponent = (function () {
                     _this.router.navigateByUrl(url_1);
                 }, 3000);
             }
-            else if (res.error) {
-                if (res.error == 'wrong') {
-                    _this.snakBar.open("Username or password incorrect ", '', { duration: 3000 });
-                }
-                else {
-                    _this.dialog.open(__WEBPACK_IMPORTED_MODULE_3__shared_dialog_simple_dialog_simple_component__["a" /* DialogSimpleComponent */], { data: {
-                            title: 'Error',
-                            message: res.message || 'Server error. Please try again later'
-                        } });
-                }
-            }
         });
     };
     LoginComponent.prototype.signUp = function () {
         console.log("Sign Up Data:", this.login);
+    };
+    LoginComponent.prototype.onRequestNewNickname = function () {
+        var _this = this;
+        var url = 'api/login/new-nickname';
+        this.authHttp.post(url, this.login).map(function (res) { return res.json(); }).subscribe(function (res) {
+            console.log(res);
+            _this.snakBar.open(res.message, 'x');
+            if (res.success) {
+                _this.authHttp.setUserNickname(res.nickname);
+            }
+        });
     };
     LoginComponent.prototype.onRestPassword = function () {
         var _this = this;
@@ -7575,12 +7588,11 @@ var LoginComponent = (function () {
             if (res.success) {
                 _this.dialog.open(__WEBPACK_IMPORTED_MODULE_3__shared_dialog_simple_dialog_simple_component__["a" /* DialogSimpleComponent */], { data: {
                         title: 'Alert',
-                        message: 'Confirmation url sent to ' + res.user.email +
-                            ' Please click on email link to reset password '
+                        message: res.message
                     } });
             }
             else {
-                _this.snakBar.open("Please Register ", '', { duration: 3000 });
+                _this.snakBar.open(res.message, 'x');
             }
         });
     };
@@ -9264,7 +9276,6 @@ export function decryptCTR(text){
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export GUEST */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthHttpService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/BehaviorSubject.js");
@@ -9286,13 +9297,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var GUEST = {
-    id: undefined,
-    email: '',
-    nickname: '',
-    password: '',
-    token: ''
-};
 var AuthHttpService = (function () {
     function AuthHttpService(http, router, route, storage) {
         var _this = this;
@@ -9301,7 +9305,7 @@ var AuthHttpService = (function () {
         this.route = route;
         this.storage = storage;
         this.user = null;
-        this.userSub = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["BehaviorSubject"](GUEST);
+        this.userSub = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["BehaviorSubject"](null);
         this.user$ = this.userSub.asObservable();
         this.isLogedIn$ = this.user$.map(function (user) { return !!user; });
         setTimeout(function () { return _this.autoLogin(); }, 2000);
@@ -9341,9 +9345,13 @@ var AuthHttpService = (function () {
         //this.isLogedInSub.next((this.user !== null));
     };
     AuthHttpService.prototype.logout = function () {
-        this.user = null;
-        this.removeAuthentication();
-        this.dispatchUser();
+        var _this = this;
+        return this.post('/api/login/logout', this.user).map(function (res) { return res.json(); }).do(function (res) {
+            console.log('do', res);
+            _this.user = null;
+            _this.removeAuthentication();
+            _this.dispatchUser();
+        });
     };
     AuthHttpService.prototype.getToken = function () {
         var user = this.getUser();
@@ -9367,8 +9375,8 @@ var AuthHttpService = (function () {
     };
     AuthHttpService.prototype.removeAuthentication = function () {
         this.storage.removeItem('authentication');
-        this.user = null;
-        this.userSub.next(null);
+        //this.user = null;
+        //this.userSub.next(null);
     };
     AuthHttpService.prototype.saveUser = function () {
         this.storage.setItem('authentication', btoa(JSON.stringify(this.user)));
@@ -9425,6 +9433,11 @@ var AuthHttpService = (function () {
     };
     AuthHttpService.prototype.setUser = function (user) {
         this.user = user;
+        this.saveUser();
+        this.dispatchUser();
+    };
+    AuthHttpService.prototype.setUserNickname = function (nickname) {
+        this.user.nickname = nickname;
         this.saveUser();
         this.dispatchUser();
     };

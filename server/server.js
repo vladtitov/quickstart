@@ -6,7 +6,7 @@ const api_1 = require("./api/api");
 const apiErrorHandler_1 = require("./utils/apiErrorHandler");
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
-const apiLogin_1 = require("./api/apiLogin");
+const login_api_1 = require("./api/login-api");
 const changelly_api_1 = require("./api/changelly-api");
 const shapeshift_api_1 = require("./api/shapeshift-api");
 const api_ether_1 = require("./api/api-ether");
@@ -41,7 +41,7 @@ app.get('/apis-info', function (req, resp) {
         data: apis
     });
 });
-apiLogin_1.initLogin(app);
+login_api_1.initLogin(app);
 api_send_notification_1.apiSendNotification(app);
 api_1.initRestApi(app);
 api_ether_1.initEther(app);

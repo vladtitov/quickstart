@@ -11,7 +11,7 @@ const bodyParser:any = require("body-parser");
 const cookieParser = require('cookie-parser');
 
 //import * as JWT from "jsonwebtoken";
-import {initLogin} from './api/apiLogin';
+import {initLogin} from './api/login-api';
 
 import {initChangelly} from './api/changelly-api';
 import {initShapeSift} from './api/shapeshift-api';

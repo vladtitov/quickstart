@@ -8,6 +8,14 @@ const algorithmCTR = 'aes-256-ctr',
   PASSWORD = '3zTvzr3p67VC61jmV54rIYu1545x4TlY'
 export const EXPIRATION_TIME:number = 180;
 
+export function  hashPassword(password, callBack:Function){
+  crypto.pbkdf2(password, PASSWORD, 9, 32, 'sha512', (err, derivedKey) => {
+    if (err) callBack({error:'error'});
+    else callBack({hash:derivedKey.toString('hex')});  // '3745e48...aa39b34'
+  });
+}
+
+
 
 export function encryptCustom(email, password):string{
   let n = password.length+'';

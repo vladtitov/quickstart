@@ -3,6 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const crypto = require("crypto");
 const algorithmCTR = 'aes-256-ctr', algorithmGSM = 'aes-256-gcm', PASSWORD = '3zTvzr3p67VC61jmV54rIYu1545x4TlY';
 exports.EXPIRATION_TIME = 180;
+function hashPassword(password, callBack) {
+    crypto.pbkdf2(password, PASSWORD, 9, 32, 'sha512', (err, derivedKey) => {
+        if (err)
+            callBack({ error: 'error' });
+        else
+            callBack({ hash: derivedKey.toString('hex') });
+    });
+}
+exports.hashPassword = hashPassword;
 function encryptCustom(email, password) {
     let n = password.length + '';
     if (n.length == 1)

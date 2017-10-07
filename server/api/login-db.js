@@ -186,7 +186,7 @@ function registerUser(email, password, ip, confirmUrl, host, callBack) {
         model_1.UserModel.findOne({ where: { email: email } })
             .then(function (result) {
             if (result) {
-                callBack({ error: 'exists' });
+                callBack({ error: 'exists', message: 'Please login' });
                 return;
             }
             let newUser = {
@@ -213,7 +213,8 @@ function registerUser(email, password, ip, confirmUrl, host, callBack) {
                     }
                     callBack({
                         success: 'confirmationsent',
-                        message: 'Confirmation sent to ' + email + ' ' + createdUser.nickname
+                        message: 'Confirmation sent to ' + email + ' ' + createdUser.nickname,
+                        nickname: createdUser.nickname
                     });
                 });
             });

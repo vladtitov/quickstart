@@ -250,7 +250,7 @@ export function registerUser(
     UserModel.findOne({where: {email: email}})
       .then(function (result: VOUser) {
         if (result) {
-          callBack({error: 'exists'});
+          callBack({error: 'exists',message:'Please login'});
           return;
         }
 
@@ -290,7 +290,8 @@ export function registerUser(
             // updateLastVisitByid(createdUser.id, {status:'confirmation sent'});
             callBack({
               success: 'confirmationsent',
-              message: 'Confirmation sent to ' + email + ' ' + createdUser.nickname
+              message: 'Confirmation sent to ' + email + ' ' + createdUser.nickname,
+              nickname:createdUser.nickname
             });
           });
 

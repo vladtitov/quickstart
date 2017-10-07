@@ -7496,23 +7496,13 @@ var LoginComponent = (function () {
         this.exists = false;
         this.authHttp.register(this.login.email, this.login.password).subscribe(function (res) {
             console.log(res);
-            /* if(res.error && res.error === 'exists'){
-               setTimeout(()=>{ this.exists = false}, 3000);
-               this.exists = true;
-             } else */
-            _this.login.nickname = res.user ? res.user.nickname : null;
             if (res.success) {
-                _this.dialog.open(__WEBPACK_IMPORTED_MODULE_3__shared_dialog_simple_dialog_simple_component__["a" /* DialogSimpleComponent */], { data: {
-                        title: 'Alert',
-                        message: 'Confirmation url sent to  ' + res.user.email
-                    } });
+                _this.authHttp.setUserNickname(res.nickname);
             }
-            else if (res.error) {
-                _this.dialog.open(__WEBPACK_IMPORTED_MODULE_3__shared_dialog_simple_dialog_simple_component__["a" /* DialogSimpleComponent */], { data: {
-                        title: 'Error',
-                        message: res.message || 'Please try again later'
-                    } });
+            if (res.error && res.error === 'exists') {
+                _this.router.navigateByUrl('/login/login');
             }
+            _this.snakBar.open(res.message);
         });
     };
     LoginComponent.prototype.checkPassword = function () {

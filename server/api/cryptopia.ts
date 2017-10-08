@@ -48,18 +48,18 @@ const APIs=[
     api:'/api/cryptopia/currencies',
     url:'https://www.cryptopia.co.nz/api/GetCurrencies',
     name:'currencies',
-    cache:'1 day'
+    cache:'10 minutes'
   },
   {
     api:'/api/cryptopia/pairs',
     url:'https://www.cryptopia.co.nz/api/GetTradePairs',
     name:'pairs',
-    cache:'1 day'
+    cache:'10 minutes'
   },
   {
     api:'/api/cryptopia/markets',
     url:'https://www.cryptopia.co.nz/api/GetMarkets',
     name:'markets',
-    cache:'1 day'
+    cache:'10 minutes'
   }
 ];

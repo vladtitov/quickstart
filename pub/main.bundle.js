@@ -99,6 +99,8 @@ var AllBalancesComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_timers___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_timers__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_Subject__ = __webpack_require__("../../../../rxjs/Subject.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_Subject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_lodash__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -117,6 +119,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var AllCoinsService = (function () {
     function AllCoinsService(http, marketCap, storage) {
         var _this = this;
@@ -125,8 +128,12 @@ var AllCoinsService = (function () {
         this.storage = storage;
         this.currentMarketsArSub = new __WEBPACK_IMPORTED_MODULE_8_rxjs_Subject__["Subject"]();
         this.currentMarketsAr$ = this.currentMarketsArSub.asObservable();
+        this.allCoinsSub = new __WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject__["BehaviorSubject"](null);
+        this.allCoins$ = this.allCoinsSub.asObservable();
         this.apisSub = new __WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject__["BehaviorSubject"](null);
         this.apis$ = this.apisSub.asObservable();
+        this.serachResultsSub = new __WEBPACK_IMPORTED_MODULE_8_rxjs_Subject__["Subject"]();
+        this.serachResults$ = this.serachResultsSub.asObservable();
         marketCap.getAllCoinsData().subscribe(function (res) {
             if (!res)
                 return;
@@ -134,13 +141,72 @@ var AllCoinsService = (function () {
             _this.apis = cfg.exchangesPublic.map(function (item) {
                 return new __WEBPACK_IMPORTED_MODULE_3__coin_sercice_base__["a" /* CoinSerciceBase */](item, res, http, storage);
             });
+            _this.apis.forEach(function (item) {
+                item.serachResults$.subscribe(function (res) {
+                    if (!res)
+                        return;
+                    _this.serachResults = _this.serachResults.concat(res);
+                    _this.serachResultsSub.next(_this.serachResults);
+                });
+            });
             _this.apisSub.next(_this.apis);
+            _this.filterCoins();
         });
     }
-    AllCoinsService.prototype.setCurrent = function (uid) {
+    AllCoinsService.prototype.filterCoins = function () {
+        var self = this;
+        var out = [];
+        var activeExchanges = this.activeExchanges;
+        var i = 0;
+        this.apis.forEach(function (service) {
+            if (activeExchanges[service.config.uid]) {
+                i++;
+                service.getCoins().subscribe(function (coins) {
+                    if (!coins)
+                        return;
+                    i--;
+                    out = __WEBPACK_IMPORTED_MODULE_9_lodash__["uniq"](out.concat(coins)).sort();
+                    if (i == 0) {
+                        self.allCoins = out;
+                        self.allCoinsSub.next(out);
+                    }
+                });
+            }
+        });
+    };
+    AllCoinsService.prototype.seachCoin = function (symbol) {
+        var result = [];
+        this.serachResults = [];
+        var activeExchanges = this.activeExchanges;
+        this.apis$.subscribe(function (apis) {
+            if (!apis)
+                return;
+            console.log(' apis raedy search  ' + symbol);
+            apis.forEach(function (service) {
+                if (activeExchanges[service.config.uid]) {
+                    var sub2 = service.searchCoin(symbol, false);
+                    /*.subscribe(res=>{
+                      if(!res) return;
+          
+                      sub2.unsubscribe();
+          
+                      if(done.indexOf(service.config.uid) !==-1) return;
+                      i--;
+                      done.push(service.config.uid);
+                      console.log( i);
+                     // i--;
+                      result = result.concat(res);
+                      if(i==0) resultSub.next(result);*/
+                    //})
+                }
+            });
+        });
+    };
+    AllCoinsService.prototype.setCurrentExchangeById = function (uid) {
+        /// console.log(uid);
         var _this = this;
         if (!this.apis) {
-            Object(__WEBPACK_IMPORTED_MODULE_7_timers__["setTimeout"])(function () { return _this.setCurrent(uid); }, 1000);
+            Object(__WEBPACK_IMPORTED_MODULE_7_timers__["setTimeout"])(function () { return _this.setCurrentExchangeById(uid); }, 1000);
             return;
         }
         if (this.sub1)
@@ -153,13 +219,23 @@ var AllCoinsService = (function () {
                 return;
             // console.log(dataAr);
             _this.baseCurrensies = _this.currentExchange.baseCurrenciesAr;
+            //  console.log(dataAr);
             _this.currentMarketsArSub.next(dataAr);
         });
         //let echageData = this.currentExchange.marketsAr$;
         //this.currentExchangeSub.next(this.currentExchange);
     };
+    AllCoinsService.prototype.getExchangeById = function (id) {
+        this.apis$.subscribe(function (res) {
+            if (!res)
+                return;
+        });
+    };
     AllCoinsService.prototype.getAllExchanges = function () {
         return this.apis$;
+    };
+    AllCoinsService.prototype.setActiveExchanges = function (exchanges) {
+        this.activeExchanges = exchanges;
     };
     AllCoinsService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
@@ -188,6 +264,8 @@ var AllCoinsService = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__material_material_app_module__ = __webpack_require__("../../../../../src/app/material/material-app.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__all_balances_all_balances_component__ = __webpack_require__("../../../../../src/app/all-in-one/all-balances/all-balances.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__all_coins_service__ = __webpack_require__("../../../../../src/app/all-in-one/all-coins.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__all_search_all_search_component__ = __webpack_require__("../../../../../src/app/all-in-one/all-search/all-search.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__all_gainers_losers_all_gainers_losers_component__ = __webpack_require__("../../../../../src/app/all-in-one/all-gainers-losers/all-gainers-losers.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -204,13 +282,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+
 var routes = [
     {
         path: 'all-in-one', component: __WEBPACK_IMPORTED_MODULE_3__all_main_all_main_component__["a" /* AllMainComponent */],
         children: [
             { path: '', redirectTo: 'data', pathMatch: 'full' },
             { path: 'data/:exchange', component: __WEBPACK_IMPORTED_MODULE_2__all_overview_all_overview_component__["a" /* AllOverviewComponent */] },
-            { path: 'balances', component: __WEBPACK_IMPORTED_MODULE_8__all_balances_all_balances_component__["a" /* AllBalancesComponent */] }
+            { path: 'balances', component: __WEBPACK_IMPORTED_MODULE_8__all_balances_all_balances_component__["a" /* AllBalancesComponent */] },
+            { path: 'search', component: __WEBPACK_IMPORTED_MODULE_10__all_search_all_search_component__["a" /* AllSearchComponent */] },
+            { path: 'search/:coin', component: __WEBPACK_IMPORTED_MODULE_10__all_search_all_search_component__["a" /* AllSearchComponent */] },
+            { path: 'gainers-losers', component: __WEBPACK_IMPORTED_MODULE_11__all_gainers_losers_all_gainers_losers_component__["a" /* AllGainersLosersComponent */] }
             /*
               {path: 'coin-markets/:symbol', component: BittrexMarketsComponent},
               {path: 'balances', component: BittrexBalancesComponent},
@@ -234,7 +317,9 @@ var AllExchangesModule = (function () {
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_2__all_overview_all_overview_component__["a" /* AllOverviewComponent */],
                 __WEBPACK_IMPORTED_MODULE_3__all_main_all_main_component__["a" /* AllMainComponent */],
-                __WEBPACK_IMPORTED_MODULE_8__all_balances_all_balances_component__["a" /* AllBalancesComponent */]
+                __WEBPACK_IMPORTED_MODULE_8__all_balances_all_balances_component__["a" /* AllBalancesComponent */],
+                __WEBPACK_IMPORTED_MODULE_10__all_search_all_search_component__["a" /* AllSearchComponent */],
+                __WEBPACK_IMPORTED_MODULE_11__all_gainers_losers_all_gainers_losers_component__["a" /* AllGainersLosersComponent */]
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_9__all_coins_service__["a" /* AllCoinsService */]
@@ -248,7 +333,7 @@ var AllExchangesModule = (function () {
 
 /***/ }),
 
-/***/ "../../../../../src/app/all-in-one/all-main/all-main.component.css":
+/***/ "../../../../../src/app/all-in-one/all-gainers-losers/all-gainers-losers.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -266,19 +351,24 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/all-in-one/all-main/all-main.component.html":
+/***/ "../../../../../src/app/all-in-one/all-gainers-losers/all-gainers-losers.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <nav  class=\"btns-row\">\n        <a  routerLink='/market-cap/all-coins'>Select Coins</a>\n        <a  routerLink='/all-in-one/data/bittrex'> Bittrex</a>\n        <a  routerLink='/all-in-one/data/poloniex'> Poloniex</a>\n        <a  routerLink='/all-in-one/data/novaexchange'> NovaExchange</a>\n        <a  routerLink='/all-in-one/data/cryptopia'> Cryptopia</a>\n        <a  routerLink='/all-in-one/data/hitbtc'> HitBtc</a>\n        <!--<ng-container *ngIf=\"!!(isLoggedIn$ | async)\">-->\n        <a  routerLink='/all-in-one/balances'> Balances</a>\n     <!--   </ng-container>-->\n\n    </nav>\n    <nav   class=\"right\">\n        <a  class=\"btn\" (click)=\"onLoginClick()\"> Login</a>\n        <a  class=\"btn\" (click)=\"onLogoutClick()\">Logout</a>\n    </nav>\n    <router-outlet></router-outlet>\n</div>\n"
+module.exports = "<div>\n\n    <section>\n        <h3>Gainers Loders <small *ngIf=\"sortedMarkets\">Total: {{sortedMarkets.length}}</small></h3>\n    </section>\n    <section>\n        <table>\n            <tbody>\n            <th class=\"btn\" (click)=\"onSortClick('symbol')\">Symbol</th>\n            <th>Name</th>\n            <th class=\"btn\" (click)=\"onSortClick('percent_change_1h')\">1h%</th>\n            <th class=\"btn\" (click)=\"onSortClick('percent_change_24h')\" >24h%</th>\n            <th class=\"btn\" (click)=\"onSortClick('percent_change_7d')\">7 days%</th>\n            <tr *ngFor=\"let market of sortedMarkets\">\n\n                <td>\n                    <a class=\"btn fa fa-line-chart\" href=\"https://coinmarketcap.com/currencies/{{market.id}}\" target=\"_blank\"></a>\n                    <a routerLink='/all-in-one/search/{{market.symbol}}' class=\"btn\">\n                        {{market.symbol}}\n                    </a>\n                </td>\n                <td>{{market.name}}</td>\n                <td [ngClass]=\"market.percent_change_1h>0?'green':'red'\">{{market.percent_change_1h}}</td>\n                <td [ngClass]=\"market.percent_change_24h>0?'green':'red'\">{{market.percent_change_24h}}</td>\n                <td [ngClass]=\"market.percent_change_7d>0?'green':'red'\">{{market.percent_change_7d}}</td>\n\n            </tr>\n            </tbody>\n        </table>\n    </section>\n</div>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/all-in-one/all-main/all-main.component.ts":
+/***/ "../../../../../src/app/all-in-one/all-gainers-losers/all-gainers-losers.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AllMainComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AllGainersLosersComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__all_coins_service__ = __webpack_require__("../../../../../src/app/all-in-one/all-coins.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__market_cap_market_cap_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -289,12 +379,156 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+
+var AllGainersLosersComponent = (function () {
+    function AllGainersLosersComponent(route, allService, marketCap) {
+        this.route = route;
+        this.allService = allService;
+        this.marketCap = marketCap;
+        this.creteria = 'percent_change_1h';
+        this.data = [];
+        this.asc_desc = 'asc';
+        this.sortBy = 'persent_24h';
+    }
+    AllGainersLosersComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.allService.allCoins$.subscribe(function (coins) {
+            if (!coins)
+                return;
+            _this.marketCap.getAllCoinsData().subscribe(function (data) {
+                // console.log(coins);
+                var ar = coins.map(function (item) {
+                    return this.mc[item] || { symbol: item };
+                }, { mc: data });
+                _this.data = ar;
+                _this.sortData();
+            });
+        });
+        /*this.allService.currentMarketsAr$.subscribe(markets=>{
+          if(!markets) return;
+         // console.log(markets);
+         this.data = markets;
+          this.filterCurrent();
+        });
+    
+        this.route.params.subscribe(params=> {
+          console.log(params);
+          this.exchange = params.exchange;
+          if(this.exchange) this.allService.setCurrentExchangeById(this.exchange);
+        });*/
+        // this.allService.setCurrent(params.exchange);
+    };
+    AllGainersLosersComponent.prototype.onSortClick = function (creteria) {
+        if (this.creteria == creteria) {
+            this.asc_desc = this.asc_desc === 'asc' ? 'desc' : 'asc';
+        }
+        this.creteria = creteria;
+        this.sortData();
+    };
+    AllGainersLosersComponent.prototype.filterCurrent = function () {
+        this.sortData();
+    };
+    AllGainersLosersComponent.prototype.sortData = function () {
+        if (!Array.isArray(this.data))
+            return;
+        var ar = this.data;
+        // let creteria = this.creteria
+        /* percent_change_1h:number;
+      percent_change_24h:number;
+      percent_change_7d:number;*/
+        console.log(this.creteria, this.asc_desc);
+        this.sortedMarkets = __WEBPACK_IMPORTED_MODULE_2_lodash__["orderBy"](ar, this.creteria, this.asc_desc);
+        // console.log(sorted);
+        // this.consAvailable = _.take(sorted,30);
+    };
+    AllGainersLosersComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+            selector: 'app-all-gainers-losers',
+            template: __webpack_require__("../../../../../src/app/all-in-one/all-gainers-losers/all-gainers-losers.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/all-in-one/all-gainers-losers/all-gainers-losers.component.css")]
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__all_coins_service__["a" /* AllCoinsService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__market_cap_market_cap_service__["a" /* MarketCapService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__market_cap_market_cap_service__["a" /* MarketCapService */]) === "function" && _c || Object])
+    ], AllGainersLosersComponent);
+    return AllGainersLosersComponent;
+    var _a, _b, _c;
+}());
+
+//# sourceMappingURL=all-gainers-losers.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/all-in-one/all-main/all-main.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "nav>input{\r\n    margin: 0;\r\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/all-in-one/all-main/all-main.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n    <nav  class=\"btns-row\">\n\n        <a  routerLink='/market-cap/all-coins'>MC</a>\n        <a class=\"btn fa fa-search\"  routerLink=\"/all-in-one/search\"></a>\n        <a routerLink=\"/all-in-one/gainers-losers\"><span class=\"btn fa fa-thumbs-down\"></span><span class=\"btn fa fa-thumbs-up\"></span></a>\n\n        <input type=\"checkbox\" [(ngModel)]=\"exchanges.bittrex\"  (ngModelChange)=\"onChange($event)\">\n        <a  routerLink='/all-in-one/data/bittrex'> Bittrex</a>\n        <input  type=\"checkbox\" [(ngModel)]=\"exchanges.poloniex\" (ngModelChange)=\"onChange($event)\">\n        <a  routerLink='/all-in-one/data/poloniex'> Poloniex</a>\n        <input  type=\"checkbox\" [(ngModel)]=\"exchanges.novaexchange\" (ngModelChange)=\"onChange($event)\" >\n        <a  routerLink='/all-in-one/data/novaexchange'> NovaExchange</a>\n        <input  type=\"checkbox\" [(ngModel)]=\"exchanges.cryptopia\" (ngModelChange)=\"onChange($event)\" >\n        <a  routerLink='/all-in-one/data/cryptopia'>   Cryptopia</a>\n        <input type=\"checkbox\" [(ngModel)]=\"exchanges.hitbtc\" (ngModelChange)=\"onChange($event)\" >\n        <a  routerLink='/all-in-one/data/hitbtc'>  HitBtc</a>\n        <!--<ng-container *ngIf=\"!!(isLoggedIn$ | async)\">-->\n        <a  routerLink='/all-in-one/balances'> Balances</a>\n     <!--   </ng-container>-->\n\n    </nav>\n    <nav   class=\"right\">\n        <a  class=\"btn\" (click)=\"onLoginClick()\"> Login</a>\n        <a  class=\"btn\" (click)=\"onLogoutClick()\">Logout</a>\n    </nav>\n    <router-outlet></router-outlet>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/all-in-one/all-main/all-main.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AllMainComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__all_coins_service__ = __webpack_require__("../../../../../src/app/all-in-one/all-coins.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_app_storage_service__ = __webpack_require__("../../../../../src/app/services/app-storage.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
 var AllMainComponent = (function () {
-    function AllMainComponent() {
+    function AllMainComponent(allConsService, sorage) {
+        this.allConsService = allConsService;
+        this.sorage = sorage;
+        this.exchanges = {
+            bittrex: true,
+            poloniex: true,
+            novaexchange: false,
+            cryptopia: true,
+            hitbtc: false,
+        };
+        var str = this.sorage.getItem('exchanges');
+        if (str)
+            this.exchanges = JSON.parse(str);
+        allConsService.setActiveExchanges(this.exchanges);
     }
     AllMainComponent.prototype.ngOnInit = function () {
     };
     AllMainComponent.prototype.onLoginClick = function () {
+    };
+    AllMainComponent.prototype.onChange = function (evt) {
+        console.log(this.exchanges);
+        this.sorage.setItem('exchanges', JSON.stringify(this.exchanges));
+        this.allConsService.filterCoins();
     };
     AllMainComponent.prototype.onLogoutClick = function () {
     };
@@ -304,9 +538,10 @@ var AllMainComponent = (function () {
             template: __webpack_require__("../../../../../src/app/all-in-one/all-main/all-main.component.html"),
             styles: [__webpack_require__("../../../../../src/app/all-in-one/all-main/all-main.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__all_coins_service__["a" /* AllCoinsService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_app_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_app_storage_service__["a" /* StorageService */]) === "function" && _b || Object])
     ], AllMainComponent);
     return AllMainComponent;
+    var _a, _b;
 }());
 
 //# sourceMappingURL=all-main.component.js.map
@@ -334,7 +569,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/all-in-one/all-overview/all-overview.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n\n    <div>\n        <h3>{{title}} Summary </h3> <small *ngIf=\"marketsAr\"> Total {{marketsAr.length}}</small>\n        <div>\n            <md-checkbox  checked=\"true\" (change)=\"onSelectedChange($event)\" >Selected Only</md-checkbox>\n\n            <md-checkbox *ngFor=\"let currency of baseCurrencies\" checked=\"true\" (change)=\"onChangeBase($event, currency)\" >{{currency}}</md-checkbox>\n\n        </div>\n\n\n        <table>\n            <tr class=\"small\">\n                <th>Name</th>\n\n                <th>Last</th>\n                <th>High</th>\n                <th>Low</th>\n\n                <th>Bid</th>\n                <th>Ask</th>\n                <th>Prev Day</th>\n\n                <th>Volume</th>\n                <th>Base Vol</th>\n                <th>To Buy</th>\n                <th>To Sell</th>\n\n                <!-- <th>Time</th>-->\n\n                <!--  <th>Sponsored</th>\n                  <th>Created</th>\n                  <th>Notice</th>-->\n            </tr>\n            <tr *ngFor=\"let market of marketsAr\">\n                <td><div class=\"w100 small\"><a (click)=\"onChartClick(market)\" class=\"fa fa-line-chart\"></a> {{market.pair}}</div></td>\n\n                <td>{{market.usLast}}</td>\n                <td>{{market.usHigh}}</td>\n                <td>{{market.usLow}}</td>\n\n\n                <td>{{market.usBid}}</td>\n                <td>{{market.usAsk}}</td>\n                <td>{{market.usPrevDay}}</td>\n\n                <td>{{market.dVolume}}</td>\n                <td>{{market.dBaseVolume}}</td>\n\n                <td>{{market.OpenBuyOrders}}</td>\n                <td>{{market.OpenSellOrders}}</td>\n\n\n                <!-- <td><small>{{market.TimeStamp}}</small></td>-->\n\n                <!--  <td>{{market.IsSponsored}}</td>\n                  <td class=\"my-timestamp\"><div>{{market.Created}}</div></td>\n                  <td class=\"notice\">{{market.Notice}}</td>-->\n            </tr>\n        </table>\n\n\n\n    </div>\n\n</div>\n"
+module.exports = "<div>\n\n    <div>\n        <h3>{{title}} Summary </h3> <small *ngIf=\"marketsAr\"> Total {{marketsAr.length}}</small>\n\n        <img  *ngIf=\"isProgress\" class=\"w2\" src=\"assets/img/spinner.gif\"/>\n\n        <div>\n            <md-checkbox  checked=\"true\" (change)=\"onSelectedChange($event)\" >Selected Only</md-checkbox>\n\n            <md-checkbox *ngFor=\"let currency of baseCurrencies\" checked=\"true\" (change)=\"onChangeBase($event, currency)\" >{{currency}}</md-checkbox>\n\n        </div>\n\n        <table>\n            <tr class=\"small\">\n                <th>Name</th>\n\n                <th>Last</th>\n                <th>High</th>\n                <th>Low</th>\n\n                <th>Bid</th>\n                <th>Ask</th>\n                <th>Prev Day</th>\n\n                <th>Volume</th>\n                <th>Base Vol</th>\n                <th>To Buy</th>\n                <th>To Sell</th>\n\n                <!-- <th>Time</th>-->\n\n                <!--  <th>Sponsored</th>\n                  <th>Created</th>\n                  <th>Notice</th>-->\n            </tr>\n            <tr *ngFor=\"let market of marketsAr\">\n                <td><div class=\"w100 small\"><a (click)=\"onChartClick(market)\" class=\"fa fa-line-chart\"></a> {{market.pair}}</div></td>\n\n                <td>{{market.usLast}}</td>\n                <td>{{market.usHigh}}</td>\n                <td>{{market.usLow}}</td>\n\n\n                <td>{{market.usBid}}</td>\n                <td>{{market.usAsk}}</td>\n                <td>{{market.usPrevDay}}</td>\n\n                <td>{{market.dVolume}}</td>\n                <td>{{market.dBaseVolume}}</td>\n\n                <td>{{market.OpenBuyOrders}}</td>\n                <td>{{market.OpenSellOrders}}</td>\n\n\n                <!-- <td><small>{{market.TimeStamp}}</small></td>-->\n\n                <!--  <td>{{market.IsSponsored}}</td>\n                  <td class=\"my-timestamp\"><div>{{market.Created}}</div></td>\n                  <td class=\"notice\">{{market.Notice}}</td>-->\n            </tr>\n        </table>\n\n\n\n    </div>\n\n</div>\n"
 
 /***/ }),
 
@@ -374,6 +609,9 @@ var AllOverviewComponent = (function () {
         this.selected = this.storage.getMCSelected();
         this.allService.currentMarketsAr$.subscribe(function (res) {
             //console.log(res);
+            if (!res)
+                return;
+            _this.isProgress = false;
             _this.title = _this.allService.currentExchange.config.name;
             _this.fullDataAr = __WEBPACK_IMPORTED_MODULE_3_lodash__["sortBy"](res, 'pair');
             // this.baseCurrencies =[];
@@ -384,7 +622,8 @@ var AllOverviewComponent = (function () {
         });
         this.route.params.subscribe(function (params) {
             console.log(params);
-            _this.allService.setCurrent(params.exchange);
+            _this.isProgress = true;
+            _this.allService.setCurrentExchangeById(params.exchange);
             /* this.allService.getAllExchanges().subscribe(all=>{
                if(!all) return;
        
@@ -441,6 +680,112 @@ var AllOverviewComponent = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/all-in-one/all-search/all-search.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "md-spinner {\r\n    float: left;\r\n    width: 24px;\r\n    height: 24px;\r\n    margin: 5px 10px 0px -10px;\r\n}\r\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/all-in-one/all-search/all-search.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n    <section>\n\n        <md-input-container>\n            <input [(ngModel)]=\"currentCoin\"  mdInput  placeholder=\"Search\" name=\"search\" >\n        </md-input-container>\n\n        <button color=\"accent\" md-raised-button  (click)=\"onSearchCoinClick()\" title=\"Search Coin\">\n            <md-spinner *ngIf=\"isProgress\" mode=\"indeterminate\"></md-spinner>\n            <span class=\"fa fa-search\"></span>\n        </button>\n       <!-- <img class=\"w3\" src=\"assets/img/spinner.gif\" *ngIf=\"isProgress\">-->\n\n        <md-select placeholder=\"Select Coin\" (change)=\"onCoinSelectChanged($event)\">\n            <md-option *ngFor=\"let coin of allCoins\" [value]=\"coin\">\n                {{coin}}\n            </md-option>\n        </md-select>\n\n\n        <table *ngIf=\"currentMC\">\n            <tbody>\n            <tr>\n                <td>Rank</td>\n                <td>Graph</td>\n                <td>Symbol</td>\n                <td>Name</td>\n                <td>1h%</td>\n                <td>24h%</td>\n                <td>7 days%</td>\n                <td>$US</td>\n            </tr>\n            <tr>\n                <td>{{currentMC.rank}}</td>\n                <td><a href=\"https://coinmarketcap.com/currencies/{{currentMC.id}}\" class=\"btn fa fa-line-chart\" target=\"_blank\"></a></td>\n                <td>{{currentMC.symbol}}</td>\n                <td>{{currentMC.name}}</td>\n                <td>{{currentMC.percent_change_1h}}</td>\n                <td>{{currentMC.percent_change_24h}}</td>\n                <td>{{currentMC.percent_change_7d}}</td>\n                <td>{{currentMC.price_usd}}</td>\n            </tr>\n\n            </tbody>\n\n        </table>\n\n    </section>\n    <br/>\n\n    <section>\n        <table>\n            <tbody>\n            <tr class=\"small\">\n                <th>Name</th>\n                <th>Market</th>\n\n                <th>Last</th>\n                <th>High</th>\n                <th>Low</th>\n\n                <th>Bid</th>\n                <th>Ask</th>\n                <th>Prev Day</th>\n\n                <th>Volume</th>\n                <th>Base Vol</th>\n                <th>To Buy</th>\n                <th>To Sell</th>\n            </tr>\n            <tr *ngFor=\"let market of searchResult\">\n\n                <td><div class=\"w100 small\">{{market.pair}}</div></td>\n\n                <td><div class=\"w5 ell\">{{market.exchange}}</div></td>\n                <td>{{market.usLast}}</td>\n                <td>{{market.usHigh}}</td>\n                <td>{{market.usLow}}</td>\n\n\n                <td>{{market.usBid}}</td>\n                <td>{{market.usAsk}}</td>\n                <td>{{market.usPrevDay}}</td>\n\n                <td>{{market.dVolume}}</td>\n                <td>{{market.dBaseVolume}}</td>\n\n                <td>{{market.OpenBuyOrders}}</td>\n                <td>{{market.OpenSellOrders}}</td>\n\n            </tr>\n            </tbody>\n        </table>\n\n\n\n    </section>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/all-in-one/all-search/all-search.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AllSearchComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__all_coins_service__ = __webpack_require__("../../../../../src/app/all-in-one/all-coins.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__market_cap_market_cap_service__ = __webpack_require__("../../../../../src/app/market-cap/market-cap.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var AllSearchComponent = (function () {
+    function AllSearchComponent(route, service, marketCap) {
+        this.route = route;
+        this.service = service;
+        this.marketCap = marketCap;
+    }
+    AllSearchComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.service.allCoins$.subscribe(function (res) {
+            if (res)
+                _this.allCoins = res;
+        });
+        this.service.serachResults$.subscribe(function (res) {
+            if (!res)
+                return;
+            _this.isProgress = false;
+            _this.searchResult = res;
+        });
+        this.currentCoin = this.route.snapshot.params.coin;
+        this.seachCoin();
+    };
+    AllSearchComponent.prototype.seachCoin = function () {
+        var _this = this;
+        if (!this.currentCoin)
+            return;
+        this.marketCap.getAllCoinsData().subscribe(function (data) {
+            if (!data)
+                return;
+            _this.currentMC = data[_this.currentCoin];
+        });
+        this.isProgress = true;
+        this.service.seachCoin(this.currentCoin);
+    };
+    AllSearchComponent.prototype.onChartClick = function (market) {
+        console.log(market);
+    };
+    AllSearchComponent.prototype.onSearchCoinClick = function () {
+        this.seachCoin();
+    };
+    AllSearchComponent.prototype.onCoinSelectChanged = function (evt) {
+        //  console.log(evt)
+        this.currentCoin = evt.value;
+    };
+    AllSearchComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+            selector: 'app-all-search',
+            template: __webpack_require__("../../../../../src/app/all-in-one/all-search/all-search.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/all-in-one/all-search/all-search.component.css")]
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__all_coins_service__["a" /* AllCoinsService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__market_cap_market_cap_service__["a" /* MarketCapService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__market_cap_market_cap_service__["a" /* MarketCapService */]) === "function" && _c || Object])
+    ], AllSearchComponent);
+    return AllSearchComponent;
+    var _a, _b, _c;
+}());
+
+//# sourceMappingURL=all-search.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/all-in-one/coin-sercice-base.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -461,7 +806,7 @@ var CoinSerciceBase = (function () {
         this.marketCapData = marketCapData;
         this.http = http;
         this.storage = storage;
-        console.log(config);
+        // console.log(config);
         this.marketsArSub = new __WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__["BehaviorSubject"](null);
         this.marketsAr$ = this.marketsArSub.asObservable();
         this.marketsSub = new __WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__["BehaviorSubject"](null);
@@ -471,12 +816,14 @@ var CoinSerciceBase = (function () {
         this.numMarketsSub = new __WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__["BehaviorSubject"](0);
         this.isLogedInSub = new __WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__["BehaviorSubject"](false);
         this.isLoggedIn$ = this.isLogedInSub.asObservable();
+        this.serachResultsSub = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
+        this.serachResults$ = this.serachResultsSub.asObservable();
         setTimeout(function () { return _this.autoLogin(); }, 3000);
     }
     CoinSerciceBase.prototype.autoLogin = function () {
         if (!this.storage.salt)
             return;
-        console.log('autologin ' + this.config.uid);
+        // console.log('autologin ' + this.config.uid);
         var str = this.storage.getItem(this.config.uid + 'credetials', true);
         if (str) {
             var credentials = JSON.parse(str);
@@ -497,21 +844,51 @@ var CoinSerciceBase = (function () {
         this.password = password;
         this.isLogedInSub.next(true);
     };
-    CoinSerciceBase.prototype._searchCoin = function (symbol, ar, isBase) {
-        return ar.filter(function (item) {
-            if (isBase)
-                return item.base === symbol;
-            else
-                return item.coin === symbol;
-        });
-    };
     CoinSerciceBase.prototype.searchCoin = function (symbol, isBase) {
-        return this.getAllMarketsAr().map(function (ar) {
-            return ar.filter(function (item) {
+        var _this = this;
+        console.log(this.config.name + ' serach ' + symbol);
+        if (!this.sCb) {
+            this.sCb = this.marketsAr$.subscribe(function (ar) {
+                if (!ar)
+                    return;
+                ar = ar.filter(function (item) {
+                    if (isBase)
+                        return item.base === symbol;
+                    else
+                        return item.coin === symbol;
+                });
+                //  console.log(ar);
+                _this.serachResults = ar;
+                _this.serachResultsSub.next(ar);
+            });
+        }
+        else {
+            var ar = this.marketsAr.filter(function (item) {
                 if (isBase)
                     return item.base === symbol;
                 else
                     return item.coin === symbol;
+            });
+            // console.log(ar);
+            this.serachResults = ar;
+            this.serachResultsSub.next(ar);
+        }
+        /*console.log(this.config.name+ ' serach ' + symbol);
+         this.getAllMarketsAr().map(ar=>{
+           console.log(this.config.name, ar);
+           if(!ar) return null;
+    
+    
+    
+    
+         })*/
+    };
+    CoinSerciceBase.prototype.getCoins = function () {
+        return this.getAllMarketsAr().map(function (ar) {
+            if (!ar)
+                return null;
+            return ar.map(function (item) {
+                return item.coin;
             });
         });
     };
@@ -521,7 +898,7 @@ var CoinSerciceBase = (function () {
         var indexed = {};
         var baseCoins = [];
         var marketCap = this.marketCapData;
-        console.log(result);
+        console.log('result ' + this.config.name);
         switch (this.config.uid) {
             case 'bittrex':
                 __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].bittrexMarkets(marketsAr, indexed, baseCoins, result.result, marketCap);
@@ -2612,6 +2989,7 @@ var Mappers = (function () {
             if (base.indexOf(market.base) === -1)
                 base.push(market.base);
             market.coin = item.currency;
+            //market.marketCap = marketCap[market.coin];
             market.pair = item.marketname;
             market.id = item.marketname;
             market.exchange = 'novaexchange';
@@ -2627,13 +3005,8 @@ var Mappers = (function () {
             var mcBase = marketCap[market.base];
             //if(!mcBase) console.warn(' no base price '+market.base +'  market name'+item.marketname)
             var basePrice = mcBase ? mcBase.price_usd : 0;
-            Mappers.mapDisplayValues(market, basePrice, 4);
             var mc = marketCap[market.coin];
-            if (!mc) {
-                // console.log('no mc for '+market.coin);
-            }
-            else
-                market.usMC = mc.price_usd.toFixed(2);
+            Mappers.mapDisplayValues(market, basePrice, 4, mc);
             indexed[market.pair] = market;
             marketsAr.push(market);
         });
@@ -2660,7 +3033,7 @@ var Mappers = (function () {
             market.PrevDay = (+data.high24hr + +data.low24hr) / 2;
             var mcBase = marketCap[market.base];
             var basePrice = mcBase ? mcBase.price_usd : 1;
-            Mappers.mapDisplayValues(market, basePrice, 4);
+            Mappers.mapDisplayValues(market, basePrice, 4, marketCap[market.coin]);
             var mc = marketCap[market.coin];
             if (!mc) {
                 //console.log('no mc for ' + market.coin);
@@ -2696,14 +3069,7 @@ var Mappers = (function () {
                 var mcBase = marketCap[market.base];
                 basePrice = mcBase ? mcBase.price_usd : 0;
             }
-            Mappers.mapDisplayValues(market, basePrice, 4);
-            var mc = marketCap[market.coin];
-            if (!mc) {
-                //console.log('no mc for ' + market.coin);
-                market.usMC = '';
-            }
-            else
-                market.usMC = mc.price_usd.toFixed(2);
+            Mappers.mapDisplayValues(market, basePrice, 4, marketCap[market.coin]);
             marketsAr.push(market);
         }
     };
@@ -2715,6 +3081,7 @@ var Mappers = (function () {
             if (base.indexOf(market.base) === -1)
                 base.push(market.base);
             market.coin = ar[1];
+            //market.marketCap = marketCap[market.coin];
             market.pair = ar.join('_');
             market.id = item.MarketName;
             market.exchange = 'bittrex';
@@ -2730,13 +3097,7 @@ var Mappers = (function () {
             market.OpenSellOrders = item.OpenSellOrders;
             var mcBase = marketCap[market.base];
             var basePrice = mcBase ? mcBase.price_usd : 1;
-            Mappers.mapDisplayValues(market, basePrice, 4);
-            var mc = marketCap[market.coin];
-            if (!mc) {
-                //  console.log('no mc for '+market.coin);
-            }
-            else
-                market.usMC = mc.price_usd.toFixed(2);
+            Mappers.mapDisplayValues(market, basePrice, 4, marketCap[market.coin]);
             indexed[market.pair] = market;
             marketsAr.push(market);
         });
@@ -2764,19 +3125,12 @@ var Mappers = (function () {
             market.OpenSellOrders = item.SellVolume;
             var mcBase = marketCap[market.base];
             var basePrice = mcBase ? mcBase.price_usd : 1;
-            Mappers.mapDisplayValues(market, basePrice, 4);
-            var mc = marketCap[market.coin];
-            if (!mc) {
-                //  console.log('no mc for '+market.coin);
-                market.usMC = '';
-            }
-            else
-                market.usMC = mc.price_usd.toFixed(2);
+            Mappers.mapDisplayValues(market, basePrice, 4, marketCap[market.coin]);
             indexed[market.pair] = market;
             marketsAr.push(market);
         });
     };
-    Mappers.mapDisplayValues = function (item, basePrice, prec) {
+    Mappers.mapDisplayValues = function (item, basePrice, prec, marketCap) {
         var base = basePrice;
         item.dVolume = (item.Volume / 1e6).toFixed(3) + 'M';
         item.dBaseVolume = item.BaseVolume.toFixed(2);
@@ -2786,6 +3140,12 @@ var Mappers = (function () {
         item.usHigh = (item.High * base).toPrecision(prec);
         item.usLast = (item.Last * base).toPrecision(prec);
         item.usPrevDay = (item.PrevDay * base).toPrecision(prec);
+        if (marketCap) {
+            item.percent_change_7d = marketCap.percent_change_7d;
+            item.percent_change_1h = marketCap.percent_change_1h;
+            item.percent_change_24h = marketCap.percent_change_24h;
+            item.usMC = marketCap.price_usd.toFixed(3);
+        }
     };
     return Mappers;
 }());
@@ -2802,7 +3162,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "md-spinner {\r\n    float: left;\r\n    width: 24px;\r\n    height: 24px;\r\n    margin: 5px 10px 0px -10px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -7718,7 +8078,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/market-cap/all-coins-table/all-coins-table.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <h4>\n       All coins\n    </h4>\n         <small *ngIf=\"allCoinsData\">Total: {{allCoinsData.length}}</small>\n    <small>Average 1h: </small> <span  [ngClass]=\"average1h>0?'green':'red'\">{{average1h}}%</span>\n    <small> 24h: </small> <span [ngClass]=\"average24h>0?'green':'red'\">{{average24h}}%</span>\n    <small> 7d : </small> <span [ngClass]=\"average7d>0?'green':'red'\">{{average7d}}%</span>\n\n    <section>\n        <table>\n            <tr>\n                <th class=\"btn\" (click)=\"onClickHeader('rank')\">Rank</th>\n                <th>#</th>\n                <th class=\"btn\" (click)=\"onClickHeader('symbol')\">Symbol</th>\n                <th>Name</th>\n                <th class=\"btn\" (click)=\"onClickHeader('percent_change_1h')\">1h%</th>\n                <th class=\"btn\" (click)=\"onClickHeader('percent_change_24h')\" >24h%</th>\n                <th class=\"btn\" (click)=\"onClickHeader('percent_change_7d')\">7 days%</th>\n                <th class=\"btn\" (click)=\"onClickHeader('price_usd')\">$US</th>\n\n\n                <th (click)=\"onClickHeader('market_cap_usd')\">market cap usd</th>\n\n            </tr>\n\n            <tbody *ngFor=\"let item of allCoinsData\">\n            <tr>\n                <td>{{item.rank}}</td>\n                <td><input type=\"checkbox\"  (change)=\"onCoinSelected($event, item)\" [checked]=\"item.selected\"   name=\"selected\"/></td>\n                <td>{{item.symbol}}</td>\n                <td class=\"w120 ell\">{{item.name}}</td>\n\n                <td [ngClass]=\"item.percent_change_1h>0?'green':'red'\">{{item.percent_change_1h}}</td>\n                <td [ngClass]=\"item.percent_change_24h>0?'green':'red'\">{{item.percent_change_24h}}</td>\n                <td [ngClass]=\"item.percent_change_7d>0?'green':'red'\">{{item.percent_change_7d}}</td>\n                <td>{{item.price_usd}}</td>\n                <td>{{item.market_cap_usd}}</td>\n\n\n            </tr>\n\n            </tbody>\n        </table>\n    </section>\n</div>\n\n"
+module.exports = "<div>\n    <h4>\n       All coins\n    </h4>\n         <small *ngIf=\"allCoinsData\">Total: {{allCoinsData.length}}</small>\n    <small>Average 1h: </small> <span  [ngClass]=\"average1h>0?'green':'red'\">{{average1h}}%</span>\n    <small> 24h: </small> <span [ngClass]=\"average24h>0?'green':'red'\">{{average24h}}%</span>\n    <small> 7d : </small> <span [ngClass]=\"average7d>0?'green':'red'\">{{average7d}}%</span>\n\n    <section>\n        <table>\n            <tr>\n                <th class=\"btn\" (click)=\"onClickHeader('rank')\">Rank</th>\n                <th>#</th>\n                <th class=\"btn\" (click)=\"onClickHeader('symbol')\">Symbol</th>\n                <th>Name</th>\n                <th class=\"btn\" (click)=\"onClickHeader('percent_change_1h')\">1h%</th>\n                <th class=\"btn\" (click)=\"onClickHeader('percent_change_24h')\" >24h%</th>\n                <th class=\"btn\" (click)=\"onClickHeader('percent_change_7d')\">7 days%</th>\n                <th class=\"btn\" (click)=\"onClickHeader('price_usd')\">$US</th>\n\n\n              <!--  <th (click)=\"onClickHeader('market_cap_usd')\">market cap usd</th>-->\n\n            </tr>\n\n            <tbody *ngFor=\"let item of allCoinsData\">\n            <tr>\n                <td>{{item.rank}}</td>\n                <td><input type=\"checkbox\"  (change)=\"onCoinSelected($event, item)\" [checked]=\"item.selected\"   name=\"selected\"/></td>\n                <td>{{item.symbol}}</td>\n                <td class=\"w120 ell\">{{item.name}}</td>\n\n                <td [ngClass]=\"item.percent_change_1h>0?'green':'red'\">{{item.percent_change_1h}}</td>\n                <td [ngClass]=\"item.percent_change_24h>0?'green':'red'\">{{item.percent_change_24h}}</td>\n                <td [ngClass]=\"item.percent_change_7d>0?'green':'red'\">{{item.percent_change_7d}}</td>\n                <td>{{item.price_usd}}</td>\n                <!--<td>{{item.market_cap_usd}}</td>-->\n\n\n            </tr>\n\n            </tbody>\n        </table>\n    </section>\n</div>\n\n"
 
 /***/ }),
 

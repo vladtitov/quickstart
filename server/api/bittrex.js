@@ -43,19 +43,19 @@ const APIs = [
         api: '/api/bittrex/markets',
         url: 'https://bittrex.com/api/v1.1/public/getmarkets',
         name: 'markets',
-        cache: '1 hour'
+        cache: '10 minutes'
     },
     {
         api: '/api/bittrex/marketsummaries',
         url: 'https://bittrex.com/api/v1.1/public/getmarketsummaries',
         name: 'recent trades ',
-        cache: '1 hour'
+        cache: '10 minutes'
     },
     {
         api: '/api/bittrex/currencies',
         url: 'https://bittrex.com/api/v1.1/public/getcurrencies',
         name: 'markets',
-        cache: '1 hour'
+        cache: '10 minutes'
     },
     {
         api: '/api/bittrex/market/:market',

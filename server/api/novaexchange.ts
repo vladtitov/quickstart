@@ -48,6 +48,6 @@ const APIs=[
     api:'/api/novaexchange/markets',
     url:'https://novaexchange.com/remote/v2/markets/',
     name:'market',
-    cache:'1 hour'
+    cache:'10 minutes'
   }
 ];

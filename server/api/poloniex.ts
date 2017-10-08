@@ -74,21 +74,21 @@ const APIs = [
   {
     name: 'returnTicker',
     api: '/api/poloniex/returnTicker',
-    cache:'1 hour',
+    cache:'10 minutes',
     url: 'https://poloniex.com/public?command=returnTicker'
 
   },
   {
     name: 'currencies',
     api: '/api/poloniex/currencies',
-    cache:'1 hour',
+    cache:'10 minutes',
     url: 'https://poloniex.com/public?command=returnCurrencies'
 
   },
   {
     name: 'return24hVolume',
     api: '/api/poloniex/volume24h',
-    cache:'1 hour',
+    cache:'10 minutes',
     url: 'https://poloniex.com/public?command=return24hVolume'
 
   },
@@ -102,7 +102,7 @@ const APIs = [
   {
     name: 'tradeHistory',
     api: '/api/poloniex/tradeHistory/:currencyPair/:start/:end',
-    cache:'1 hour',
+    cache:'10 minutes',
     url: ' https://poloniex.com/public?command=returnTradeHistory&'
 
   }

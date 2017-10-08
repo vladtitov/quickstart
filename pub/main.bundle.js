@@ -156,7 +156,7 @@ var AllCoinsService = (function () {
     AllCoinsService.prototype.filterCoins = function () {
         var self = this;
         var out = [];
-        var activeExchanges = this.activeExchanges;
+        var activeExchanges = this.getActiveExchanges();
         var i = 0;
         this.apis.forEach(function (service) {
             if (activeExchanges[service.config.uid]) {
@@ -236,6 +236,23 @@ var AllCoinsService = (function () {
     };
     AllCoinsService.prototype.setActiveExchanges = function (exchanges) {
         this.activeExchanges = exchanges;
+        this.storage.setItem('exchanges', JSON.stringify(this.activeExchanges));
+    };
+    AllCoinsService.prototype.getActiveExchanges = function () {
+        if (!this.activeExchanges) {
+            var str = this.storage.getItem('exchanges');
+            if (str)
+                this.activeExchanges = JSON.parse(str);
+            else
+                this.activeExchanges = {
+                    bittrex: true,
+                    poloniex: true,
+                    novaexchange: false,
+                    cryptopia: true,
+                    hitbtc: false,
+                };
+        }
+        return this.activeExchanges;
     };
     AllCoinsService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
@@ -492,7 +509,6 @@ module.exports = "<div>\n    <nav  class=\"btns-row\">\n\n        <a  routerLink
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AllMainComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__all_coins_service__ = __webpack_require__("../../../../../src/app/all-in-one/all-coins.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_app_storage_service__ = __webpack_require__("../../../../../src/app/services/app-storage.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -504,30 +520,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-
 var AllMainComponent = (function () {
-    function AllMainComponent(allConsService, sorage) {
+    function AllMainComponent(allConsService
+        // private sorage:StorageService
+    ) {
         this.allConsService = allConsService;
-        this.sorage = sorage;
-        this.exchanges = {
-            bittrex: true,
-            poloniex: true,
-            novaexchange: false,
-            cryptopia: true,
-            hitbtc: false,
-        };
-        var str = this.sorage.getItem('exchanges');
-        if (str)
-            this.exchanges = JSON.parse(str);
-        allConsService.setActiveExchanges(this.exchanges);
+        this.exchanges = {};
     }
     AllMainComponent.prototype.ngOnInit = function () {
+        this.exchanges = this.allConsService.getActiveExchanges();
     };
     AllMainComponent.prototype.onLoginClick = function () {
     };
     AllMainComponent.prototype.onChange = function (evt) {
         console.log(this.exchanges);
-        this.sorage.setItem('exchanges', JSON.stringify(this.exchanges));
+        this.allConsService.setActiveExchanges(this.exchanges);
         this.allConsService.filterCoins();
     };
     AllMainComponent.prototype.onLogoutClick = function () {
@@ -538,10 +545,10 @@ var AllMainComponent = (function () {
             template: __webpack_require__("../../../../../src/app/all-in-one/all-main/all-main.component.html"),
             styles: [__webpack_require__("../../../../../src/app/all-in-one/all-main/all-main.component.css")]
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__all_coins_service__["a" /* AllCoinsService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_app_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_app_storage_service__["a" /* StorageService */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__all_coins_service__["a" /* AllCoinsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__all_coins_service__["a" /* AllCoinsService */]) === "function" && _a || Object])
     ], AllMainComponent);
     return AllMainComponent;
-    var _a, _b;
+    var _a;
 }());
 
 //# sourceMappingURL=all-main.component.js.map

@@ -254,6 +254,12 @@ var AllCoinsService = (function () {
         }
         return this.activeExchanges;
     };
+    AllCoinsService.prototype.getMarketUrl = function (market) {
+        var service = this.apis.find(function (item) {
+            return item.config.uid === market.exchange;
+        });
+        return service.getMarketUrl(market);
+    };
     AllCoinsService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
         __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__market_cap_market_cap_service__["a" /* MarketCapService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__market_cap_market_cap_service__["a" /* MarketCapService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_6__services_app_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_app_storage_service__["a" /* StorageService */]) === "function" && _c || Object])
@@ -371,7 +377,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/all-in-one/all-gainers-losers/all-gainers-losers.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n\n    <section>\n        <h3>Gainers Loders <small *ngIf=\"sortedMarkets\">Total: {{sortedMarkets.length}}</small></h3>\n    </section>\n    <section>\n        <table>\n            <tbody>\n            <tr>\n                <th class=\"btn\" (click)=\"onSortClick('symbol')\">Symbol</th>\n                <th>Name</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_1h')\">1h%</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_24h')\" >24h%</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_7d')\">7 days%</th>\n                <th>Graph</th>\n            </tr>\n\n            <tr *ngFor=\"let market of sortedMarkets\">\n                <td> <a routerLink='/all-in-one/search/{{market.symbol}}' class=\"btn\"> {{market.symbol}}</a> </td>\n                <td>{{market.name}}</td>\n                <td [ngClass]=\"market.percent_change_1h>0?'green':'red'\">{{market.percent_change_1h}}</td>\n                <td [ngClass]=\"market.percent_change_24h>0?'green':'red'\">{{market.percent_change_24h}}</td>\n                <td [ngClass]=\"market.percent_change_7d>0?'green':'red'\">{{market.percent_change_7d}}</td>\n                <td> <a class=\"btn fa fa-line-chart\" href=\"https://coinmarketcap.com/currencies/{{market.id}}\" target=\"_blank\"></a></td>\n\n            </tr>\n            </tbody>\n        </table>\n    </section>\n</div>\n"
+module.exports = "<div>\n\n    <section>\n        <h3>Gainers Loders <small *ngIf=\"sortedMarkets\">Total: {{sortedMarkets.length}}</small></h3>\n    </section>\n    <section>\n        <table>\n            <tbody>\n            <tr>\n                <th class=\"btn\" (click)=\"onSortClick('symbol')\">Symbol</th>\n                <th>Name</th>\n                <th>US</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_1h')\">1h%</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_24h')\" >24h%</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_7d')\">7 days%</th>\n                <th>Graph</th>\n            </tr>\n\n            <tr *ngFor=\"let coin of sortedMarkets\">\n                <td> <a routerLink='/all-in-one/search/{{coin.symbol}}' class=\"btn\"> {{coin.symbol}}</a> </td>\n                <td>{{coin.name}}</td>\n                <td>{{coin.price_usd}}</td>\n                <td [ngClass]=\"coin.percent_change_1h>0?'green':'red'\">{{coin.percent_change_1h}}</td>\n                <td [ngClass]=\"coin.percent_change_24h>0?'green':'red'\">{{coin.percent_change_24h}}</td>\n                <td [ngClass]=\"coin.percent_change_7d>0?'green':'red'\">{{coin.percent_change_7d}}</td>\n                <td> <a class=\"btn fa fa-line-chart\" href=\"https://coinmarketcap.com/currencies/{{coin.id}}\" target=\"_blank\"></a></td>\n\n            </tr>\n            </tbody>\n        </table>\n    </section>\n</div>\n"
 
 /***/ }),
 
@@ -576,7 +582,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/all-in-one/all-overview/all-overview.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n\n    <div>\n        <h3>{{title}} Summary </h3> <small *ngIf=\"marketsAr\"> Total {{marketsAr.length}}</small>\n\n        <img  *ngIf=\"isProgress\" class=\"w2\" src=\"assets/img/spinner.gif\"/>\n\n        <div>\n            <md-checkbox  checked=\"true\" (change)=\"onSelectedChange($event)\" >Selected Only</md-checkbox>\n\n            <md-checkbox *ngFor=\"let currency of baseCurrencies\" checked=\"true\" (change)=\"onChangeBase($event, currency)\" >{{currency}}</md-checkbox>\n\n        </div>\n\n        <table>\n            <tr class=\"small\">\n                <th>Name</th>\n\n                <th>Last</th>\n                <th>High</th>\n                <th>Low</th>\n\n                <th>Bid</th>\n                <th>Ask</th>\n                <th>Prev Day</th>\n\n                <th>Volume</th>\n                <th>Base Vol</th>\n                <th>To Buy</th>\n                <th>To Sell</th>\n\n                <!-- <th>Time</th>-->\n\n                <!--  <th>Sponsored</th>\n                  <th>Created</th>\n                  <th>Notice</th>-->\n            </tr>\n            <tr *ngFor=\"let market of marketsAr\">\n                <td><div class=\"w100 small\"><a (click)=\"onChartClick(market)\" class=\"fa fa-line-chart\"></a> {{market.pair}}</div></td>\n\n                <td>{{market.usLast}}</td>\n                <td>{{market.usHigh}}</td>\n                <td>{{market.usLow}}</td>\n\n\n                <td>{{market.usBid}}</td>\n                <td>{{market.usAsk}}</td>\n                <td>{{market.usPrevDay}}</td>\n\n                <td>{{market.dVolume}}</td>\n                <td>{{market.dBaseVolume}}</td>\n\n                <td>{{market.OpenBuyOrders}}</td>\n                <td>{{market.OpenSellOrders}}</td>\n\n\n                <!-- <td><small>{{market.TimeStamp}}</small></td>-->\n\n                <!--  <td>{{market.IsSponsored}}</td>\n                  <td class=\"my-timestamp\"><div>{{market.Created}}</div></td>\n                  <td class=\"notice\">{{market.Notice}}</td>-->\n            </tr>\n        </table>\n\n\n\n    </div>\n\n</div>\n"
+module.exports = "<div>\n\n    <section>\n        <h3>{{title}} Summary </h3> <small *ngIf=\"marketsAr\"> Total {{marketsAr.length}}</small>\n\n        <img  *ngIf=\"isProgress\" class=\"w2\" src=\"assets/img/spinner.gif\"/>\n\n        <div>\n            <md-checkbox  checked=\"true\" (change)=\"onSelectedChange($event)\" >Selected Only</md-checkbox>\n\n            <md-checkbox *ngFor=\"let currency of baseCurrencies\" checked=\"true\" (change)=\"onChangeBase($event, currency)\" >{{currency}}</md-checkbox>\n\n        </div>\n    </section>\n    <section>\n        <table>\n            <tr class=\"small\">\n                <th>Name</th>\n                <th>$ MC</th>\n                <th>% 1h</th>\n                <th>% 24h</th>\n                <th>% 7d</th>\n                <th>Last</th>\n                <th>High</th>\n                <th>Low</th>\n\n                <th>Bid</th>\n                <th>Ask</th>\n                <th>Prev Day</th>\n\n                <th>Volume</th>\n                <th>Base Vol</th>\n                <th>To Buy</th>\n                <th>To Sell</th>\n\n                <!-- <th>Time</th>-->\n\n                <!--  <th>Sponsored</th>\n                  <th>Created</th>\n                  <th>Notice</th>-->\n            </tr>\n            <tr *ngFor=\"let market of marketsAr\">\n                <td>\n                    <div  class=\"small w100\">\n                        <a class=\"btn fa fa-line-chart\" href=\"https://coinmarketcap.com/currencies/{{market.coinId}}\" target=\"_blank\"></a>\n                        <a class=\"btn\" (click)=\"onMarketClick(market)\">{{market.pair}}</a>\n                    </div>\n\n                </td>\n\n                <td>{{market.usMC}}</td>\n\n                <td [ngClass]=\"market.percent_change_1h>0?'green':'red'\">{{market.percent_change_1h}}</td>\n                <td [ngClass]=\"market.percent_change_24h>0?'green':'red'\">{{market.percent_change_24h}}</td>\n                <td [ngClass]=\"market.percent_change_7d>0?'green':'red'\">{{market.percent_change_7d}}</td>\n\n                <td>{{market.usLast}}</td>\n                <td>{{market.usHigh}}</td>\n                <td>{{market.usLow}}</td>\n\n                <td>{{market.usBid}}</td>\n                <td>{{market.usAsk}}</td>\n\n\n                <td>{{market.usPrevDay}}</td>\n\n                <td>{{market.dVolume}}</td>\n                <td>{{market.dBaseVolume}}</td>\n\n                <td>{{market.OpenBuyOrders}}</td>\n                <td>{{market.OpenSellOrders}}</td>\n\n\n                <!-- <td><small>{{market.TimeStamp}}</small></td>-->\n\n                <!--  <td>{{market.IsSponsored}}</td>\n                  <td class=\"my-timestamp\"><div>{{market.Created}}</div></td>\n                  <td class=\"notice\">{{market.Notice}}</td>-->\n            </tr>\n        </table>\n\n\n    </section>\n\n</div>\n"
 
 /***/ }),
 
@@ -648,6 +654,12 @@ var AllOverviewComponent = (function () {
             this.selected = null;
         this.filterArr();
     };
+    AllOverviewComponent.prototype.onMarketClick = function (market) {
+        console.log(market);
+        var url = this.allService.getMarketUrl(market);
+        console.log(url);
+        window.open(url, '_blank');
+    };
     AllOverviewComponent.prototype.onChartClick = function (market) {
     };
     AllOverviewComponent.prototype.filterArr = function () {
@@ -708,7 +720,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/all-in-one/all-search/all-search.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <section>\n\n        <md-input-container>\n            <input [(ngModel)]=\"currentCoin\"  mdInput  placeholder=\"Search\" name=\"search\" >\n        </md-input-container>\n\n        <button color=\"accent\" md-raised-button  (click)=\"onSearchCoinClick()\" title=\"Search Coin\">\n            <md-spinner *ngIf=\"isProgress\" mode=\"indeterminate\"></md-spinner>\n            <span class=\"fa fa-search\"></span>\n        </button>\n       <!-- <img class=\"w3\" src=\"assets/img/spinner.gif\" *ngIf=\"isProgress\">-->\n\n        <md-select placeholder=\"Select Coin\" (change)=\"onCoinSelectChanged($event)\">\n            <md-option *ngFor=\"let coin of allCoins\" [value]=\"coin\">\n                {{coin}}\n            </md-option>\n        </md-select>\n\n\n        <table *ngIf=\"currentMC\">\n            <tbody>\n            <tr>\n                <td>Rank</td>\n                <td>Graph</td>\n                <td>Symbol</td>\n                <td>Name</td>\n                <td>1h%</td>\n                <td>24h%</td>\n                <td>7 days%</td>\n                <td>$US</td>\n            </tr>\n            <tr>\n                <td>{{currentMC.rank}}</td>\n                <td><a href=\"https://coinmarketcap.com/currencies/{{currentMC.id}}\" class=\"btn fa fa-line-chart\" target=\"_blank\"></a></td>\n                <td>{{currentMC.symbol}}</td>\n                <td>{{currentMC.name}}</td>\n                <td>{{currentMC.percent_change_1h}}</td>\n                <td>{{currentMC.percent_change_24h}}</td>\n                <td>{{currentMC.percent_change_7d}}</td>\n                <td>{{currentMC.price_usd}}</td>\n            </tr>\n\n            </tbody>\n\n        </table>\n\n    </section>\n    <br/>\n\n    <section>\n        <table>\n            <tbody>\n            <tr class=\"small\">\n                <th>Name</th>\n                <th>Market</th>\n\n                <th>Last</th>\n                <th>High</th>\n                <th>Low</th>\n\n                <th>Bid</th>\n                <th>Ask</th>\n                <th>Prev Day</th>\n\n                <th>Volume</th>\n                <th>Base Vol</th>\n                <th>To Buy</th>\n                <th>To Sell</th>\n            </tr>\n            <tr *ngFor=\"let market of searchResult\">\n\n                <td><div class=\"w100 small\">{{market.pair}}</div></td>\n\n                <td><div class=\"w5 ell\">{{market.exchange}}</div></td>\n                <td>{{market.usLast}}</td>\n                <td>{{market.usHigh}}</td>\n                <td>{{market.usLow}}</td>\n\n\n                <td>{{market.usBid}}</td>\n                <td>{{market.usAsk}}</td>\n                <td>{{market.usPrevDay}}</td>\n\n                <td>{{market.dVolume}}</td>\n                <td>{{market.dBaseVolume}}</td>\n\n                <td>{{market.OpenBuyOrders}}</td>\n                <td>{{market.OpenSellOrders}}</td>\n\n            </tr>\n            </tbody>\n        </table>\n\n\n\n    </section>\n</div>\n"
+module.exports = "<div>\n    <section>\n\n        <md-input-container>\n            <input [(ngModel)]=\"currentCoin\"  mdInput  placeholder=\"Search\" name=\"search\" >\n        </md-input-container>\n\n        <button color=\"accent\" md-raised-button  (click)=\"onSearchCoinClick()\" title=\"Search Coin\">\n            <md-spinner *ngIf=\"isProgress\" mode=\"indeterminate\"></md-spinner>\n            <span class=\"fa fa-search\"></span>\n        </button>\n       <!-- <img class=\"w3\" src=\"assets/img/spinner.gif\" *ngIf=\"isProgress\">-->\n\n        <md-select placeholder=\"Select Coin\" (change)=\"onCoinSelectChanged($event)\">\n            <md-option *ngFor=\"let coin of allCoins\" [value]=\"coin\">\n                {{coin}}\n            </md-option>\n        </md-select>\n\n\n        <table *ngIf=\"currentMC\">\n            <tbody>\n            <tr>\n                <td>Rank</td>\n                <td>Graph</td>\n                <td>Symbol</td>\n                <td>Name</td>\n                <td>$US</td>\n                <td>1h%</td>\n                <td>24h%</td>\n                <td>7days%</td>\n\n            </tr>\n            <tr>\n                <td>{{currentMC.rank}}</td>\n                <td><a href=\"https://coinmarketcap.com/currencies/{{currentMC.id}}\" class=\"btn fa fa-line-chart\" target=\"_blank\"></a></td>\n                <td>{{currentMC.symbol}}</td>\n                <td>{{currentMC.name}}</td>\n                <td>{{currentMC.price_usd}}</td>\n                <td>{{currentMC.percent_change_1h}}</td>\n                <td>{{currentMC.percent_change_24h}}</td>\n                <td>{{currentMC.percent_change_7d}}</td>\n            </tr>\n\n            </tbody>\n\n        </table>\n\n    </section>\n    <br/>\n\n    <section>\n        <table>\n            <tbody>\n            <tr class=\"small\">\n                <th>Name</th>\n                <th>Market</th>\n\n                <th>Last</th>\n                <th>High</th>\n                <th>Low</th>\n\n                <th>Bid</th>\n                <th>Ask</th>\n                <th>Prev Day</th>\n\n                <th>Volume</th>\n                <th>Base Vol</th>\n                <th>To Buy</th>\n                <th>To Sell</th>\n            </tr>\n            <tr *ngFor=\"let market of searchResult\">\n\n                <td><div class=\"w100 small\">{{market.pair}}</div></td>\n\n                <td><div class=\"w5 ell\">{{market.exchange}}</div></td>\n                <td>{{market.usLast}}</td>\n                <td>{{market.usHigh}}</td>\n                <td>{{market.usLow}}</td>\n\n\n                <td>{{market.usBid}}</td>\n                <td>{{market.usAsk}}</td>\n                <td>{{market.usPrevDay}}</td>\n\n                <td>{{market.dVolume}}</td>\n                <td>{{market.dBaseVolume}}</td>\n\n                <td>{{market.OpenBuyOrders}}</td>\n                <td>{{market.OpenSellOrders}}</td>\n\n            </tr>\n            </tbody>\n        </table>\n\n\n\n    </section>\n</div>\n"
 
 /***/ }),
 
@@ -943,6 +955,10 @@ var CoinSerciceBase = (function () {
         if (!this.markets)
             this.loadMarkets();
         return this.markets$;
+    };
+    CoinSerciceBase.prototype.getMarketUrl = function (market) {
+        var ar = market.pair.split('_');
+        return this.config.webMarket.replace('{{base}}', ar[0]).replace('{{coin}}', ar[1]);
     };
     return CoinSerciceBase;
 }());
@@ -3006,6 +3022,7 @@ var Mappers = (function () {
             market.Low = +item.low24h;
             market.Ask = +item.ask;
             market.Bid = +item.bid;
+            market.disabled = item.disabled;
             market.BaseVolume = +item.volume24h;
             market.change = +item.change24h;
             market.PrevDay = 0;
@@ -3037,6 +3054,7 @@ var Mappers = (function () {
             market.Ask = +data.lowestAsk;
             market.Bid = +data.highestBid;
             market.BaseVolume = +data.baseVolume;
+            market.disabled = data.isFrozen ? 1 : 0;
             market.PrevDay = (+data.high24hr + +data.low24hr) / 2;
             var mcBase = marketCap[market.base];
             var basePrice = mcBase ? mcBase.price_usd : 1;
@@ -3148,10 +3166,11 @@ var Mappers = (function () {
         item.usLast = (item.Last * base).toPrecision(prec);
         item.usPrevDay = (item.PrevDay * base).toPrecision(prec);
         if (marketCap) {
+            item.coinId = marketCap.id;
             item.percent_change_7d = marketCap.percent_change_7d;
             item.percent_change_1h = marketCap.percent_change_1h;
             item.percent_change_24h = marketCap.percent_change_24h;
-            item.usMC = marketCap.price_usd.toFixed(3);
+            item.usMC = marketCap.price_usd.toPrecision(4);
         }
     };
     return Mappers;
@@ -9284,31 +9303,36 @@ var ConfigApp = (function () {
                 uid: 'poloniex',
                 name: 'Poloniex',
                 urlMarkets: '/api/poloniex/returnTicker',
-                urlOrderBook: '/api/poloniex/orderBook/{{pair}}/{{depth}}'
+                urlOrderBook: '/api/poloniex/orderBook/{{pair}}/{{depth}}',
+                webMarket: 'https://poloniex.com/marginTrading#{{base}}_{{coin}}'
             },
             {
                 uid: 'bittrex',
                 name: 'Bittrex',
                 urlMarkets: '/api/bittrex/marketsummaries',
-                urlOrderBook: '/api/bittrex/getorderbook/{{pair}}/{{depth}}'
+                urlOrderBook: '/api/bittrex/getorderbook/{{pair}}/{{depth}}',
+                webMarket: 'https://bittrex.com/Market/Index?MarketName={{base}}-{{coin}}'
             },
             {
                 uid: 'novaexchange',
                 name: 'NovaExchange',
                 urlMarkets: '/api/novaexchange/markets',
-                urlOrderBook: '/api/novaexchange/getorderbook/{{pair}}/{{depth}}'
+                urlOrderBook: '/api/novaexchange/getorderbook/{{pair}}/{{depth}}',
+                webMarket: 'https://novaexchange.com/market/{{base}}_{{coin}}/'
             },
             {
                 uid: 'cryptopia',
                 name: 'Cryptopia',
                 urlMarkets: '/api/cryptopia/markets',
-                urlOrderBook: '/api/cryptopia/getorderbook/{{pair}}/{{depth}}'
+                urlOrderBook: '/api/cryptopia/getorderbook/{{pair}}/{{depth}}',
+                webMarket: 'https://www.cryptopia.co.nz/Exchange?market={{coin}}_{{base}}'
             },
             {
                 uid: 'hitbtc',
                 name: 'HitBTC',
                 urlMarkets: '/api/hitbtc/markets',
-                urlOrderBook: '/api/hitbtc/getorderbook/{{pair}}/{{depth}}'
+                urlOrderBook: '/api/hitbtc/getorderbook/{{pair}}/{{depth}}',
+                webMarket: 'https://hitbtc.com/exchange/{{base}}-to-{{coin}}'
             }
         ];
     }
@@ -10642,7 +10666,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/shared/sortable-table/sortable-table.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n        <table (click)=\"onTableclick($event)\">\n            <tbody>\n            <tr><td  colspan=\"8\" class=\"text-center\"> MarketCap</td></tr>\n            <tr>\n                <th class=\"btn\" (click)=\"onClickHeader('symbol')\">Symbol</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('rank')\">Rank</th>\n\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_1h')\">1h%</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_24h')\" >24h%</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_7d')\">7 days%</th>\n\n                <th  class=\"btn\" (click)=\"onClickHeader('price_usd')\">$US</th>\n                <th>Name</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('market_cap_usd')\">$ Cap</th>\n            </tr>\n\n            <tr *ngFor=\"let item of consAvailable\">\n\n                <td [attr.data]=\"item.symbol\" title=\"{{item.name}}\" class=\"btn\">{{item.symbol}}</td>\n                <td>{{item.rank}}</td>\n\n                <td [ngClass]=\"item.percent_change_1h>0?'dgreen':'dred'\">{{item.percent_change_1h}}</td>\n                <td [ngClass]=\"item.percent_change_24h>0?'dgreen':'dred'\">{{item.percent_change_24h}}</td>\n                <td [ngClass]=\"item.percent_change_7d>0?'dgreen':'dred'\">{{item.percent_change_7d}}</td>\n\n                <td class=\"small \" title=\"{{item.price_usd}}\">{{item.price_usd}}</td>\n                <td class=\"small w80 ell\" title=\"{{item.name}}\">{{item.name}}</td>\n                <td class=\"small\" title=\"{{item.market_cap_usd}}\">{{item.market_cap_usd}}</td>\n            </tr>\n            </tbody>\n        </table>\n</div>"
+module.exports = "<div>\n        <table (click)=\"onTableclick($event)\">\n            <tbody>\n            <tr><td  colspan=\"8\" class=\"text-center\"> MarketCap</td></tr>\n            <tr>\n\n                <th>Graph</th>\n                <th class=\"btn\" (click)=\"onClickHeader('symbol')\">Symbol</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('rank')\">Rank</th>\n\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_1h')\">1h%</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_24h')\" >24h%</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_7d')\">7 days%</th>\n\n                <th  class=\"btn\" (click)=\"onClickHeader('price_usd')\">$US</th>\n                <th>Name</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('market_cap_usd')\">$ Cap</th>\n            </tr>\n\n            <tr *ngFor=\"let item of consAvailable\">\n                <td><a href=\"https://coinmarketcap.com/currencies/{{item.id}}\" target=\"_blank\" class=\"btn fa fa-line-chart\"></a></td>\n                <td [attr.data]=\"item.symbol\" title=\"{{item.name}}\" class=\"btn\">{{item.symbol}}</td>\n                <td>{{item.rank}}</td>\n\n                <td [ngClass]=\"item.percent_change_1h>0?'dgreen':'dred'\">{{item.percent_change_1h}}</td>\n                <td [ngClass]=\"item.percent_change_24h>0?'dgreen':'dred'\">{{item.percent_change_24h}}</td>\n                <td [ngClass]=\"item.percent_change_7d>0?'dgreen':'dred'\">{{item.percent_change_7d}}</td>\n\n                <td class=\"small \" title=\"{{item.price_usd}}\">{{item.price_usd}}</td>\n                <td class=\"small w80 ell\" title=\"{{item.name}}\">{{item.name}}</td>\n                <td class=\"small\" title=\"{{item.market_cap_usd}}\">{{item.market_cap_usd}}</td>\n            </tr>\n            </tbody>\n        </table>\n</div>"
 
 /***/ }),
 

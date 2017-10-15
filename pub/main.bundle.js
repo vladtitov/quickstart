@@ -123,6 +123,7 @@ var AllCoinsService = (function () {
         this.http = http;
         this.marketCap = marketCap;
         this.storage = storage;
+        this.selectedMarketsAr = [];
         this.currentMarketsArSub = new __WEBPACK_IMPORTED_MODULE_8_rxjs_Subject__["Subject"]();
         this.currentMarketsAr$ = this.currentMarketsArSub.asObservable();
         this.allCoinsSub = new __WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject__["BehaviorSubject"](null);
@@ -190,31 +191,19 @@ var AllCoinsService = (function () {
         });
     };
     AllCoinsService.prototype.seachCoin = function (symbol) {
+        var _this = this;
         var result = [];
         this.serachResults = [];
         var activeExchanges = this.activeExchanges;
-        this.apis$.subscribe(function (apis) {
-            if (!apis)
-                return;
-            console.log(' apis raedy search  ' + symbol);
-            apis.forEach(function (service) {
-                if (activeExchanges[service.config.uid]) {
-                    var sub2 = service.searchCoin(symbol, false);
-                    /*.subscribe(res=>{
-                      if(!res) return;
-          
-                      sub2.unsubscribe();
-          
-                      if(done.indexOf(service.config.uid) !==-1) return;
-                      i--;
-                      done.push(service.config.uid);
-                      console.log( i);
-                     // i--;
-                      result = result.concat(res);
-                      if(i==0) resultSub.next(result);*/
-                    //})
-                }
-            });
+        if (!this.apis) {
+            Object(__WEBPACK_IMPORTED_MODULE_7_timers__["setTimeout"])(function () { return _this.seachCoin(symbol); }, 500);
+            return;
+        }
+        console.log(' apis raedy search  ' + symbol);
+        this.apis.forEach(function (service) {
+            if (activeExchanges[service.config.uid]) {
+                service.searchCoin(symbol, false);
+            }
         });
     };
     AllCoinsService.prototype.setCurrentExchangeById = function (uid) {
@@ -444,9 +433,11 @@ var AllGainersLosersComponent = (function () {
             if (!markets)
                 return;
             console.log(markets);
-            _this.data = markets;
+            _this.data = markets.filter(function (item) {
+                return !!item.percent_change_24h;
+            });
             clearTimeout(_this.timeout);
-            _this.timeout = setTimeout(function () { return _this.sortData(); }, 1000);
+            _this.timeout = setTimeout(function () { return _this.sortData(); }, 500);
             /* this.marketCap.getAllCoinsData().subscribe(data=>{
               // console.log(coins);
        
@@ -802,12 +793,12 @@ var AllSearchComponent = (function () {
         this.marketCap = marketCap;
     }
     AllSearchComponent.prototype.ngOnInit = function () {
+        /*  this.service.allCoins$.subscribe(res=>{
+            if(res) this.allCoins = res;
+          });*/
         var _this = this;
-        this.service.allCoins$.subscribe(function (res) {
-            if (res)
-                _this.allCoins = res;
-        });
         this.service.serachResults$.subscribe(function (res) {
+            console.log(res);
             if (!res)
                 return;
             _this.isProgress = false;
@@ -817,14 +808,9 @@ var AllSearchComponent = (function () {
         this.seachCoin();
     };
     AllSearchComponent.prototype.seachCoin = function () {
-        var _this = this;
         if (!this.currentCoin)
             return;
-        this.marketCap.getAllCoinsData().subscribe(function (data) {
-            if (!data)
-                return;
-            _this.currentMC = data[_this.currentCoin];
-        });
+        this.searchResult = [];
         this.isProgress = true;
         this.service.seachCoin(this.currentCoin);
     };
@@ -917,42 +903,30 @@ var CoinSerciceBase = (function () {
     };
     CoinSerciceBase.prototype.searchCoin = function (symbol, isBase) {
         var _this = this;
+        if (isBase === void 0) { isBase = false; }
         console.log(this.config.name + ' serach ' + symbol);
-        if (!this.sCb) {
-            this.sCb = this.marketsAr$.subscribe(function (ar) {
-                if (!ar)
-                    return;
-                ar = ar.filter(function (item) {
-                    if (isBase)
-                        return item.base === symbol;
-                    else
-                        return item.coin === symbol;
-                });
-                //  console.log(ar);
-                _this.serachResults = ar;
-                _this.serachResultsSub.next(ar);
-            });
+        if (!this.marketsAr) {
+            this.loadMarkets();
+            setTimeout(function () { return _this.searchCoin(symbol, isBase); }, 500);
+            return;
         }
-        else {
-            var ar = this.marketsAr.filter(function (item) {
-                if (isBase)
-                    return item.base === symbol;
-                else
-                    return item.coin === symbol;
+        var ar = this.marketsAr;
+        ar = ar.filter(function (item) {
+            if (isBase)
+                return item.base === symbol;
+            else
+                return item.coin === symbol;
+        });
+        console.log(ar);
+        if (this.config.isMarketComplex) {
+            var nodata = ar.filter(function (item) {
+                return !item.Last;
             });
-            // console.log(ar);
-            this.serachResults = ar;
-            this.serachResultsSub.next(ar);
+            if (nodata.length)
+                this.loadMarketsDetailsAr(nodata);
         }
-        /*console.log(this.config.name+ ' serach ' + symbol);
-         this.getAllMarketsAr().map(ar=>{
-           console.log(this.config.name, ar);
-           if(!ar) return null;
-    
-    
-    
-    
-         })*/
+        this.serachResults = ar;
+        this.serachResultsSub.next(ar);
     };
     CoinSerciceBase.prototype.dispatchMarketsAr = function () {
         if (!this.marketsAr)
@@ -1064,7 +1038,16 @@ var CoinSerciceBase = (function () {
         var _this = this;
         var url = this.config.apiMarket.replace('{{id}}', market.id);
         return this.http.get(url).map(function (res) {
-            var result = res.json();
+            var result;
+            try {
+                result = res.json();
+            }
+            catch (e) {
+                console.log(url);
+                // console.log(res.text())
+                console.error(e);
+                return null;
+            }
             var mcB = _this.marketCapData[market.base];
             var base = mcB ? mcB.price_usd : -1;
             console.log(market);
@@ -3148,7 +3131,7 @@ var Mappers = (function () {
                 bases.push(market.base);
             indexed[market.pair] = market;
             marketsAr.push(market);
-            console.log(ar);
+            // console.log(ar);
         });
         return marketsAr.length;
     };

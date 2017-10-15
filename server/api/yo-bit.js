@@ -34,15 +34,21 @@ function initYoBit(app) {
 exports.initYoBit = initYoBit;
 const APIs = [
     {
-        api: '/api/yo-bit/currencies',
+        api: '/api/yobit/currencies',
         url: 'https://yobit.net/api/3/info',
         name: 'market',
-        cache: '1 hour'
+        cache: '10 minutes'
     },
     {
-        api: '/api/yo-bit/market/:pair',
+        api: '/api/yobit/market/:pair',
         url: 'https://yobit.net/api/3/ticker/',
         name: 'market',
-        cache: '1 hour'
+        cache: '10 minutes'
+    },
+    {
+        api: '/api/yobit/orderbook/:pair',
+        url: 'https://yobit.net/api/3/depth/',
+        name: 'market',
+        cache: '10 minutes'
     }
 ];

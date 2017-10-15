@@ -57,7 +57,7 @@ const APIs=[
     cache:'10 minutes'
   },
   {
-    api:'/api/cryptopia/markets',
+    api:'/api/cryptopia/markets-summary',
     url:'https://www.cryptopia.co.nz/api/GetMarkets',
     name:'markets',
     cache:'10 minutes'

@@ -23,7 +23,7 @@ const APIs = [
         cache: '10 minutes'
     },
     {
-        api: '/api/hitbtc/markets',
+        api: '/api/hitbtc/markets-summary',
         url: 'https://api.hitbtc.com/api/1/public/ticker',
         name: 'market',
         cache: '10 minutes'

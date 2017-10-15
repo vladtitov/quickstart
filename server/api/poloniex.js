@@ -44,7 +44,7 @@ exports.initPoloniex = initPoloniex;
 const APIs = [
     {
         name: 'returnTicker',
-        api: '/api/poloniex/returnTicker',
+        api: '/api/poloniex/markets-summary',
         cache: '10 minutes',
         url: 'https://poloniex.com/public?command=returnTicker'
     },

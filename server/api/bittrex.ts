@@ -88,7 +88,7 @@ const APIs=[
     cache:'10 minutes'
   },
   {
-    api:'/api/bittrex/marketsummaries',
+    api:'/api/bittrex/markets-summary',
     url:'https://bittrex.com/api/v1.1/public/getmarketsummaries',
     name:'recent trades ',
     cache:'10 minutes'

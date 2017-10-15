@@ -23,6 +23,7 @@ const kraken_1 = require("./api/kraken");
 const bitfinex_1 = require("./api/bitfinex");
 const novaexchange_1 = require("./api/novaexchange");
 const cryptopia_1 = require("./api/cryptopia");
+const livecoin_1 = require("./api/livecoin");
 const app = express();
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -59,6 +60,7 @@ apis = apis.concat(kraken_1.initKraken(app));
 apis = apis.concat(bitfinex_1.initBitFinrx(app));
 apis = apis.concat(novaexchange_1.initNovoExchange(app));
 apis = apis.concat(cryptopia_1.initCryptopia(app));
+apis = apis.concat(livecoin_1.initLivecoin(app));
 app.use(apiErrorHandler_1.apiErrorHandler);
 app.listen(app.get('port'), () => {
     console.log("Server now running on port " + app.get('port'));

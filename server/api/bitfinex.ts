@@ -41,13 +41,13 @@ export function initBitFinrx(app:Application){
 
 const APIs=[
   {
-    api:'/api/bitfinex/symbols',
+    api:'/api/bitfinex/currencies',
     url:'https://api.bitfinex.com/v1/symbols',
     name:'currencies',
     cache:'1 hour'
   },
   {
-    api:'/api/bitfinex/market/:pair',
+    api:'/api/bitfinex/market/:marketId',
     url:'https://api.bitfinex.com/v1/pubticker/',
     name:'markets',
     cache:'1 hour'

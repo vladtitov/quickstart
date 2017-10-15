@@ -34,9 +34,9 @@ function initNovoExchange(app) {
 exports.initNovoExchange = initNovoExchange;
 const APIs = [
     {
-        api: '/api/novaexchange/markets',
+        api: '/api/novaexchange/markets-summary',
         url: 'https://novaexchange.com/remote/v2/markets/',
         name: 'market',
-        cache: '10 minutes'
+        cache: '30 minutes'
     }
 ];

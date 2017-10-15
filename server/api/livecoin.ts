@@ -4,23 +4,23 @@ import * as _ from 'lodash';
 import * as apicache from 'apicache';
 let cache = apicache.middleware;
 
-export function initNovoExchange(app:Application) {
+export function initLivecoin(app:Application) {
 
   APIs.forEach(function (item) {
     if(item.cache){
       app.get(item.api,
         cache(item.cache),
         function (req: Request, resp: Response) {
-          // console.log(req.params);
-          let values = _.values(req.params);
-          //console.log(values);
-          let url= item.url+ (values.length?'/'+values.join('/'):'');
-          console.log(url);
-          let options = {
-            url: url
-          };
-          request(options).pipe(resp);
-        });
+       // console.log(req.params);
+        let values = _.values(req.params);
+        //console.log(values);
+         let url= item.url+ (values.length?'/'+values.join('/'):'');
+        console.log(url);
+        let options = {
+          url: url
+        };
+        request(options).pipe(resp);
+      });
 
     }else{
 
@@ -45,9 +45,10 @@ export function initNovoExchange(app:Application) {
 
 const APIs=[
   {
-    api:'/api/novaexchange/markets-summary',
-    url:'https://novaexchange.com/remote/v2/markets/',
+    api:'/api/livecoin/markets',
+    url:'https://api.livecoin.net/exchange/ticker',
     name:'market',
-    cache:'30 minutes'
+    cache:'10 minutes'
   }
+
 ];

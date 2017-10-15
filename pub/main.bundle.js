@@ -138,7 +138,10 @@ var AllCoinsService = (function () {
             if (!res)
                 return;
             var cfg = new __WEBPACK_IMPORTED_MODULE_2__models_app_models__["a" /* ConfigApp */]();
-            _this.apis = cfg.exchangesPublic.map(function (item) {
+            var apis = cfg.exchangesPublic.filter(function (item) {
+                return item.enabled;
+            });
+            _this.apis = apis.map(function (item) {
                 return new __WEBPACK_IMPORTED_MODULE_3__coin_sercice_base__["a" /* CoinSerciceBase */](item, res, http, storage);
             });
             _this.apis.forEach(function (item) {
@@ -150,7 +153,7 @@ var AllCoinsService = (function () {
                 });
             });
             _this.apisSub.next(_this.apis);
-            _this.filterCoins();
+            //this.filterCoins();
         });
     }
     AllCoinsService.prototype.filterCoins = function () {
@@ -224,6 +227,12 @@ var AllCoinsService = (function () {
         });
         //let echageData = this.currentExchange.marketsAr$;
         //this.currentExchangeSub.next(this.currentExchange);
+    };
+    AllCoinsService.prototype.isComplex = function () {
+        return this.currentExchange.config.isMarketComplex;
+    };
+    AllCoinsService.prototype.loadDetails = function (markets) {
+        this.currentExchange.loadMarketsDetailsAr(markets);
     };
     AllCoinsService.prototype.getExchangeById = function (id) {
         this.apis$.subscribe(function (res) {
@@ -504,7 +513,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/all-in-one/all-main/all-main.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <nav  class=\"btns-row\">\n\n        <a  routerLink='/market-cap/all-coins'>MC</a>\n        <a class=\"btn fa fa-search\"  routerLink=\"/all-in-one/search\"></a>\n        <a routerLink=\"/all-in-one/gainers-losers\"><span class=\"btn fa fa-thumbs-down\"></span><span class=\"btn fa fa-thumbs-up\"></span></a>\n\n        <input type=\"checkbox\" [(ngModel)]=\"exchanges.bittrex\"  (ngModelChange)=\"onChange($event)\">\n        <a  routerLink='/all-in-one/data/bittrex'> Bittrex</a>\n        <input  type=\"checkbox\" [(ngModel)]=\"exchanges.poloniex\" (ngModelChange)=\"onChange($event)\">\n        <a  routerLink='/all-in-one/data/poloniex'> Poloniex</a>\n        <input  type=\"checkbox\" [(ngModel)]=\"exchanges.novaexchange\" (ngModelChange)=\"onChange($event)\" >\n        <a  routerLink='/all-in-one/data/novaexchange'> NovaExchange</a>\n        <input  type=\"checkbox\" [(ngModel)]=\"exchanges.cryptopia\" (ngModelChange)=\"onChange($event)\" >\n        <a  routerLink='/all-in-one/data/cryptopia'>   Cryptopia</a>\n        <input type=\"checkbox\" [(ngModel)]=\"exchanges.hitbtc\" (ngModelChange)=\"onChange($event)\" >\n        <a  routerLink='/all-in-one/data/hitbtc'>  HitBtc</a>\n        <!--<ng-container *ngIf=\"!!(isLoggedIn$ | async)\">-->\n        <a  routerLink='/all-in-one/balances'> Balances</a>\n     <!--   </ng-container>-->\n\n    </nav>\n    <nav   class=\"right\">\n        <a  class=\"btn\" (click)=\"onLoginClick()\"> Login</a>\n        <a  class=\"btn\" (click)=\"onLogoutClick()\">Logout</a>\n    </nav>\n    <router-outlet></router-outlet>\n</div>\n"
+module.exports = "<div>\n    <nav  class=\"btns-row\">\n\n        <a  routerLink='/market-cap/all-coins'>MC</a>\n        <a class=\"btn fa fa-search\"  routerLink=\"/all-in-one/search\"></a>\n        <a routerLink=\"/all-in-one/gainers-losers\"><span class=\"btn fa fa-thumbs-down\"></span><span class=\"btn fa fa-thumbs-up\"></span></a>\n\n        <div>\n            <span *ngFor=\"let api of apis\">\n                  <input type=\"checkbox\" [(ngModel)]=\"api.selected\"  (ngModelChange)=\"onChange($event, api)\">\n                <a  routerLink='/all-in-one/data/{{api.uid}}'> {{api.config.name}}</a>\n            </span>\n        </div>\n\n        <!--<ng-container *ngIf=\"!!(isLoggedIn$ | async)\">-->\n        <a  routerLink='/all-in-one/balances'> Balances</a>\n     <!--   </ng-container>-->\n\n    </nav>\n    <nav   class=\"right\">\n        <a  class=\"btn\" (click)=\"onLoginClick()\"> Login</a>\n        <a  class=\"btn\" (click)=\"onLogoutClick()\">Logout</a>\n    </nav>\n    <router-outlet></router-outlet>\n</div>\n"
 
 /***/ }),
 
@@ -534,13 +543,27 @@ var AllMainComponent = (function () {
         this.exchanges = {};
     }
     AllMainComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.exchanges = this.allConsService.getActiveExchanges();
+        this.allConsService.apis$.subscribe(function (apis) {
+            if (!apis)
+                return;
+            var active = _this.allConsService.getActiveExchanges();
+            apis.forEach(function (item) {
+                item.selected = active[item.uid];
+            });
+            _this.apis = apis;
+        });
     };
     AllMainComponent.prototype.onLoginClick = function () {
     };
-    AllMainComponent.prototype.onChange = function (evt) {
+    AllMainComponent.prototype.onChange = function (evt, api) {
+        var out = {};
         console.log(this.exchanges);
-        this.allConsService.setActiveExchanges(this.exchanges);
+        this.apis.forEach(function (item) {
+            out[item.uid] = item.selected;
+        });
+        this.allConsService.setActiveExchanges(out);
         this.allConsService.filterCoins();
     };
     AllMainComponent.prototype.onLogoutClick = function () {
@@ -582,7 +605,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/all-in-one/all-overview/all-overview.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n\n    <section>\n        <h3>{{title}} Summary </h3> <small *ngIf=\"marketsAr\"> Total {{marketsAr.length}}</small>\n\n        <img  *ngIf=\"isProgress\" class=\"w2\" src=\"assets/img/spinner.gif\"/>\n\n        <div>\n            <md-checkbox  checked=\"true\" (change)=\"onSelectedChange($event)\" >Selected Only</md-checkbox>\n\n            <md-checkbox *ngFor=\"let currency of baseCurrencies\" checked=\"true\" (change)=\"onChangeBase($event, currency)\" >{{currency}}</md-checkbox>\n\n        </div>\n    </section>\n    <section>\n        <table>\n            <tr class=\"small\">\n                <th>Name</th>\n                <th>$ MC</th>\n                <th>% 1h</th>\n                <th>% 24h</th>\n                <th>% 7d</th>\n                <th>Last</th>\n                <th>High</th>\n                <th>Low</th>\n\n                <th>Bid</th>\n                <th>Ask</th>\n                <th>Prev Day</th>\n\n                <th>Volume</th>\n                <th>Base Vol</th>\n                <th>To Buy</th>\n                <th>To Sell</th>\n\n                <!-- <th>Time</th>-->\n\n                <!--  <th>Sponsored</th>\n                  <th>Created</th>\n                  <th>Notice</th>-->\n            </tr>\n            <tr *ngFor=\"let market of marketsAr\">\n                <td>\n                    <div  class=\"small w100\">\n                        <a class=\"btn fa fa-line-chart\" href=\"https://coinmarketcap.com/currencies/{{market.coinId}}\" target=\"_blank\"></a>\n                        <a class=\"btn\" (click)=\"onMarketClick(market)\">{{market.pair}}</a>\n                    </div>\n\n                </td>\n\n                <td>{{market.usMC}}</td>\n\n                <td [ngClass]=\"market.percent_change_1h>0?'green':'red'\">{{market.percent_change_1h}}</td>\n                <td [ngClass]=\"market.percent_change_24h>0?'green':'red'\">{{market.percent_change_24h}}</td>\n                <td [ngClass]=\"market.percent_change_7d>0?'green':'red'\">{{market.percent_change_7d}}</td>\n\n                <td>{{market.usLast}}</td>\n                <td>{{market.usHigh}}</td>\n                <td>{{market.usLow}}</td>\n\n                <td>{{market.usBid}}</td>\n                <td>{{market.usAsk}}</td>\n\n\n                <td>{{market.usPrevDay}}</td>\n\n                <td>{{market.dVolume}}</td>\n                <td>{{market.dBaseVolume}}</td>\n\n                <td>{{market.OpenBuyOrders}}</td>\n                <td>{{market.OpenSellOrders}}</td>\n\n\n                <!-- <td><small>{{market.TimeStamp}}</small></td>-->\n\n                <!--  <td>{{market.IsSponsored}}</td>\n                  <td class=\"my-timestamp\"><div>{{market.Created}}</div></td>\n                  <td class=\"notice\">{{market.Notice}}</td>-->\n            </tr>\n        </table>\n\n\n    </section>\n\n</div>\n"
+module.exports = "<div>\n\n    <section>\n        <h3>{{title}} Summary </h3> <small *ngIf=\"marketsAr\"> Total {{marketsAr.length}}</small>\n\n        <img  *ngIf=\"isProgress\" class=\"w2\" src=\"assets/img/spinner.gif\"/>\n\n        <div>\n            <md-checkbox  checked=\"true\" (change)=\"onSelectedChange($event)\" >Selected Only</md-checkbox>\n\n            <md-checkbox *ngFor=\"let currency of baseCurrencies\" checked=\"true\" (change)=\"onChangeBase($event, currency)\" >{{currency}}</md-checkbox>\n\n        </div>\n    </section>\n    <section>\n        <table>\n            <tr class=\"small\">\n                <th>Name</th>\n\n                <th>% 1h</th>\n                <th>% 24h</th>\n                <th>% 7d</th>\n                <th>$ MC</th>\n\n                <th>Last</th>\n                <th>High</th>\n                <th>Low</th>\n\n                <th>Bid</th>\n                <th>Ask</th>\n                <th>Prev Day</th>\n\n                <th>Volume</th>\n                <th>Base Vol</th>\n                <th>To Buy</th>\n                <th>To Sell</th>\n\n                <!-- <th>Time</th>-->\n\n                <!--  <th>Sponsored</th>\n                  <th>Created</th>\n                  <th>Notice</th>-->\n            </tr>\n            <tr *ngFor=\"let market of marketsAr\">\n                <td>\n                    <div  class=\"small w100\">\n                        <a class=\"btn fa fa-line-chart\" href=\"https://coinmarketcap.com/currencies/{{market.coinId}}\" target=\"_blank\"></a>\n                        <a class=\"btn\" [ngClass]=\"market.disabled?'red':''\" (click)=\"onMarketClick(market)\">{{market.pair}}</a>\n                    </div>\n\n                </td>\n\n                <td [ngClass]=\"market.percent_change_1h>0?'green':'red'\">{{market.percent_change_1h}}</td>\n                <td [ngClass]=\"market.percent_change_24h>0?'green':'red'\">{{market.percent_change_24h}}</td>\n                <td [ngClass]=\"market.percent_change_7d>0?'green':'red'\">{{market.percent_change_7d}}</td>\n                <td>{{market.usMC}}</td>\n\n                <td>{{market.usLast}}</td>\n                <td>{{market.usHigh}}</td>\n                <td>{{market.usLow}}</td>\n\n                <td>{{market.usBid}}</td>\n                <td>{{market.usAsk}}</td>\n\n\n                <td>{{market.usPrevDay}}</td>\n\n                <td>{{market.dVolume}}</td>\n                <td>{{market.dBaseVolume}}</td>\n\n                <td>{{market.OpenBuyOrders}}</td>\n                <td>{{market.OpenSellOrders}}</td>\n\n\n                <!-- <td><small>{{market.TimeStamp}}</small></td>-->\n\n                <!--  <td>{{market.IsSponsored}}</td>\n                  <td class=\"my-timestamp\"><div>{{market.Created}}</div></td>\n                  <td class=\"notice\">{{market.Notice}}</td>-->\n            </tr>\n        </table>\n\n\n    </section>\n\n</div>\n"
 
 /***/ }),
 
@@ -632,6 +655,10 @@ var AllOverviewComponent = (function () {
             if (!_this.unchecked)
                 _this.unchecked = []; //= this.baseCurrencies.slice(0);
             _this.filterArr();
+            if (_this.allService.isComplex()) {
+                _this.allService.loadDetails(_this.marketsAr);
+            }
+            ;
         });
         this.route.params.subscribe(function (params) {
             console.log(params);
@@ -826,6 +853,7 @@ var CoinSerciceBase = (function () {
         this.http = http;
         this.storage = storage;
         // console.log(config);
+        this.uid = config.uid;
         this.marketsArSub = new __WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__["BehaviorSubject"](null);
         this.marketsAr$ = this.marketsArSub.asObservable();
         this.marketsSub = new __WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__["BehaviorSubject"](null);
@@ -913,28 +941,33 @@ var CoinSerciceBase = (function () {
     };
     CoinSerciceBase.prototype.mapAllMarkets = function (res) {
         var result = res.json();
+        // console.log(this.config.uid, result);
         var marketsAr = [];
         var indexed = {};
         var baseCoins = [];
         var marketCap = this.marketCapData;
-        console.log('result ' + this.config.name);
+        var i;
         switch (this.config.uid) {
             case 'bittrex':
-                __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].bittrexMarkets(marketsAr, indexed, baseCoins, result.result, marketCap);
+                i = __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].bittrexMarkets(result, marketsAr, indexed, baseCoins, marketCap);
                 break;
             case 'poloniex':
-                __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].poloniexMarkets(marketsAr, indexed, baseCoins, result, marketCap);
+                i = __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].poloniexMarkets(result, marketsAr, indexed, baseCoins, marketCap);
                 break;
             case 'novaexchange':
-                __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].novaExchangeMarkets(marketsAr, indexed, baseCoins, result.markets, marketCap);
+                i = __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].novaExchangeMarkets(result, marketsAr, indexed, baseCoins, marketCap);
                 break;
             case 'cryptopia':
-                __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].cryptopiaMarkets(marketsAr, indexed, baseCoins, result.Data, marketCap);
+                i = __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].cryptopiaMarkets(result, marketsAr, indexed, baseCoins, marketCap);
                 break;
             case 'hitbtc':
-                __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].hitbtcMarkets(marketsAr, indexed, baseCoins, result, marketCap);
+                i = __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].hitbtcMarkets(result, marketsAr, indexed, baseCoins, marketCap);
+                break;
+            case 'livecoin':
+                i = __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].livecoinMarkets(result, marketsAr, indexed, baseCoins, marketCap);
                 break;
         }
+        console.log(' result ' + this.config.name + ' markets ' + i + ' active: ' + marketsAr.length);
         // console.log(marketCap);
         // console.log(arr);
         this.markets = indexed;
@@ -944,7 +977,32 @@ var CoinSerciceBase = (function () {
     };
     CoinSerciceBase.prototype.loadMarkets = function () {
         var _this = this;
-        this.http.get(this.config.urlMarkets).subscribe(function (res) { return _this.mapAllMarkets(res); });
+        if (this.config.isMarketComplex) {
+            this.http.get(this.config.apiCurrencies).subscribe(function (res) {
+                res = res.json();
+                console.log(res);
+                var marketsAr = [];
+                var indexed = {};
+                var baseCoins = [];
+                var marketCap = _this.marketCapData;
+                var i;
+                switch (_this.config.uid) {
+                    case 'bitfinex':
+                        i = __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].bitfinexCurencies(res, marketsAr, indexed, baseCoins, marketCap);
+                        break;
+                    case 'yobit':
+                        i = __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].yobitCurencies(res, marketsAr, indexed, baseCoins, marketCap);
+                        break;
+                }
+                console.log(marketsAr);
+                _this.markets = indexed;
+                _this.baseCurrenciesAr = baseCoins;
+                _this.marketsAr = marketsAr;
+                _this.marketsArSub.next(_this.marketsAr);
+            });
+        }
+        else
+            this.http.get(this.config.apiMarkets).subscribe(function (res) { return _this.mapAllMarkets(res); });
     };
     CoinSerciceBase.prototype.getAllMarketsAr = function () {
         if (!this.marketsAr)
@@ -959,6 +1017,35 @@ var CoinSerciceBase = (function () {
     CoinSerciceBase.prototype.getMarketUrl = function (market) {
         var ar = market.pair.split('_');
         return this.config.webMarket.replace('{{base}}', ar[0]).replace('{{coin}}', ar[1]);
+    };
+    CoinSerciceBase.prototype.loadMarketsDetailsAr = function (markets, i) {
+        var _this = this;
+        if (i === void 0) { i = 0; }
+        this.loadMarketDetails(markets[i++]).subscribe(function (res) {
+            if (i >= markets.length)
+                return;
+            _this.loadMarketsDetailsAr(markets, i);
+        });
+    };
+    CoinSerciceBase.prototype.loadMarketDetails = function (market) {
+        var _this = this;
+        var url = this.config.apiMarket.replace('{{id}}', market.id);
+        return this.http.get(url).map(function (res) {
+            var result = res.json();
+            var mcB = _this.marketCapData[market.base];
+            var base = mcB ? mcB.price_usd : -1;
+            console.log(market);
+            switch (market.exchange) {
+                case 'bitfinex':
+                    __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].bitfinexMarketDetails(result, market, base, _this.marketCapData[market.coin]);
+                    break;
+                case 'yobit':
+                    __WEBPACK_IMPORTED_MODULE_2__com_mappers__["a" /* Mappers */].yobitMarketDetails(result, market, base, _this.marketCapData[market.coin]);
+                    break;
+            }
+            console.log(result);
+            return result;
+        });
     };
     return CoinSerciceBase;
 }());
@@ -3004,39 +3091,75 @@ var MarketsSummaryDialog = (function () {
 var Mappers = (function () {
     function Mappers() {
     }
-    Mappers.novaExchangeMarkets = function (marketsAr, indexed, base, result, marketCap) {
+    Mappers.bitfinexMarketDetails = function (result, market, base, mc) {
+        market.Volume = +result.volume;
+        market.BaseVolume = -1;
+        market.Last = +result.last_price;
+        market.Low = +result.low;
+        market.High = +result.high;
+        market.Ask = +result.ask;
+        market.Bid = +result.bid;
+        market.PrevDay = -1;
+        Mappers.mapDisplayValues2(market, base, mc);
+    };
+    Mappers.bitfinexCurencies = function (result, marketsAr, indexed, bases, marketCap) {
         result.forEach(function (item) {
-            //let ar:string[] = item.MarketName.split('-');
             var market = new __WEBPACK_IMPORTED_MODULE_0__models_app_models__["b" /* VOMarket */]();
-            market.base = item.basecurrency;
-            if (base.indexOf(market.base) === -1)
-                base.push(market.base);
-            market.coin = item.currency;
-            //market.marketCap = marketCap[market.coin];
-            market.pair = item.marketname;
-            market.id = item.marketname;
-            market.exchange = 'novaexchange';
-            market.Volume = +item.volume24h;
-            market.Last = +item.last_price;
-            market.High = +item.high24h;
-            market.Low = +item.low24h;
-            market.Ask = +item.ask;
-            market.Bid = +item.bid;
-            market.disabled = item.disabled;
-            market.BaseVolume = +item.volume24h;
-            market.change = +item.change24h;
-            market.PrevDay = 0;
-            var mcBase = marketCap[market.base];
-            //if(!mcBase) console.warn(' no base price '+market.base +'  market name'+item.marketname)
-            var basePrice = mcBase ? mcBase.price_usd : 0;
-            var mc = marketCap[market.coin];
-            Mappers.mapDisplayValues(market, basePrice, 4, mc);
+            var ar = [item.substr(-3), item.substr(0, item.length - 3)];
+            market.base = ar[0].toUpperCase();
+            market.coin = ar[1].toUpperCase();
+            market.pair = market.base + '_' + market.coin;
+            market.id = item;
+            market.exchange = 'bitfinex';
+            if (bases.indexOf(market.base) === -1)
+                bases.push(market.base);
             indexed[market.pair] = market;
             marketsAr.push(market);
+            console.log(ar);
         });
+        return marketsAr.length;
     };
-    Mappers.poloniexMarkets = function (marketsAr, indexed, base, result, marketCap) {
+    Mappers.novaExchangeMarkets = function (result, marketsAr, indexed, base, marketCap) {
+        // console.log(result);
+        var ar = result.markets;
+        ar.forEach(function (item) {
+            if (!item.disabled) {
+                var market = new __WEBPACK_IMPORTED_MODULE_0__models_app_models__["b" /* VOMarket */]();
+                market.base = item.basecurrency;
+                if (base.indexOf(market.base) === -1)
+                    base.push(market.base);
+                market.coin = item.currency;
+                //market.marketCap = marketCap[market.coin];
+                market.pair = item.marketname;
+                market.id = item.marketname;
+                market.exchange = 'novaexchange';
+                market.Volume = +item.volume24h;
+                market.Last = +item.last_price;
+                market.High = +item.high24h;
+                market.Low = +item.low24h;
+                market.Ask = +item.ask;
+                market.Bid = +item.bid;
+                market.disabled = item.disabled;
+                market.BaseVolume = +item.volume24h;
+                market.change = +item.change24h;
+                market.PrevDay = -1;
+                var mcBase = marketCap[market.base];
+                //if(!mcBase) console.warn(' no base price '+market.base +'  market name'+item.marketname)
+                var basePrice = mcBase ? mcBase.price_usd : 0;
+                var mc = marketCap[market.coin];
+                Mappers.mapDisplayValues(market, basePrice, 4, mc);
+                indexed[market.pair] = market;
+                marketsAr.push(market);
+            }
+            //let ar:string[] = item.MarketName.split('-');
+        });
+        return result.length;
+        // console.log(marketsAr);
+    };
+    Mappers.poloniexMarkets = function (result, marketsAr, indexed, base, marketCap) {
+        var i = 0;
         for (var str in result) {
+            i++;
             var market = new __WEBPACK_IMPORTED_MODULE_0__models_app_models__["b" /* VOMarket */]();
             var data = result[str];
             var ar = str.split('_');
@@ -3054,7 +3177,7 @@ var Mappers = (function () {
             market.Ask = +data.lowestAsk;
             market.Bid = +data.highestBid;
             market.BaseVolume = +data.baseVolume;
-            market.disabled = data.isFrozen ? 1 : 0;
+            market.disabled = data.isFrozen !== '0';
             market.PrevDay = (+data.high24hr + +data.low24hr) / 2;
             var mcBase = marketCap[market.base];
             var basePrice = mcBase ? mcBase.price_usd : 1;
@@ -3068,9 +3191,12 @@ var Mappers = (function () {
                 market.usMC = mc.price_usd.toFixed(2);
             marketsAr.push(market);
         }
+        return i;
     };
-    Mappers.hitbtcMarkets = function (marketsAr, indexed, base, result, marketCap) {
+    Mappers.hitbtcMarkets = function (result, marketsAr, indexed, base, marketCap) {
+        var i = 0;
         for (var str in result) {
+            i++;
             var market = new __WEBPACK_IMPORTED_MODULE_0__models_app_models__["b" /* VOMarket */]();
             market.exchange = 'hitbtc';
             var item = result[str];
@@ -3097,9 +3223,11 @@ var Mappers = (function () {
             Mappers.mapDisplayValues(market, basePrice, 4, marketCap[market.coin]);
             marketsAr.push(market);
         }
+        return i;
     };
-    Mappers.bittrexMarkets = function (marketsAr, indexed, base, result, marketCap) {
-        result.forEach(function (item) {
+    Mappers.bittrexMarkets = function (result, marketsAr, indexed, base, marketCap) {
+        var ar = result.result;
+        ar.forEach(function (item) {
             var ar = item.MarketName.split('-');
             var market = new __WEBPACK_IMPORTED_MODULE_0__models_app_models__["b" /* VOMarket */]();
             market.base = ar[0];
@@ -3121,14 +3249,16 @@ var Mappers = (function () {
             market.OpenBuyOrders = item.OpenBuyOrders;
             market.OpenSellOrders = item.OpenSellOrders;
             var mcBase = marketCap[market.base];
-            var basePrice = mcBase ? mcBase.price_usd : 1;
+            var basePrice = mcBase ? mcBase.price_usd : -1;
             Mappers.mapDisplayValues(market, basePrice, 4, marketCap[market.coin]);
             indexed[market.pair] = market;
             marketsAr.push(market);
         });
+        return result.length;
     };
-    Mappers.cryptopiaMarkets = function (marketsAr, indexed, base, result, marketCap) {
-        result.forEach(function (item) {
+    Mappers.cryptopiaMarkets = function (result, marketsAr, indexed, base, marketCap) {
+        var ar = result.Data;
+        ar.forEach(function (item) {
             var ar = item.Label.split('/');
             var market = new __WEBPACK_IMPORTED_MODULE_0__models_app_models__["b" /* VOMarket */]();
             market.base = ar[1];
@@ -3154,6 +3284,36 @@ var Mappers = (function () {
             indexed[market.pair] = market;
             marketsAr.push(market);
         });
+        return result.length;
+    };
+    Mappers.livecoinMarkets = function (result, marketsAr, indexed, baseCoins, marketCap) {
+        //console.log(result)
+        var ar = result;
+        ar.forEach(function (item) {
+            var market = new __WEBPACK_IMPORTED_MODULE_0__models_app_models__["b" /* VOMarket */]();
+            var ar = item.symbol.split('/');
+            market.coin = ar[0];
+            market.base = ar[1];
+            market.pair = market.base + '_' + market.coin;
+            market.exchange = 'livecoin';
+            market.id = item.symbol;
+            market.Last = item.last;
+            market.High = +item.high;
+            market.Low = item.low;
+            market.Ask = item.best_ask;
+            market.Bid = item.best_bid;
+            market.Volume = item.volume;
+            market.BaseVolume = item.vwap;
+            market.PrevDay = -1;
+            var mcB = marketCap[market.base];
+            var base = mcB ? mcB.price_usd : -1;
+            Mappers.mapDisplayValues2(market, base, marketCap[market.coin]);
+            if (baseCoins.indexOf(market.base) === -1)
+                baseCoins.push(market.base);
+            indexed[market.pair] = market;
+            marketsAr.push(market);
+        });
+        return marketsAr.length;
     };
     Mappers.mapDisplayValues = function (item, basePrice, prec, marketCap) {
         var base = basePrice;
@@ -3172,6 +3332,55 @@ var Mappers = (function () {
             item.percent_change_24h = marketCap.percent_change_24h;
             item.usMC = marketCap.price_usd.toPrecision(4);
         }
+    };
+    Mappers.mapDisplayValues2 = function (item, base, marketCap, prec) {
+        if (prec === void 0) { prec = 4; }
+        item.dVolume = (item.Volume / 1e6).toFixed(3) + 'M';
+        item.dBaseVolume = item.BaseVolume.toFixed(2);
+        item.usAsk = (item.Ask * base).toPrecision(prec);
+        item.usBid = (item.Bid * base).toPrecision(prec);
+        item.usLow = (item.Low * base).toPrecision(prec);
+        item.usHigh = (item.High * base).toPrecision(prec);
+        item.usLast = (item.Last * base).toPrecision(prec);
+        item.usPrevDay = (item.PrevDay * base).toPrecision(prec);
+        if (marketCap) {
+            item.coinId = marketCap.id;
+            item.percent_change_7d = marketCap.percent_change_7d;
+            item.percent_change_1h = marketCap.percent_change_1h;
+            item.percent_change_24h = marketCap.percent_change_24h;
+            item.usMC = marketCap.price_usd.toPrecision(4);
+        }
+    };
+    Mappers.yobitCurencies = function (res, marketsAr, indexed, baseCoins, marketCap) {
+        var obj = res.pairs;
+        for (var str in obj) {
+            var ar = str.split('_');
+            var market = new __WEBPACK_IMPORTED_MODULE_0__models_app_models__["b" /* VOMarket */]();
+            market.id = str;
+            market.base = ar[1].toUpperCase();
+            market.coin = ar[0].toUpperCase();
+            market.pair = market.base + '_' + market.coin;
+            market.exchange = 'yobit';
+            if (baseCoins.indexOf(market.base) === -1)
+                baseCoins.push(market.base);
+            marketsAr.push(market);
+            indexed[market.pair] = market;
+        }
+        return marketsAr.length;
+    };
+    Mappers.yobitMarketDetails = function (res, market, base, mc) {
+        for (var str in res) {
+            var result = res[str];
+            market.Volume = result.vol;
+            market.BaseVolume = result.vol_cur;
+            market.Last = result.last;
+            market.Low = result.low;
+            market.High = result.high;
+            market.Ask = result.sell;
+            market.Bid = +result.buy;
+            market.PrevDay = result.avg;
+        }
+        Mappers.mapDisplayValues2(market, base, mc);
     };
     return Mappers;
 }());
@@ -9302,37 +9511,96 @@ var ConfigApp = (function () {
             {
                 uid: 'poloniex',
                 name: 'Poloniex',
-                urlMarkets: '/api/poloniex/returnTicker',
-                urlOrderBook: '/api/poloniex/orderBook/{{pair}}/{{depth}}',
-                webMarket: 'https://poloniex.com/marginTrading#{{base}}_{{coin}}'
+                isMarketComplex: false,
+                enabled: true,
+                apiCurrencies: '/api/poloniex/currencies',
+                apiMarkets: '/api/poloniex/markets-summary',
+                apiMarket: '',
+                apiOrderBook: '/api/poloniex/orderBook/{{pair}}/{{depth}}',
+                webMarket: 'https://poloniex.com/exchange#{{base}}_{{coin}}',
+                apiVolume24h: '',
+                apiTradeHistory: ''
             },
             {
                 uid: 'bittrex',
                 name: 'Bittrex',
-                urlMarkets: '/api/bittrex/marketsummaries',
-                urlOrderBook: '/api/bittrex/getorderbook/{{pair}}/{{depth}}',
+                enabled: true,
+                isMarketComplex: false,
+                apiMarket: '',
+                apiMarkets: '/api/bittrex/markets-summary',
+                apiOrderBook: '/api/bittrex/getorderbook/{{pair}}/{{depth}}',
+                apiTradeHistory: '',
                 webMarket: 'https://bittrex.com/Market/Index?MarketName={{base}}-{{coin}}'
             },
             {
                 uid: 'novaexchange',
                 name: 'NovaExchange',
-                urlMarkets: '/api/novaexchange/markets',
-                urlOrderBook: '/api/novaexchange/getorderbook/{{pair}}/{{depth}}',
+                isMarketComplex: false,
+                enabled: true,
+                apiMarkets: '/api/novaexchange/markets-summary',
+                apiMarket: '',
+                apiOrderBook: '/api/novaexchange/getorderbook/{{pair}}/{{depth}}',
+                apiTradeHistory: '',
                 webMarket: 'https://novaexchange.com/market/{{base}}_{{coin}}/'
             },
             {
                 uid: 'cryptopia',
                 name: 'Cryptopia',
-                urlMarkets: '/api/cryptopia/markets',
-                urlOrderBook: '/api/cryptopia/getorderbook/{{pair}}/{{depth}}',
+                isMarketComplex: false,
+                enabled: true,
+                apiMarkets: '/api/cryptopia/markets-summary',
+                apiMarket: '',
+                apiOrderBook: '/api/cryptopia/getorderbook/{{pair}}/{{depth}}',
+                apiTradeHistory: '',
                 webMarket: 'https://www.cryptopia.co.nz/Exchange?market={{coin}}_{{base}}'
             },
             {
                 uid: 'hitbtc',
                 name: 'HitBTC',
-                urlMarkets: '/api/hitbtc/markets',
-                urlOrderBook: '/api/hitbtc/getorderbook/{{pair}}/{{depth}}',
+                enabled: true,
+                isMarketComplex: false,
+                apiCurrencies: '/api/y/hitbtcrencies',
+                apiMarkets: '/api/hitbtc/markets-summary',
+                apiMarket: '',
+                apiOrderBook: '/api/hitbtc/getorderbook/{{pair}}/{{depth}}',
+                apiTradeHistory: '',
                 webMarket: 'https://hitbtc.com/exchange/{{base}}-to-{{coin}}'
+            },
+            {
+                uid: 'livecoin',
+                name: 'Livecoin',
+                enabled: true,
+                isMarketComplex: false,
+                apiCurrencies: '',
+                apiMarkets: '/api/livecoin/markets',
+                apiMarket: '',
+                apiOrderBook: '',
+                apiTradeHistory: '',
+                webMarket: 'https://www.livecoin.net/en/trade/orderbook/{{coin}}{{base}}'
+            },
+            {
+                uid: 'bitfinex',
+                name: 'Bitfinex',
+                enabled: true,
+                isMarketComplex: true,
+                apiCurrencies: '/api/bitfinex/currencies',
+                apiMarkets: '',
+                apiMarket: '/api/bitfinex/market/{{id}}',
+                apiOrderBook: '',
+                apiTradeHistory: '',
+                webMarket: 'https://www.bfxdata.com/orderbooks/{{coin}}{{base}}'
+            },
+            {
+                uid: 'yobit',
+                name: 'YObit',
+                enabled: true,
+                isMarketComplex: true,
+                apiCurrencies: '/api/yobit/currencies',
+                apiMarkets: '',
+                apiMarket: '/api/yobit/market/{{id}}',
+                apiOrderBook: '/api/yobit/orderbook/{{coin}}_{{base}}',
+                apiTradeHistory: '',
+                webMarket: 'https://www.yobit.net/en/trade/{{coin}}/{{base}}'
             }
         ];
     }
@@ -10666,7 +10934,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/shared/sortable-table/sortable-table.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n        <table (click)=\"onTableclick($event)\">\n            <tbody>\n            <tr><td  colspan=\"8\" class=\"text-center\"> MarketCap</td></tr>\n            <tr>\n\n                <th>Graph</th>\n                <th class=\"btn\" (click)=\"onClickHeader('symbol')\">Symbol</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('rank')\">Rank</th>\n\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_1h')\">1h%</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_24h')\" >24h%</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_7d')\">7 days%</th>\n\n                <th  class=\"btn\" (click)=\"onClickHeader('price_usd')\">$US</th>\n                <th>Name</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('market_cap_usd')\">$ Cap</th>\n            </tr>\n\n            <tr *ngFor=\"let item of consAvailable\">\n                <td><a href=\"https://coinmarketcap.com/currencies/{{item.id}}\" target=\"_blank\" class=\"btn fa fa-line-chart\"></a></td>\n                <td [attr.data]=\"item.symbol\" title=\"{{item.name}}\" class=\"btn\">{{item.symbol}}</td>\n                <td>{{item.rank}}</td>\n\n                <td [ngClass]=\"item.percent_change_1h>0?'dgreen':'dred'\">{{item.percent_change_1h}}</td>\n                <td [ngClass]=\"item.percent_change_24h>0?'dgreen':'dred'\">{{item.percent_change_24h}}</td>\n                <td [ngClass]=\"item.percent_change_7d>0?'dgreen':'dred'\">{{item.percent_change_7d}}</td>\n\n                <td class=\"small \" title=\"{{item.price_usd}}\">{{item.price_usd}}</td>\n                <td class=\"small w80 ell\" title=\"{{item.name}}\">{{item.name}}</td>\n                <td class=\"small\" title=\"{{item.market_cap_usd}}\">{{item.market_cap_usd}}</td>\n            </tr>\n            </tbody>\n        </table>\n</div>"
+module.exports = "<div>\n        <table (click)=\"onTableclick($event)\">\n            <tbody>\n            <tr><td  colspan=\"8\" class=\"text-center\"> MarketCap</td></tr>\n            <tr>\n\n                <th>Graph</th>\n                <th class=\"btn\" (click)=\"onClickHeader('symbol')\">Symbol</th>\n                <th>Name</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_1h')\">1h%</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_24h')\" >24h%</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('percent_change_7d')\">7 days%</th>\n\n                <th  class=\"btn\" (click)=\"onClickHeader('price_usd')\">$US</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('rank')\">Rank</th>\n                <th  class=\"btn\" (click)=\"onClickHeader('market_cap_usd')\">$ Cap</th>\n            </tr>\n\n            <tr *ngFor=\"let item of consAvailable\">\n                <td><a href=\"https://coinmarketcap.com/currencies/{{item.id}}\" target=\"_blank\" class=\"btn fa fa-line-chart\"></a></td>\n                <td [attr.data]=\"item.symbol\" title=\"{{item.name}}\" class=\"btn\">{{item.symbol}}</td>\n                <td class=\"small w80 ell\" title=\"{{item.name}}\">{{item.name}}</td>\n                <td [ngClass]=\"item.percent_change_1h>0?'dgreen':'dred'\">{{item.percent_change_1h}}</td>\n                <td [ngClass]=\"item.percent_change_24h>0?'dgreen':'dred'\">{{item.percent_change_24h}}</td>\n                <td [ngClass]=\"item.percent_change_7d>0?'dgreen':'dred'\">{{item.percent_change_7d}}</td>\n\n                <td class=\"small \" title=\"{{item.price_usd}}\">{{item.price_usd}}</td>\n\n                <td>{{item.rank}}</td>\n                <td class=\"small\" title=\"{{item.market_cap_usd}}\">{{item.market_cap_usd}}</td>\n            </tr>\n            </tbody>\n        </table>\n</div>"
 
 /***/ }),
 

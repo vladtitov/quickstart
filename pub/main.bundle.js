@@ -577,7 +577,7 @@ var AllMainComponent = (function () {
             out[item.uid] = item.selected;
         });
         this.allConsService.setActiveExchanges(out);
-        // this.allConsService.filterCoins();
+        this.allConsService.loadCoinsSelectedExchanges();
     };
     AllMainComponent.prototype.onLogoutClick = function () {
     };
@@ -8704,7 +8704,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/market-cap/gainers-losers/gainers-losers.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <h4 class=\"btn\" (click)=\"onGainersClick()\">Gainers</h4>\n    <h4 class=\"btn\" (click)=\"onLosersClick()\">Losers</h4>\n    <a class=\"btn\" (click)=\"onExchangesClick()\">Exchanges</a>\n    <section>\n\n        <h4>Gainers 24h top 30 </h4> <small> (With market cap more then\n        <input type=\"number\" class=\"w60\" step=\"2000\"   [(ngModel)] = \"capLimit\"   />\n        <span (click)=\"onFilterClick()\" class=\"btn fa fa-filter\"> &nbsp;&nbsp;</span>\n        )</small>\n\n        <div>\n            <table (click)=\"onTableclick($event)\">\n                <tbody>\n                <tr><td  colspan=\"8\" class=\"text-center\"> MarketCap</td></tr>\n                <tr>\n\n                    <th class=\"btn\" (click)=\"onClickHeader('symbol')\">Symbol</th>\n                    <th>Graph</th>\n                    <th  class=\"btn\" (click)=\"onClickHeader('rank')\">Rank</th>\n\n                    <th  class=\"btn\" (click)=\"onClickHeader('percent_change_1h')\">1h%</th>\n                    <th  class=\"btn\" (click)=\"onClickHeader('percent_change_24h')\" >24h%</th>\n                    <th  class=\"btn\" (click)=\"onClickHeader('percent_change_7d')\">7d%</th>\n\n                    <th  class=\"btn\" (click)=\"onClickHeader('price_usd')\">$US</th>\n                    <th>Name</th>\n                    <th  class=\"btn\" (click)=\"onClickHeader('market_cap_usd')\">$ Cap</th>\n                    <th>Network</th>\n                </tr>\n\n                <tr *ngFor=\"let item of consAvailable\">\n\n                    <td [attr.data]=\"item.symbol\" title=\"{{item.name}}\" class=\"btn w100\" ><img class=\"w1\" src=\"assets/icons/{{item.id}}.png\"/> {{item.symbol}}</td>\n                    <td><a class=\"fa fa-line-chart\" target=\"_blank\" href=\"https://coinmarketcap.com/currencies/{{item.id}}/\"></a></td>\n                    <td>{{item.rank}}</td>\n                    <td class=\"w50\" [ngClass]=\"item.percent_change_1h>0?'dgreen':'dred'\" >{{item.percent_change_1h}}</td>\n                    <td class=\"w50\" [ngClass]=\"item.percent_change_24h>0?'dgreen':'dred'\" >{{item.percent_change_24h}}</td>\n                    <td class=\"w50\" [ngClass]=\"item.percent_change_7d>0?'dgreen':'dred'\" >{{item.percent_change_7d}}</td>\n\n                    <td class=\"small \" title=\"{{item.price_usd}}\">{{item.price_usd}}</td>\n                    <td class=\"small w80 ell\" title=\"{{item.name}}\">{{item.name}}</td>\n                    <td class=\"small\" title=\"{{item.market_cap_usd}}\">{{item.market_cap_usd}}</td>\n                    <td>{{item.network}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n        <!-- <app-sortable-table [consAvailable]=\"gainersAr\" (selectedSymbol)=\"onSymbolSelected($event)\"></app-sortable-table>-->\n    </section>\n</div>\n"
+module.exports = "<div>\n   <!-- <h4 class=\"btn\" (click)=\"onGainersClick()\">Gainers</h4>\n    <h4 class=\"btn\" (click)=\"onLosersClick()\">Losers</h4>-->\n    <a class=\"btn\" (click)=\"onExchangesClick()\">Exchanges</a>\n    <section>\n\n        <h4>Gainers 24h top {{limit}} </h4>\n        <small> Limit:\n            <input type=\"number\" class=\"w60\" step=\"10\"   [(ngModel)] = \"limit\"   />\n            Volume 24h >\n        <input type=\"number\" class=\"w60\" step=\"2000\"   [(ngModel)] = \"capLimit\"   />\n            rank <\n        <input type=\"number\" class=\"w60\" step=\"100\"   [(ngModel)] = \"rank\"   />\n\n\n        <span (click)=\"onFilterClick()\" class=\"btn fa fa-filter\"> &nbsp;&nbsp;</span>\n        </small>\n\n        <div>\n            <table (click)=\"onTableclick($event)\">\n                <tbody>\n                <tr><td  colspan=\"8\" class=\"text-center\"> MarketCap</td></tr>\n                <tr>\n                    <th>Symbol</th>\n                    <th>Graph</th>\n                    <th>Rank</th>\n\n                    <th  class=\"btn\" (click)=\"onClickHeader('percent_change_1h')\">1h%</th>\n                    <th  class=\"btn\" (click)=\"onClickHeader('percent_change_24h')\" >24h%</th>\n                    <th  class=\"btn\" (click)=\"onClickHeader('percent_change_7d')\">7d%</th>\n\n                    <th>$US</th>\n                    <th>Name</th>\n                    <th >Volume</th>\n\n                </tr>\n\n                <tr *ngFor=\"let item of consAvailable\">\n\n                    <td [attr.data]=\"item.symbol\" title=\"{{item.name}}\" class=\"btn w100\" ><img (error)=\"onImageError(item)\"  class=\"w1\" src=\"assets/icons/{{item.id}}.png\" /> {{item.symbol}}</td>\n                    <td><a class=\"fa fa-line-chart\" target=\"_blank\" href=\"https://coinmarketcap.com/currencies/{{item.id}}/\"></a></td>\n                    <td>{{item.rank}}</td>\n                    <td class=\"w50\" [ngClass]=\"item.percent_change_1h>0?'dgreen':'dred'\" >{{item.percent_change_1h}}</td>\n                    <td class=\"w50\" [ngClass]=\"item.percent_change_24h>0?'dgreen':'dred'\" >{{item.percent_change_24h}}</td>\n                    <td class=\"w50\" [ngClass]=\"item.percent_change_7d>0?'dgreen':'dred'\" >{{item.percent_change_7d}}</td>\n\n                    <td class=\"small \" title=\"{{item.price_usd}}\">{{item.price_usd}}</td>\n                    <td class=\"small w80 ell\" >{{item.name}}</td>\n                    <td class=\"small\">{{item.volume_usd_24h}}</td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n        <!-- <app-sortable-table [consAvailable]=\"gainersAr\" (selectedSymbol)=\"onSymbolSelected($event)\"></app-sortable-table>-->\n    </section>\n</div>\n"
 
 /***/ }),
 
@@ -8737,7 +8737,10 @@ var GainersLosersComponent = (function () {
         this.marketCap = marketCap;
         this.asc_desc = 'desc';
         this.capLimit = 10000;
+        this.rank = 1000;
         this.sortBy = 'percent_change_24h';
+        this.limit = 200;
+        this.missingImages = [];
     }
     GainersLosersComponent.prototype.onGainersClick = function () {
         if (this.asc_desc === 'desc')
@@ -8757,10 +8760,20 @@ var GainersLosersComponent = (function () {
         var symbols = __WEBPACK_IMPORTED_MODULE_2_lodash__["map"](this.consAvailable, 'symbol');
         this.router.navigate(['/coins-exchanges', symbols.toString()]);
     };
+    GainersLosersComponent.prototype.onImageError = function (item) {
+        //console.log(item);
+        /*  if(this.missingImages.indexOf(item.id) ===-1)this.missingImages.push(item.id);
+          clearTimeout(this.misingImagesTimeout);
+          this.misingImagesTimeout = setTimeout(()=>{
+            console.log(JSON.stringify(this.missingImages));
+          }, 1000);*/
+    };
     GainersLosersComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.marketCap.getAllCoinsArr().subscribe(function (res) {
-            /*   if(!res) return;
+            if (!res)
+                return;
+            /*
              this.marketCap.getCoins().subscribe(coins=>{
                if(!coins) return;
                console.log(res);
@@ -8791,10 +8804,10 @@ var GainersLosersComponent = (function () {
     GainersLosersComponent.prototype.sortData = function () {
         if (!Array.isArray(this.data))
             return;
-        var cap = this.data.filter(function (item) { return item.volume_usd_24h > this.limit; }, { limit: this.capLimit });
+        var cap = this.data.filter(function (item) { return item.volume_usd_24h > this.limit && item.rank < this.rank; }, { limit: this.capLimit, rank: this.rank });
         var sorted = __WEBPACK_IMPORTED_MODULE_2_lodash__["orderBy"](cap, this.sortBy, this.asc_desc);
         // console.log(sorted);
-        this.consAvailable = __WEBPACK_IMPORTED_MODULE_2_lodash__["take"](sorted, 200);
+        this.consAvailable = __WEBPACK_IMPORTED_MODULE_2_lodash__["take"](sorted, this.limit);
     };
     GainersLosersComponent.prototype.onTableclick = function (event) {
         // console.log(event.srcElement);
@@ -8806,14 +8819,11 @@ var GainersLosersComponent = (function () {
     };
     GainersLosersComponent.prototype.onClickHeader = function (criteria) {
         console.log(criteria);
-        if (this.sortBy !== criteria) {
-            // if(this.asc_desc === 'asc') this.asc_desc ='desc';
-            // else  this.asc_desc='asc';
-            //}else this.asc_desc = 'asc';
-            // console.log(this.asc_desc);
-            this.sortBy = criteria;
-            this.sortData();
+        if (this.sortBy === criteria) {
+            this.asc_desc = this.asc_desc === 'asc' ? 'desc' : 'asc';
         }
+        this.sortBy = criteria;
+        this.sortData();
     };
     GainersLosersComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({

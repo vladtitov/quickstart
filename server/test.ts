@@ -10,6 +10,7 @@ let cache = apicache.middleware;
 let url = 'https://api.coinmarketcap.com/v1/ticker/';
 
 
+/*
 let all_market:any = {};
 console.log(url);
 
@@ -32,7 +33,7 @@ request.get(url,function (err,r,body){
     console.log(icons.length);
     setTimeout(downloadNext, 1000);
 
-     /*data.forEach(function (item) {
+     /!*data.forEach(function (item) {
        let id = item.id;
        let url='https://files.coinmarketcap.com/static/img/coins/128x128/{{id}}.png';
        let filePath = '../pub/img/icons/{{id}}.png';
@@ -43,7 +44,7 @@ request.get(url,function (err,r,body){
          });
 
 
-     })*/
+     })*!/
     //console.log(cookie_string);
 
 
@@ -53,8 +54,11 @@ request.get(url,function (err,r,body){
 
 
 });
+*/
 
-let icons:string[];
+
+
+let icons:string[] = JSON.parse('["authorship","cryptonex","senderon","hubii-network","flik","internxt","gokucoin","alis","hive","trackr","oax","macro1","attention-token-of-media","rivetz","tezos","blackmoon-crypto","airtoken","ormeus-coin","bridgecoin","viberate","neblio","ethereum-dark","kin","agrello-delta","chainlink","voisecom","atbcoin","kexcoin"]')
 
 let i =0;
 
@@ -69,15 +73,20 @@ let downloadNext = function () {
   console.log(id);
 
   let url='https://files.coinmarketcap.com/static/img/coins/128x128/{{id}}.png';
-  let filePath = '../pub/img/icons/{{id}}.png';
+  let filePath = '../pub/assets/icons/{{id}}.png';
+
 
 
   download(url.replace('{{id}}', id),
     filePath.replace('{{id}}',id), function () {
 
+
+
       setTimeout(downloadNext, 1000);
     });
 }
+
+
 
 
 
@@ -94,7 +103,7 @@ var download = function(uri, filename, callback){
   });
 };
 
-
+downloadNext();
 
 /*
 

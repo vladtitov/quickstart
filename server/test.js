@@ -7,22 +7,7 @@ const apicache = require("apicache");
 const path = require("path");
 let cache = apicache.middleware;
 let url = 'https://api.coinmarketcap.com/v1/ticker/';
-let all_market = {};
-console.log(url);
-request.get(url, function (err, r, body) {
-    if (err) {
-        console.error(' error from  ' + url, err);
-    }
-    else {
-        let data = JSON.parse(body);
-        icons = data.map(function (item) {
-            return item.id;
-        });
-        console.log(icons.length);
-        setTimeout(downloadNext, 1000);
-    }
-});
-let icons;
+let icons = JSON.parse('["authorship","cryptonex","senderon","hubii-network","flik","internxt","gokucoin","alis","hive","trackr","oax","macro1","attention-token-of-media","rivetz","tezos","blackmoon-crypto","airtoken","ormeus-coin","bridgecoin","viberate","neblio","ethereum-dark","kin","agrello-delta","chainlink","voisecom","atbcoin","kexcoin"]');
 let i = 0;
 let downloadNext = function () {
     if (i >= icons.length) {
@@ -33,7 +18,7 @@ let downloadNext = function () {
     let id = icons[i++];
     console.log(id);
     let url = 'https://files.coinmarketcap.com/static/img/coins/128x128/{{id}}.png';
-    let filePath = '../pub/img/icons/{{id}}.png';
+    let filePath = '../pub/assets/icons/{{id}}.png';
     download(url.replace('{{id}}', id), filePath.replace('{{id}}', id), function () {
         setTimeout(downloadNext, 1000);
     });
@@ -47,3 +32,4 @@ var download = function (uri, filename, callback) {
             .on('close', callback);
     });
 };
+downloadNext();

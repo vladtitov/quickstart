@@ -485,7 +485,7 @@ var AllGainersLosersComponent = (function () {
       percent_change_24h:number;
       percent_change_7d:number;*/
         console.log(this.creteria, this.asc_desc);
-        this.sortedMarkets = __WEBPACK_IMPORTED_MODULE_2_lodash__["take"](__WEBPACK_IMPORTED_MODULE_2_lodash__["orderBy"](ar, this.creteria, this.asc_desc), 50);
+        this.sortedMarkets = __WEBPACK_IMPORTED_MODULE_2_lodash__["take"](__WEBPACK_IMPORTED_MODULE_2_lodash__["orderBy"](ar, this.creteria, this.asc_desc), 200);
         // console.log(sorted);
         // this.consAvailable = _.take(sorted,30);
     };
@@ -8794,7 +8794,7 @@ var GainersLosersComponent = (function () {
         var cap = this.data.filter(function (item) { return item.volume_usd_24h > this.limit; }, { limit: this.capLimit });
         var sorted = __WEBPACK_IMPORTED_MODULE_2_lodash__["orderBy"](cap, this.sortBy, this.asc_desc);
         // console.log(sorted);
-        this.consAvailable = __WEBPACK_IMPORTED_MODULE_2_lodash__["take"](sorted, 30);
+        this.consAvailable = __WEBPACK_IMPORTED_MODULE_2_lodash__["take"](sorted, 200);
     };
     GainersLosersComponent.prototype.onTableclick = function (event) {
         // console.log(event.srcElement);

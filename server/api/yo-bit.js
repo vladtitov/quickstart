@@ -37,13 +37,13 @@ const APIs = [
         api: '/api/yobit/currencies',
         url: 'https://yobit.net/api/3/info',
         name: 'market',
-        cache: '10 minutes'
+        cache: '1 day'
     },
     {
         api: '/api/yobit/market/:pair',
         url: 'https://yobit.net/api/3/ticker/',
         name: 'market',
-        cache: '10 minutes'
+        cache: '30 minutes'
     },
     {
         api: '/api/yobit/orderbook/:pair',

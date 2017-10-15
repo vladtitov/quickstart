@@ -28,12 +28,12 @@ const APIs = [
         api: '/api/bitfinex/currencies',
         url: 'https://api.bitfinex.com/v1/symbols',
         name: 'currencies',
-        cache: '1 hour'
+        cache: '1 day'
     },
     {
         api: '/api/bitfinex/market/:marketId',
         url: 'https://api.bitfinex.com/v1/pubticker/',
         name: 'markets',
-        cache: '1 hour'
+        cache: '30 minutes'
     }
 ];

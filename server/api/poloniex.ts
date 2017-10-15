@@ -74,14 +74,14 @@ const APIs = [
   {
     name: 'returnTicker',
     api: '/api/poloniex/markets-summary',
-    cache:'10 minutes',
+    cache:'30 minutes',
     url: 'https://poloniex.com/public?command=returnTicker'
 
   },
   {
     name: 'currencies',
     api: '/api/poloniex/currencies',
-    cache:'10 minutes',
+    cache:'1 day',
     url: 'https://poloniex.com/public?command=returnCurrencies'
 
   },
@@ -95,7 +95,7 @@ const APIs = [
   {
     name: 'orderBook',
     api: '/api/poloniex/orderBook/:currencyPair/:depth',
-    cache:'1 minute',
+    cache:'10 minute',
     url: 'https://poloniex.com/public?command=returnOrderBook&'
 
   },

@@ -85,25 +85,25 @@ const APIs=[
     api:'/api/bittrex/markets',
     url:'https://bittrex.com/api/v1.1/public/getmarkets',
     name:'markets',
-    cache:'10 minutes'
+    cache:'30 minutes'
   },
   {
     api:'/api/bittrex/markets-summary',
     url:'https://bittrex.com/api/v1.1/public/getmarketsummaries',
     name:'recent trades ',
-    cache:'10 minutes'
+    cache:'30 minutes'
   },
   {
     api:'/api/bittrex/currencies',
     url:'https://bittrex.com/api/v1.1/public/getcurrencies',
     name:'markets',
-    cache:'10 minutes'
+    cache:'30 minutes'
   },
   {
     api:'/api/bittrex/market/:market',
     url:'https://bittrex.com/api/v1.1/public/getmarketsummary?',
     name:'recent trades ',
-    cache:'10 minutes'
+    cache:'30 minutes'
   },
   {
     api:'/api/bittrex/getmarkethistory/:market',

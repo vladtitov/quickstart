@@ -28,12 +28,12 @@ const APIs=[
     api:'/api/hitbtc/currencies',
     url:'https://api.hitbtc.com/api/1/public/symbols',
     name:'coins',
-    cache:'10 minutes'
+    cache:'1 day'
   },
   {
     api:'/api/hitbtc/markets-summary',
     url:'https://api.hitbtc.com/api/1/public/ticker',
     name:'market',
-    cache:'10 minutes'
+    cache:'30 minutes'
   }
 ];

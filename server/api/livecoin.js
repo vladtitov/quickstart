@@ -37,6 +37,6 @@ const APIs = [
         api: '/api/livecoin/markets',
         url: 'https://api.livecoin.net/exchange/ticker',
         name: 'market',
-        cache: '10 minutes'
+        cache: '30 minutes'
     }
 ];

@@ -99,8 +99,6 @@ var AllBalancesComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_timers___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_timers__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_Subject__ = __webpack_require__("../../../../rxjs/Subject.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_Subject__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_lodash__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -110,7 +108,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 
@@ -134,6 +131,8 @@ var AllCoinsService = (function () {
         this.apis$ = this.apisSub.asObservable();
         this.serachResultsSub = new __WEBPACK_IMPORTED_MODULE_8_rxjs_Subject__["Subject"]();
         this.serachResults$ = this.serachResultsSub.asObservable();
+        this.selectedMarketsArSub = new __WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject__["BehaviorSubject"](null);
+        this.selectedMarketsAr$ = this.selectedMarketsArSub.asObservable();
         marketCap.getAllCoinsData().subscribe(function (res) {
             if (!res)
                 return;
@@ -145,6 +144,12 @@ var AllCoinsService = (function () {
                 return new __WEBPACK_IMPORTED_MODULE_3__coin_sercice_base__["a" /* CoinSerciceBase */](item, res, http, storage);
             });
             _this.apis.forEach(function (item) {
+                item.marketsAr$.subscribe(function (res) {
+                    if (!res)
+                        return;
+                    _this.selectedMarketsAr = _this.selectedMarketsAr.concat(res);
+                    _this.selectedMarketsArSub.next(_this.selectedMarketsAr);
+                });
                 item.serachResults$.subscribe(function (res) {
                     if (!res)
                         return;
@@ -156,24 +161,31 @@ var AllCoinsService = (function () {
             //this.filterCoins();
         });
     }
-    AllCoinsService.prototype.filterCoins = function () {
+    AllCoinsService.prototype.loadCoinsSelectedExchanges = function () {
+        var _this = this;
+        if (!this.apis) {
+            Object(__WEBPACK_IMPORTED_MODULE_7_timers__["setTimeout"])(function () { return _this.loadCoinsSelectedExchanges(); }, 1000);
+            return;
+        }
         var self = this;
         var out = [];
         var activeExchanges = this.getActiveExchanges();
         var i = 0;
+        this.selectedMarketsAr = [];
         this.apis.forEach(function (service) {
             if (activeExchanges[service.config.uid]) {
                 i++;
-                service.getCoins().subscribe(function (coins) {
-                    if (!coins)
-                        return;
-                    i--;
-                    out = __WEBPACK_IMPORTED_MODULE_9_lodash__["uniq"](out.concat(coins)).sort();
-                    if (i == 0) {
-                        self.allCoins = out;
-                        self.allCoinsSub.next(out);
-                    }
-                });
+                service.dispatchMarketsAr();
+                /*service.getAllMarketsAr().subscribe(coins=>{
+                  if(!coins) return;
+                  i--
+                  out = _.uniq(out.concat(coins)).sort();
+                  if(i==0){
+                    self.allCoins = out;
+                    self.allCoinsSub.next(out);
+                  }
+        
+                });*/
             }
         });
     };
@@ -386,7 +398,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/all-in-one/all-gainers-losers/all-gainers-losers.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n\n    <section>\n        <h3>Gainers Loders <small *ngIf=\"sortedMarkets\">Total: {{sortedMarkets.length}}</small></h3>\n    </section>\n    <section>\n        <table>\n            <tbody>\n            <tr>\n                <th class=\"btn\" (click)=\"onSortClick('symbol')\">Symbol</th>\n                <th>Name</th>\n                <th>US</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_1h')\">1h%</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_24h')\" >24h%</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_7d')\">7 days%</th>\n                <th>Graph</th>\n            </tr>\n\n            <tr *ngFor=\"let coin of sortedMarkets\">\n                <td> <a routerLink='/all-in-one/search/{{coin.symbol}}' class=\"btn\"> {{coin.symbol}}</a> </td>\n                <td>{{coin.name}}</td>\n                <td>{{coin.price_usd}}</td>\n                <td [ngClass]=\"coin.percent_change_1h>0?'green':'red'\">{{coin.percent_change_1h}}</td>\n                <td [ngClass]=\"coin.percent_change_24h>0?'green':'red'\">{{coin.percent_change_24h}}</td>\n                <td [ngClass]=\"coin.percent_change_7d>0?'green':'red'\">{{coin.percent_change_7d}}</td>\n                <td> <a class=\"btn fa fa-line-chart\" href=\"https://coinmarketcap.com/currencies/{{coin.id}}\" target=\"_blank\"></a></td>\n\n            </tr>\n            </tbody>\n        </table>\n    </section>\n</div>\n"
+module.exports = "<div>\n\n    <section>\n        <h3>Gainers Loders <small *ngIf=\"sortedMarkets\">Total: {{sortedMarkets.length}}</small></h3>\n    </section>\n    <section>\n        <table>\n            <tbody>\n            <tr>\n                <th class=\"btn\" (click)=\"onSortClick('symbol')\">Coin</th>\n                <th>Market</th>\n                <th>Exchange</th>\n                <th>US</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_1h')\">1h%</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_24h')\" >24h%</th>\n                <th class=\"btn\" (click)=\"onSortClick('percent_change_7d')\">7 days%</th>\n                <th>Graph</th>\n            </tr>\n\n            <tr *ngFor=\"let market of sortedMarkets\">\n                <td> <a routerLink='/all-in-one/search/{{market.coin}}' class=\"btn\"> {{market.coin}}</a> </td>\n                <td>{{market.pair}}</td>\n                <td>{{market.exchange}}</td>\n                <td>{{market.usMC}}</td>\n                <td [ngClass]=\"market.percent_change_1h>0?'green':'red'\">{{market.percent_change_1h}}</td>\n                <td [ngClass]=\"market.percent_change_24h>0?'green':'red'\">{{market.percent_change_24h}}</td>\n                <td [ngClass]=\"market.percent_change_7d>0?'green':'red'\">{{market.percent_change_7d}}</td>\n                <td> <a class=\"btn fa fa-line-chart\" href=\"https://coinmarketcap.com/currencies/{{market.id}}\" target=\"_blank\"></a></td>\n\n            </tr>\n            </tbody>\n        </table>\n    </section>\n</div>\n"
 
 /***/ }),
 
@@ -422,23 +434,33 @@ var AllGainersLosersComponent = (function () {
         this.marketCap = marketCap;
         this.creteria = 'percent_change_1h';
         this.data = [];
+        this.sortedMarkets = [];
         this.asc_desc = 'asc';
         this.sortBy = 'persent_24h';
     }
     AllGainersLosersComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.allService.allCoins$.subscribe(function (coins) {
-            if (!coins)
+        this.allService.selectedMarketsAr$.subscribe(function (markets) {
+            if (!markets)
                 return;
-            _this.marketCap.getAllCoinsData().subscribe(function (data) {
-                // console.log(coins);
-                var ar = coins.map(function (item) {
-                    return this.mc[item] || { symbol: item };
-                }, { mc: data });
-                _this.data = ar;
-                _this.sortData();
-            });
+            console.log(markets);
+            _this.data = markets;
+            clearTimeout(_this.timeout);
+            _this.timeout = setTimeout(function () { return _this.sortData(); }, 1000);
+            /* this.marketCap.getAllCoinsData().subscribe(data=>{
+              // console.log(coins);
+       
+               if(!data) return;
+               let ar = coins.map(function (item) {
+                 return this.mc[item] || {symbol:item};
+               },{mc:data});
+       
+               this.data = ar;
+               this.sortData();
+       
+             })*/
         });
+        this.allService.loadCoinsSelectedExchanges();
         /*this.allService.currentMarketsAr$.subscribe(markets=>{
           if(!markets) return;
          // console.log(markets);
@@ -472,7 +494,7 @@ var AllGainersLosersComponent = (function () {
       percent_change_24h:number;
       percent_change_7d:number;*/
         console.log(this.creteria, this.asc_desc);
-        this.sortedMarkets = __WEBPACK_IMPORTED_MODULE_2_lodash__["orderBy"](ar, this.creteria, this.asc_desc);
+        this.sortedMarkets = __WEBPACK_IMPORTED_MODULE_2_lodash__["take"](__WEBPACK_IMPORTED_MODULE_2_lodash__["orderBy"](ar, this.creteria, this.asc_desc), 50);
         // console.log(sorted);
         // this.consAvailable = _.take(sorted,30);
     };
@@ -564,7 +586,7 @@ var AllMainComponent = (function () {
             out[item.uid] = item.selected;
         });
         this.allConsService.setActiveExchanges(out);
-        this.allConsService.filterCoins();
+        // this.allConsService.filterCoins();
     };
     AllMainComponent.prototype.onLogoutClick = function () {
     };
@@ -865,6 +887,8 @@ var CoinSerciceBase = (function () {
         this.isLoggedIn$ = this.isLogedInSub.asObservable();
         this.serachResultsSub = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
         this.serachResults$ = this.serachResultsSub.asObservable();
+        // this.coinsAvailableSub = new BehaviorSubject(null);
+        // this.coinsAvailable$ = this.coinsAvailableSub.asObservable();
         setTimeout(function () { return _this.autoLogin(); }, 3000);
     }
     CoinSerciceBase.prototype.autoLogin = function () {
@@ -930,6 +954,12 @@ var CoinSerciceBase = (function () {
     
          })*/
     };
+    CoinSerciceBase.prototype.dispatchMarketsAr = function () {
+        if (!this.marketsAr)
+            this.loadMarkets();
+        else
+            this.marketsArSub.next(this.marketsAr);
+    };
     CoinSerciceBase.prototype.getCoins = function () {
         return this.getAllMarketsAr().map(function (ar) {
             if (!ar)
@@ -946,6 +976,7 @@ var CoinSerciceBase = (function () {
         var indexed = {};
         var baseCoins = [];
         var marketCap = this.marketCapData;
+        var coinsAvailable = [];
         var i;
         switch (this.config.uid) {
             case 'bittrex':
@@ -974,6 +1005,8 @@ var CoinSerciceBase = (function () {
         this.baseCurrenciesAr = baseCoins;
         this.marketsAr = marketsAr;
         this.marketsArSub.next(this.marketsAr);
+        //this.coinsAvailable = coinsAvailable;
+        //this.coinsAvailableSub.next(coinsAvailable);
     };
     CoinSerciceBase.prototype.loadMarkets = function () {
         var _this = this;

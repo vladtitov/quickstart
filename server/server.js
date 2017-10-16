@@ -6,6 +6,11 @@ const api_1 = require("./api/api");
 const apiErrorHandler_1 = require("./utils/apiErrorHandler");
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
+const apicache = require("apicache");
+let cache = apicache.middleware;
+const request = require("request");
+let config = require('./api/api-config.json');
+console.log(config);
 const login_api_1 = require("./api/login-api");
 const changelly_api_1 = require("./api/changelly-api");
 const shapeshift_api_1 = require("./api/shapeshift-api");
@@ -41,6 +46,33 @@ app.get('/apis-info', function (req, resp) {
         timestamp: (new Date()).toISOString(),
         data: apis
     });
+});
+app.get('/api/public/:exchange/:funct', cache('30 minutes'), function (req, resp) {
+    let exchange = req.params.exchange;
+    let func = req.params.funct;
+    console.log(req.params);
+    let api = config[exchange];
+    let url = api[func]['url'];
+    let options = {
+        url: url,
+        method: api['method'] || 'GET'
+    };
+    console.log(options);
+    request(options).pipe(resp);
+});
+app.get('/api/public/:exchange/:function/:params', cache('30 minutes'), function (req, resp) {
+    let exchange = req.params.exchange;
+    let func = req.params.function;
+    let params = req.params.params;
+    let api = config[exchange];
+    let divider = api['divider'] || '/';
+    let url = api[func]['url'] + api[divider] + params;
+    let options = {
+        url: url,
+        method: api['method'] || 'GET'
+    };
+    console.log(options);
+    request(options).pipe(resp);
 });
 login_api_1.initLogin(app);
 api_send_notification_1.apiSendNotification(app);

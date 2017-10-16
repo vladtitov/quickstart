@@ -10,6 +10,36 @@ import {apiErrorHandler} from "./utils/apiErrorHandler";
 const bodyParser:any = require("body-parser");
 const cookieParser = require('cookie-parser');
 
+import * as apicache from 'apicache';
+let cache = apicache.middleware;
+import * as request from 'request';
+
+
+let config:{
+  [exchange:string]:{
+    isComplex:boolean,
+    urlMarkets:string
+  }
+} = require('./api/api-config.json');
+  /*exchanges:{
+    [exchange:string]:{
+      isComplex:boolean,
+      urlMarkets:string
+    }
+  }*/
+
+console.log(config);
+
+
+
+
+
+
+
+
+
+
+
 //import * as JWT from "jsonwebtoken";
 import {initLogin} from './api/login-api';
 
@@ -35,6 +65,8 @@ const app: Application = express();
 //const cors = require('cors');
 
 
+
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 
@@ -54,6 +86,8 @@ app.use('/api',function(req:any, res:Response , next:Function){
   else verifyLogin(req,res,next);
 });
 */
+
+
 
 let apis:any[] = [];
 
@@ -79,17 +113,58 @@ app.get('/apis-info', function(req, resp) {
 
 
 
+
+
+app.get('/api/public/:exchange/:funct',  cache('30 minutes'), function(req, resp) {
+  let exchange = req.params.exchange;
+  let func = req.params.funct;
+
+  console.log(req.params);
+
+  let api= config[exchange];
+
+  let url = api[func]['url'];
+
+  let options = {
+    url: url,
+    method:api['method'] || 'GET'
+  };
+
+  console.log(options);
+  request(options).pipe(resp);
+
+});
+
+app.get('/api/public/:exchange/:function/:params',  cache('30 minutes'), function(req, resp) {
+  let exchange = req.params.exchange;
+  let func = req.params.function;
+  let params = req.params.params;
+  let api= config[exchange];
+  let divider= api['divider'] || '/';
+  let url = api[func]['url'] + api[divider] + params;
+
+
+  let options = {
+    url: url,
+    method:api['method'] || 'GET'
+  };
+
+  console.log(options);
+  request(options).pipe(resp);
+});
+
+
+
+
+
 initLogin(app);
 
 apiSendNotification(app);
 initRestApi(app);
 
-
-
 initEther(app);
 
 apiSave(app);
-
 
 apis = apis.concat(initChangelly(app));
 

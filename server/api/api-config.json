@@ -1,0 +1,8 @@
+{
+  "ver":1,
+  "etherdelta":{
+    "markets":{
+      "url":"https://api.etherdelta.com/returnTicker"
+    }
+  }
+}

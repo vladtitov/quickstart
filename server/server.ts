@@ -2,7 +2,7 @@
 import * as path from 'path';
 import * as express from "express";
 import {Application} from "express";
-import {initRestApi} from "./api/api";
+
 import {apiErrorHandler} from "./utils/apiErrorHandler";
 
 //import apicache from 'apicache';
@@ -58,6 +58,7 @@ import {initKraken} from './api/kraken';
 import {initBitFinrx} from './api/bitfinex';
 import {initNovoExchange} from './api/novaexchange';
 import {initCryptopia} from './api/cryptopia';
+import {initPublicApis} from './api/apis';
 
 
 const app: Application = express();
@@ -166,10 +167,14 @@ app.get('/api/public/:exchange/:funct/:params',  cache('30 minutes'), function(r
 
 initLogin(app);
 
-apiSendNotification(app);
-initRestApi(app);
 
-initEther(app);
+
+apiSendNotification(app);
+//initRestApi(app);
+
+initPublicApis(app);
+
+//initEther(app);
 
 apiSave(app);
 
@@ -179,19 +184,21 @@ apis = apis.concat(initShapeSift(app));
 
 apis = apis.concat(initBittrex(app));
 
-
 apis = apis.concat(coinMarketCap(app));
+
+
 
 apis = apis.concat(initPoloniex(app));
 apis = apis.concat(initCoinbase(app));
 
-apis = apis.concat(initHitBTC(app));
+//apis = apis.concat(initHitBTC(app));
 apis = apis.concat(initYoBit(app));
 apis = apis.concat(initCoinExchange(app));
 apis = apis.concat(initKraken(app));
 apis = apis.concat(initBitFinrx(app));
 apis = apis.concat(initNovoExchange(app));
-apis = apis.concat(initCryptopia(app));
+
+//apis = apis.concat(initCryptopia(app));
 
 
 app.use(apiErrorHandler);

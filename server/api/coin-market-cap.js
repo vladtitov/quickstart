@@ -31,7 +31,7 @@ function coinMarketCap(app) {
             resp.json({ data: data });
         });
     });
-    app.get("/api/marketcap/ticker", cache('5 minutes'), function (req, resp) {
+    app.get("/api/marketcap/ticker", cache('10 minutes'), function (req, resp) {
         let url = 'https://api.coinmarketcap.com/v1/ticker/';
         let all_market = {};
         console.log(url);

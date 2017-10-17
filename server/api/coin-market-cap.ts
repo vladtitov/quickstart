@@ -58,7 +58,7 @@ export function coinMarketCap(app: Application) {
   });
 
 
-    app.get("/api/marketcap/ticker",cache('5 minutes'), function (req: Request, resp: Response) {
+    app.get("/api/marketcap/ticker",cache('10 minutes'), function (req: Request, resp: Response) {
 
     let url = 'https://api.coinmarketcap.com/v1/ticker/';
 

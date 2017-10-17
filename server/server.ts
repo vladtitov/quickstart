@@ -18,7 +18,8 @@ import * as request from 'request';
 let config:{
   [exchange:string]:{
     isComplex:boolean,
-    urlMarkets:string
+    apis:{[func:string]:string}
+
   }
 } = require('./api/api-config.json');
   /*exchanges:{
@@ -29,8 +30,6 @@ let config:{
   }*/
 
 console.log(config);
-
-
 
 
 
@@ -59,7 +58,7 @@ import {initKraken} from './api/kraken';
 import {initBitFinrx} from './api/bitfinex';
 import {initNovoExchange} from './api/novaexchange';
 import {initCryptopia} from './api/cryptopia';
-import {initLivecoin} from './api/livecoin';
+
 
 const app: Application = express();
 //const cors = require('cors');
@@ -113,42 +112,50 @@ app.get('/apis-info', function(req, resp) {
 
 
 
+function getOptions(params){
+  let exchange = config[params.exchange];
+  if(!exchange) return null;
+  let url = exchange.apis[params.funct];
+  if(!url) return null;
+  return {
+    url: url,
+    headers: {
+      'User-Agent': 'request'
+    }
+  }
+}
+
+function getOtionsWithParams(params){
+  let option = getOptions(params);
+  if(!option) return null;
+  let exchange = config[params.exchange];
+
+
+}
 
 
 app.get('/api/public/:exchange/:funct',  cache('30 minutes'), function(req, resp) {
-  let exchange = req.params.exchange;
-  let func = req.params.funct;
 
+  let options = getOptions(req.params);
+
+  if(!options){
+    resp.json({error:'nofunction'});
+    return
+  }
   console.log(req.params);
-
-  let api= config[exchange];
-
-  let url = api[func]['url'];
-
-  let options = {
-    url: url,
-    method:api['method'] || 'GET'
-  };
-
   console.log(options);
   request(options).pipe(resp);
 
 });
 
-app.get('/api/public/:exchange/:function/:params',  cache('30 minutes'), function(req, resp) {
-  let exchange = req.params.exchange;
-  let func = req.params.function;
-  let params = req.params.params;
-  let api= config[exchange];
-  let divider= api['divider'] || '/';
-  let url = api[func]['url'] + api[divider] + params;
+app.get('/api/public/:exchange/:funct/:params',  cache('30 minutes'), function(req, resp) {
 
+  let options = getOtionsWithParams(req.params);
 
-  let options = {
-    url: url,
-    method:api['method'] || 'GET'
-  };
-
+  if(!options){
+    resp.json({error:'nofunction'});
+    return
+  }
   console.log(options);
   request(options).pipe(resp);
 });
@@ -185,7 +192,6 @@ apis = apis.concat(initKraken(app));
 apis = apis.concat(initBitFinrx(app));
 apis = apis.concat(initNovoExchange(app));
 apis = apis.concat(initCryptopia(app));
-apis = apis.concat(initLivecoin(app));
 
 
 app.use(apiErrorHandler);

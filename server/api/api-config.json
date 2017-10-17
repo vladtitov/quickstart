@@ -1,8 +1,23 @@
 {
   "ver":1,
+
   "etherdelta":{
-    "markets":{
-      "url":"https://api.etherdelta.com/returnTicker"
+    "apis":{
+      "marketsSummaries":"https://api.etherdelta.com/returnTicker"
     }
+  },
+
+  "livecoin":{
+    "headers":{"User-Agent":"Request"},
+    "apis":{
+      "marketsSummaries":"https://api.livecoin.net/exchange/ticker"
+    }
+
+  },
+  "hitbtc":{
+    "apis":{
+      "marketsSummaries":"https://api.hitbtc.com/api/1/public/ticker"
+    }
+
   }
 }

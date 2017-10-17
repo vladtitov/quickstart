@@ -28,7 +28,6 @@ const kraken_1 = require("./api/kraken");
 const bitfinex_1 = require("./api/bitfinex");
 const novaexchange_1 = require("./api/novaexchange");
 const cryptopia_1 = require("./api/cryptopia");
-const livecoin_1 = require("./api/livecoin");
 const app = express();
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -47,30 +46,42 @@ app.get('/apis-info', function (req, resp) {
         data: apis
     });
 });
-app.get('/api/public/:exchange/:funct', cache('30 minutes'), function (req, resp) {
-    let exchange = req.params.exchange;
-    let func = req.params.funct;
-    console.log(req.params);
-    let api = config[exchange];
-    let url = api[func]['url'];
-    let options = {
+function getOptions(params) {
+    let exchange = config[params.exchange];
+    if (!exchange)
+        return null;
+    let url = exchange.apis[params.funct];
+    if (!url)
+        return null;
+    return {
         url: url,
-        method: api['method'] || 'GET'
+        headers: {
+            'User-Agent': 'request'
+        }
     };
+}
+function getOtionsWithParams(params) {
+    let option = getOptions(params);
+    if (!option)
+        return null;
+    let exchange = config[params.exchange];
+}
+app.get('/api/public/:exchange/:funct', cache('30 minutes'), function (req, resp) {
+    let options = getOptions(req.params);
+    if (!options) {
+        resp.json({ error: 'nofunction' });
+        return;
+    }
+    console.log(req.params);
     console.log(options);
     request(options).pipe(resp);
 });
-app.get('/api/public/:exchange/:function/:params', cache('30 minutes'), function (req, resp) {
-    let exchange = req.params.exchange;
-    let func = req.params.function;
-    let params = req.params.params;
-    let api = config[exchange];
-    let divider = api['divider'] || '/';
-    let url = api[func]['url'] + api[divider] + params;
-    let options = {
-        url: url,
-        method: api['method'] || 'GET'
-    };
+app.get('/api/public/:exchange/:funct/:params', cache('30 minutes'), function (req, resp) {
+    let options = getOtionsWithParams(req.params);
+    if (!options) {
+        resp.json({ error: 'nofunction' });
+        return;
+    }
     console.log(options);
     request(options).pipe(resp);
 });
@@ -92,7 +103,6 @@ apis = apis.concat(kraken_1.initKraken(app));
 apis = apis.concat(bitfinex_1.initBitFinrx(app));
 apis = apis.concat(novaexchange_1.initNovoExchange(app));
 apis = apis.concat(cryptopia_1.initCryptopia(app));
-apis = apis.concat(livecoin_1.initLivecoin(app));
 app.use(apiErrorHandler_1.apiErrorHandler);
 app.listen(app.get('port'), () => {
     console.log("Server now running on port " + app.get('port'));

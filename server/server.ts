@@ -14,31 +14,6 @@ import * as apicache from 'apicache';
 let cache = apicache.middleware;
 import * as request from 'request';
 
-
-let config:{
-  [exchange:string]:{
-    isComplex:boolean,
-    apis:{[func:string]:string}
-
-  }
-} = require('./api/api-config.json');
-  /*exchanges:{
-    [exchange:string]:{
-      isComplex:boolean,
-      urlMarkets:string
-    }
-  }*/
-
-console.log(config);
-
-
-
-
-
-
-
-
-
 //import * as JWT from "jsonwebtoken";
 import {initLogin} from './api/login-api';
 
@@ -59,6 +34,7 @@ import {initBitFinrx} from './api/bitfinex';
 import {initNovoExchange} from './api/novaexchange';
 import {initCryptopia} from './api/cryptopia';
 import {initPublicApis} from './api/apis';
+import {filter} from 'rxjs/operator/filter';
 
 
 const app: Application = express();
@@ -102,68 +78,23 @@ app.get('/index', function(req,res) {
 
 app.use(express.static(path.join(__dirname, '../pub')));
 
-app.get('/apis-info', function(req, resp) {
+app.get('/apis-info/:filter', function(req, resp) {
 
-  resp.json({
-    title:'APIS Available',
-    timestamp:(new Date()).toISOString(),
-    data:apis
-  });
-});
+  let out = [];
+  let filter = req.params.filter;
 
+  app._router.stack.forEach(function(r){
 
+    if (r.route && r.route.path && r.route.path.indexOf(this.filter) !==-1){
 
-function getOptions(params){
-  let exchange = config[params.exchange];
-  if(!exchange) return null;
-  let url = exchange.apis[params.funct];
-  if(!url) return null;
-  return {
-    url: url,
-    headers: {
-      'User-Agent': 'request'
+      out.push(r.route.path.substr(5));
     }
-  }
-}
+  }, {filter:filter, i:0});
 
-function getOtionsWithParams(params){
-  let option = getOptions(params);
-  if(!option) return null;
-  let exchange = config[params.exchange];
-
-
-}
-
-
-app.get('/api/public/:exchange/:funct',  cache('30 minutes'), function(req, resp) {
-
-  let options = getOptions(req.params);
-
-  if(!options){
-    resp.json({error:'nofunction'});
-    return
-  }
-  console.log(req.params);
-  console.log(options);
-  request(options).pipe(resp);
-
+  resp.json(out.sort().map(function (item, index) {
+    return index+ ' ' + item;
+  }));
 });
-
-app.get('/api/public/:exchange/:funct/:params',  cache('30 minutes'), function(req, resp) {
-
-  let options = getOtionsWithParams(req.params);
-
-  if(!options){
-    resp.json({error:'nofunction'});
-    return
-  }
-  console.log(options);
-  request(options).pipe(resp);
-});
-
-
-
-
 
 initLogin(app);
 

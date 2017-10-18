@@ -7,9 +7,6 @@ const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 const apicache = require("apicache");
 let cache = apicache.middleware;
-const request = require("request");
-let config = require('./api/api-config.json');
-console.log(config);
 const login_api_1 = require("./api/login-api");
 const changelly_api_1 = require("./api/changelly-api");
 const shapeshift_api_1 = require("./api/shapeshift-api");
@@ -36,51 +33,17 @@ app.get('/index', function (req, res) {
     res.sendFile(p);
 });
 app.use(express.static(path.join(__dirname, '../pub')));
-app.get('/apis-info', function (req, resp) {
-    resp.json({
-        title: 'APIS Available',
-        timestamp: (new Date()).toISOString(),
-        data: apis
-    });
-});
-function getOptions(params) {
-    let exchange = config[params.exchange];
-    if (!exchange)
-        return null;
-    let url = exchange.apis[params.funct];
-    if (!url)
-        return null;
-    return {
-        url: url,
-        headers: {
-            'User-Agent': 'request'
+app.get('/apis-info/:filter', function (req, resp) {
+    let out = [];
+    let filter = req.params.filter;
+    app._router.stack.forEach(function (r) {
+        if (r.route && r.route.path && r.route.path.indexOf(this.filter) !== -1) {
+            out.push(r.route.path.substr(5));
         }
-    };
-}
-function getOtionsWithParams(params) {
-    let option = getOptions(params);
-    if (!option)
-        return null;
-    let exchange = config[params.exchange];
-}
-app.get('/api/public/:exchange/:funct', cache('30 minutes'), function (req, resp) {
-    let options = getOptions(req.params);
-    if (!options) {
-        resp.json({ error: 'nofunction' });
-        return;
-    }
-    console.log(req.params);
-    console.log(options);
-    request(options).pipe(resp);
-});
-app.get('/api/public/:exchange/:funct/:params', cache('30 minutes'), function (req, resp) {
-    let options = getOtionsWithParams(req.params);
-    if (!options) {
-        resp.json({ error: 'nofunction' });
-        return;
-    }
-    console.log(options);
-    request(options).pipe(resp);
+    }, { filter: filter, i: 0 });
+    resp.json(out.sort().map(function (item, index) {
+        return index + ' ' + item;
+    }));
 });
 login_api_1.initLogin(app);
 api_send_notification_1.apiSendNotification(app);

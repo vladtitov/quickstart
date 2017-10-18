@@ -41,7 +41,7 @@ export function initBitFinrx(app:Application){
 
 const APIs=[
   {
-    api:'/api/bitfinex/currencies',
+    api:'/api/bitfinex/pairs',
     url:'https://api.bitfinex.com/v1/symbols',
     name:'currencies',
     cache:'1 day'
